@@ -26,7 +26,7 @@ const Comments = () => {
       <div className="flex flex-col gap-2 w-full">
         <textarea
           placeholder="Write a comment...."
-          className="w-full p-4 rounded-xl text-black border border-gray-300 focus:outline-none"
+          className="w-full p-4 rounded-xl text-black border  dark:shadow-black  border-gray-300 focus:outline-none"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />

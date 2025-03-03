@@ -7,13 +7,13 @@ const FeaturedPost = () => {
             {/* LEFT SECTION - Main Featured Post */}
             <div className="lg:col-span-1 flex flex-col gap-4">
                 {/* IMAGE */}
-                <Image src="SmartLogoMain.png" className="rounded-3xl object-cover w-full" w="895" />
+                <Image src="SmartLogoMain.png" className="rounded-3xl dark:shadow-black  object-cover w-full" w="895" />
                 
                 {/* Details */}
                 <div className="flex items-center gap-4 text-gray-300">
                     <h1 className="font-semibold text-lg">01.</h1>
                     <Link to="/sports-news" className="text-blue-400 hover:underline">Sports News</Link>
-                    <span className="text-gray-500 text-sm">2 days ago</span>
+                    <span className="text-gray-500  dark:text-gray-800 text-sm">2 days ago</span>
                 </div>
 
                 {/* Title */}
@@ -50,7 +50,7 @@ const FeaturedPost = () => {
 
             {/* RIGHT SECTION - Ads */}
             <div className="lg:col-span-1 flex flex-col gap-8">
-                <h2 className="text-lg font-bold text-gray-300">Sponsored Ads</h2>
+                <h2 className="text-lg font-bold dark:text-gray-600 text-gray-300">Sponsored Ads</h2>
                 
                 {/* Ads */}
                 {[

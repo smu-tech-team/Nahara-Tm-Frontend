@@ -3,8 +3,29 @@ import { Link } from "react-router-dom";
 import PostMenuActions from "./PostMenuAction";
 import SearchBar from "./Search";
 import Comments from "./Comments";
+import { useEffect, useState } from "react";
+import {  useParams } from "react-router-dom";
+import axios from "axios";
+
 
 const SinglePostPage = () => {
+
+    const { postId } = useParams(); // Assuming postId is passed in the route
+    const [views, setViews] = useState(0);
+
+    useEffect(() => {
+        // Fetch and update post views when the component mounts
+        const updateViews = async () => {
+            try {
+                const response = await axios.post(`http://localhost:8087/api/post/${postId}/view`);
+                setViews(response.data.views);
+            } catch (error) {
+                console.error("Error updating post views", error);
+            }
+        };
+        updateViews();
+    }, [postId]);
+
     return (
         <div className="flex flex-col gap-12 p-4 md:p-8">
             {/* Post Details */}
@@ -23,6 +44,8 @@ const SinglePostPage = () => {
                         <span>on</span>
                         <Link to="#" className="text-blue-700 font-semibold hover:underline">Sport News</Link>
                         <span>• 2 days ago</span>
+                        <span className="ml-4 text-gray-600 dark:text-gray-400">👁️ {views} views</span>
+
                     </div>
 
                     {/* Post Intro */}
@@ -119,15 +142,15 @@ const SinglePostPage = () => {
                 </div>
 
                 {/* Sidebar Section */}
-                <div className="px-4 h-max  text-white rounded-2xl shadow-lg sticky top-8">
+                <div className="px-4 h-max   dark:text-black text-white rounded-2xl shadow-lg sticky top-8">
                     {/* Author Section */}
-                    <h2 className="text-xl font-semibold mb-4">Author</h2>
+                    <h2 className="text-xl  dark:text-black font-semibold mb-4">Author</h2>
                     
                     <div className="flex items-center gap-4">
                         <Image src="myphoto.jpg" className="w-14 h-14 rounded-full object-cover" w="56" h="56" />
                         <div>
                             <Link to="#" className="text-blue-400 font-semibold text-lg hover:underline">Smart</Link>
-                            <p className="text-gray-400 text-sm">Football & Sports Analyst</p>
+                            <p className="text-gray-400  dark:text-black text-sm">Football & Sports Analyst</p>
                         </div>
                     </div>
 
@@ -153,7 +176,7 @@ const SinglePostPage = () => {
                     </div>
 
                     {/* Categories Section */}
-                    <div className="mt-6">
+                    <div className="mt-6  dark:text-black">
                         <h1 className="text-sm font-medium  mb-4">Categories</h1>
                         <div className="flex flex-col gap-2 text-sm">
                             <Link className="hover:underline">All</Link>
@@ -167,7 +190,7 @@ const SinglePostPage = () => {
 
                     {/* Search Section */}
                     <div className="mt-6">
-                        <h1 className="text-sm font-medium  mb-4">Search</h1>
+                        <h1 className="text-sm font-medium   mb-4">Search</h1>
                         <SearchBar />  
                     </div>
                 </div>

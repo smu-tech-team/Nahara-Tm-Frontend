@@ -2,25 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Set default background color to black and text color to white */
+/* Set default background to dark mode */
 body {
-  @apply bg-black text-white;
+  @apply bg-black text-white transition-all duration-300 dark:bg-white dark:text-black;
   width: 100vw;
-  overflow: auto;
-  font-family: sans-serif;
+  font-family: "Montserrat", sans-serif;
+  overflow-x: hidden;
 }
 
-.animatedButton{
+.animatedButton {
   animation-duration: 10000ms;
 }
-.ql-container{
-  border: none !important;
-}
 
-.ql-toolbar{
-  border: none !important;
-}
-
-.ql-editor{
+.ql-container, .ql-toolbar, .ql-editor {
   border: none !important;
 }

@@ -4,25 +4,25 @@ import { Link } from "react-router-dom";
 const SideMenu = () => {
 
     const categories = [
-        { name: "All Posts", path: "/posts" },
-        { name: "Sports News", path: "/posts?cat=sports-news" },
+        {  name: "All Posts", path: "/posts" },
+        { name: "Sports News", path: "/posts?cat=sports-news"},
         { name: "Celebrity News", path: "/posts?cat=celebrity-news" },
         { name: "Politics", path: "/posts?cat=politics" },
         { name: "Betting Tips", path: "/posts?cat=betting-tips" },
         { name: "Hot Gist", path: "/posts?cat=hot-gist" },
     ];
     return (
-        <div className="px-4 h-max sticky gap-8 top-8 mb-11 bg-black  shadow-md">
+        <div className="px-4 h-max sticky gap-8 top-8 mb-11 bg-blackdark:bg-transparent shadow-md">
             {/* 🔍 Search Section */}
             <div>
-                <h1 className="text-sm font-medium text-white mb-4">Search</h1>
+                <h1 className="text-sm font-medium dark:text-black text-white mb-4">Search</h1>
                 <div className="relative">
                     <input
                         type="text"
                         placeholder="Search posts..."
-                        className="w-full p-2 pr-10 border border-gray-700 rounded-md text-white placeholder-gray-400"
+                        className="w-full p-2 pr-10 border border-gray-700 rounded-md  dark:text-black text-black placeholder-gray-400"
                     />
-                    <Search className="absolute right-3 top-2 text-gray-400" size={18} />
+                    <Search className="absolute right-3   dark:text-black top-2 text-gray-400" size={18} />
                 </div>
             </div>
 
@@ -37,7 +37,7 @@ const SideMenu = () => {
                     name="sort" 
                     value="newest"
                      className="appearance-none w-4 h-4 border-[1.5px]
-                      border-blue-800 cursor-pointer  bg-white rounded-sm checked:bg-blue-800"
+                      border-blue-800 cursor-pointer  dark:text-black  bg-white rounded-sm checked:bg-blue-800"
                       />
                       Newest
                 </label>
@@ -46,7 +46,7 @@ const SideMenu = () => {
                      name="sort" 
                      value="most-popular"
                      className="appearance-none w-4 h-4 border-[1.5px]
-                      border-blue-800 cursor-pointer bg-white rounded-sm checked:bg-blue-800"
+                      border-blue-800 cursor-pointer dark:text-black bg-white rounded-sm checked:bg-blue-800"
                       />
                       Most Popular
                 </label>
@@ -55,7 +55,7 @@ const SideMenu = () => {
                      name="sort"
                       value="trending"
                      className="appearance-none w-4 h-4 border-[1.5px]
-                      border-blue-800 cursor-pointer  bg-white rounded-sm checked:bg-blue-800"
+                      border-blue-800 cursor-pointer  dark:text-black bg-white rounded-sm checked:bg-blue-800"
                       />
                       Trending
                 </label>
@@ -64,29 +64,29 @@ const SideMenu = () => {
                     name="sort"
                      value="oldest"
                      className="appearance-none w-4 h-4 border-[1.5px]
-                      border-blue-800 cursor-pointer  bg-white rounded-sm checked:bg-blue-800"
+                      border-blue-800 cursor-pointer  dark:text-black bg-white rounded-sm checked:bg-blue-800"
                       />
                       Oldest
                 </label>
 
                 </div>
-                <p className="text-gray-400 text-xs mt-1">Customize your feed</p>
+                <p className="text-gray-400  dark:text-black text-xs mt-1">Customize your feed</p>
             </div>
 
             {/* 📂 Categories */}
             <div className="mt-6">
             {/* 📂 Categories Header */}
-            <h2 className="text-sm font-medium text-white flex items-center gap-1">
+            <h2 className="text-sm font-medium  dark:text-black text-white flex items-center gap-1">
                 Categories <ChevronRight size={16} />
             </h2>
 
             {/* Category Links */}
-            <div className="mt-3 space-y-2">
+            <div className="mt-3 space-y-2 dark:text-back hover:bg-gray-500">
                 {categories.map((category, index) => (
                     <Link
                         key={index}
                         to={category.path}
-                        className="block px-3 py-1 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition"
+                        className="block px-3 py-1 rounded-lg  dark:text-black text-gray-300 hover:text-white hover:bg-gray-800 transition"
                     >
                         {category.name}
                     </Link>
