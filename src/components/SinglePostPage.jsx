@@ -3,28 +3,151 @@ import { Link } from "react-router-dom";
 import PostMenuActions from "./PostMenuAction";
 import SearchBar from "./Search";
 import Comments from "./Comments";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {  useParams } from "react-router-dom";
 import axios from "axios";
+import {
+    FacebookShareButton,
+    TwitterShareButton,
+    LinkedinShareButton,
+} from 'react-share';
+// import { Helmet } from 'react-helmet';
+import { useQuery } from "@tanstack/react-query";
+import PostCard from "../components/PostCard";
+import  Skeleton  from "../components/Skelete";
 
 
-const SinglePostPage = () => {
 
-    const { postId } = useParams(); // Assuming postId is passed in the route
+
+const fetchPost = async (slug) => {
+    try {
+        const response = await axios.get(`http://localhost:8087/api/post/post/${slug}`);
+        console.log(response.data);
+        return response.data; // ✅ Return the data
+    } catch (error) {
+        console.error("Error fetching post:", error);
+        throw new Error("Failed to fetch post"); // ✅ Throw an error so React Query can handle it
+    }
+};
+
+const SinglePostPage = ({postId}) => {
+    const { slug } = useParams();
     const [views, setViews] = useState(0);
+    const [likes, setLikes] = useState(0);
+    const [isLiking, setIsLiking] = useState(false);
+    const [likeMessage, setLikeMessage] = useState('');
+    const postUrl = useMemo(() => `http://localhost:8087/api/post/${postId}`, [postId]);
+    const [isSharing, setIsSharing] = useState(false);
+    const [shareMessage, setShareMessage] = useState('');
+    const [message] = useState(null);
 
+    
+
+
+    console.log("Extracted Post ID:", postId);  // ✅ Debugging step
+
+
+    const fetchRelatedPosts = async (slug) => {
+        const response = await axios.get(`http://localhost:8087/api/post/${slug}/related`);
+        if (response.status !== 200) {
+            throw new Error("Failed to fetch related posts");
+        }
+        return response.data;
+    };
+    
+
+
+
+   
     useEffect(() => {
-        // Fetch and update post views when the component mounts
+        if (!postId) return;
         const updateViews = async () => {
-            try {
+            const viewedPosts = JSON.parse(localStorage.getItem("viewedPosts")) || [];
+            if (!viewedPosts.includes(postId)) {
                 const response = await axios.post(`http://localhost:8087/api/post/${postId}/view`);
-                setViews(response.data.views);
-            } catch (error) {
-                console.error("Error updating post views", error);
+                setViews(response.data);
+                localStorage.setItem("viewedPosts", JSON.stringify([...viewedPosts, postId]));
             }
         };
         updateViews();
     }, [postId]);
+    
+    
+        
+        useEffect(() => {
+            const script = document.createElement("script");
+            script.src = "https://images.dmca.com/Badges/DMCABadgeHelper.min.js";
+            script.async = true;
+            document.body.appendChild(script);
+        }, []);
+
+    const handleLike = async () => {
+    if (!postId) return;
+    setIsLiking(true);
+    try {
+        const { data } = await axios.post(`http://localhost:8087/api/post/${postId}/like`);
+        setLikes(data.likes || 0);
+        setLikeMessage('Post liked!');
+    } catch (error) {
+        console.error('Error liking post', error);
+        setLikeMessage('Failed to like post.');
+    } finally {
+        setIsLiking(false);
+    }
+};
+
+
+
+    const handleShare = async (platform) => {
+        setIsSharing(true);
+        try {
+            // Simulate a share action
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            setShareMessage(`Post shared on ${platform}!`);
+        } catch (error) {
+            console.error(`Error sharing post on ${platform}`, error);
+            setShareMessage(`Failed to share post on ${platform}.`);
+        } finally {
+            setIsSharing(false);
+        }
+    };
+
+    const { 
+        isLoading: isLoadingRelatedPosts, 
+        error: relatedPostsError, 
+        data: relatedPosts = [] 
+    } = useQuery({
+        queryKey: ['relatedPosts', slug],
+        queryFn: () => fetchRelatedPosts(slug),
+        enabled: !!slug,
+    });
+    
+    const { 
+        isLoading: isLoadingPost, 
+        data: postData 
+    } = useQuery({
+        queryKey: ['post', slug],
+        queryFn: () => fetchPost(slug),
+        enabled: !!slug,
+    });
+    
+    // Handle errors for related posts separately
+    if (relatedPostsError) {
+        console.error("Error fetching related posts:", relatedPostsError);
+        return <p className="text-gray-500">Error loading related posts.</p>;
+    }
+    
+    // Handle loading and data states for main post and related posts
+    if (isLoadingPost || isLoadingRelatedPosts) {
+        return <Skeleton className="w-full h-64" />;
+    }
+    
+    if (!postData) {
+        return <p className="text-center text-gray-500">Post not found</p>;
+    }      
+    const localTime = postData?.createdAt ? new Date(postData.createdAt).toLocaleString() : "Unknown Date";
+
+
 
     return (
         <div className="flex flex-col gap-12 p-4 md:p-8">
@@ -32,35 +155,31 @@ const SinglePostPage = () => {
             <div className="flex flex-col lg:flex-row gap-8">
                 {/* Left Content */}
                 <div className="lg:w-3/5 flex flex-col gap-6">
+               
                     <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold leading-tight">
-                        Manchester United a 'bunch of strangers',
-                        <br /> says Roy Keane after FA Cup fourth-round victory over Leicester
+                        {postData.title}
                     </h1>
-                    
                     {/* Post Meta Info */}
                     <div className="flex items-center gap-3 text-gray-500 text-sm">
                         <span>Written by</span>
-                        <Link to="#" className="text-blue-700 font-semibold hover:underline">John Doe</Link>
+                        <Link to="#" className="text-blue-700 font-semibold hover:underline">
+                        {postData?.creator?.blogName || "Unknown Creator"}
+                        </Link>
                         <span>on</span>
-                        <Link to="#" className="text-blue-700 font-semibold hover:underline">Sport News</Link>
-                        <span>• 2 days ago</span>
+                        <Link to="#" className="text-blue-700 font-semibold hover:underline">{postData.category}</Link>
+                        <span>{localTime}</span> {/* Displays proper local time */}
                         <span className="ml-4 text-gray-600 dark:text-gray-400">👁️ {views} views</span>
-
                     </div>
-
                     {/* Post Intro */}
-                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                        Football, also known as soccer, is a team sport where two teams 
-                        compete to score goals by moving a ball into the opponent's net.
-                         It's the most popular sport globally, with billions of viewers
-                          tuning in for the World Cup every four years.
+                    <p className="text-gray-400 dark:text-gray-400 leading-relaxed">
+                        {postData.desc}
                     </p>
                 </div>
 
                 {/* Advertisement Image */}
-                <div className="hidden lg:block lg:w-2/5">
-                    <Image src="SMUADS.PNG.jpg" w="500" className="rounded-2xl shadow-lg" />
-                </div>
+                { postData.img && <div className="hidden lg:block lg:w-2/5">
+                   <img src={postData.img} width="500" className="rounded-2xl shadow-lg" />
+                </div>}
             </div>
 
             {/* Content & Sidebar Section */}
@@ -68,31 +187,9 @@ const SinglePostPage = () => {
                 {/* Article Content */}
                 <div className="lg:w-3/5 text-lg leading-relaxed space-y-6 text-justify">
                 <p>
-                        Football, also known as soccer, is played with two teams aiming to 
-                        score goals by kicking the ball into the opponent’s net. It is the
-                         most followed sport worldwide, with an unparalleled level of 
-                         excitement and fan engagement.
-
-                         The January transfer window has barely been closed a week and Arsenal and Chelsea are among the clubs already plotting huge summer transfer moves.
-
-                            Arsenal failed to sign a striker in January but are ready to back Mikel Arteta with some big new signings for next season, with Alexander Isak and Nico Williams among their potential targets. The Gunners are also said to be plotting a shock move for Liverpool star Diogo Jota. Chelsea had a quiet January too, and their two priorities in the summer are new forwards and a new goalkeeper. The Blues are being linked with Bournemouth star Antoine Semenyo.
-
-
-                    Liverpool are said be eyeing up a potential replacement for Virgil van Dijk amid uncertainty over his future at Anfield, Manchester United are keen on Geovany Quenda and Fermin Lopez, and Arsenal could face a fight to keep hold of William Saliba amid interest from Real Madrid. Tottenham also look set for a busy summer as they continue to rebuild their squad. Follow all the latest news, gossip and rumours below!
+                        {postData.content}
                     </p>
-                    <p>
-                        Football, also known as soccer, is played with two teams aiming to 
-                        score goals by kicking the ball into the opponent’s net. It is the
-                         most followed sport worldwide, with an unparalleled level of 
-                         excitement and fan engagement.
 
-                         The January transfer window has barely been closed a week and Arsenal and Chelsea are among the clubs already plotting huge summer transfer moves.
-
-                            Arsenal failed to sign a striker in January but are ready to back Mikel Arteta with some big new signings for next season, with Alexander Isak and Nico Williams among their potential targets. The Gunners are also said to be plotting a shock move for Liverpool star Diogo Jota. Chelsea had a quiet January too, and their two priorities in the summer are new forwards and a new goalkeeper. The Blues are being linked with Bournemouth star Antoine Semenyo.
-
-
-                    Liverpool are said be eyeing up a potential replacement for Virgil van Dijk amid uncertainty over his future at Anfield, Manchester United are keen on Geovany Quenda and Fermin Lopez, and Arsenal could face a fight to keep hold of William Saliba amid interest from Real Madrid. Tottenham also look set for a busy summer as they continue to rebuild their squad. Follow all the latest news, gossip and rumours below!
-                    </p>
                     {/* 🔹 Ad Space (In-Article Ad) */}
                     <div>
                     <h1 className="flex flex-col items-center font-bold">Advertisment</h1>
@@ -101,63 +198,31 @@ const SinglePostPage = () => {
                          <Image src="myphoto.jpg" w="300" h="250" className="rounded-lg shadow-md" />
                     </div>
                     </div>
-                    <p>
-                        Football, also known as soccer, is played with two teams aiming to 
-                        score goals by kicking the ball into the opponent’s net. It is the
-                         most followed sport worldwide, with an unparalleled level of 
-                         excitement and fan engagement.
-
-                         The January transfer window has barely been closed a week and Arsenal and Chelsea are among the clubs already plotting huge summer transfer moves.
-
-                            Arsenal failed to sign a striker in January but are ready to back Mikel Arteta with some big new signings for next season, with Alexander Isak and Nico Williams among their potential targets. The Gunners are also said to be plotting a shock move for Liverpool star Diogo Jota. Chelsea had a quiet January too, and their two priorities in the summer are new forwards and a new goalkeeper. The Blues are being linked with Bournemouth star Antoine Semenyo.
-
-
-                    Liverpool are said be eyeing up a potential replacement for Virgil van Dijk amid uncertainty over his future at Anfield, Manchester United are keen on Geovany Quenda and Fermin Lopez, and Arsenal could face a fight to keep hold of William Saliba amid interest from Real Madrid. Tottenham also look set for a busy summer as they continue to rebuild their squad. Follow all the latest news, gossip and rumours below!
-                    </p>
-                    <p>
-                        Football, also known as soccer, is played with two teams aiming to 
-                        score goals by kicking the ball into the opponent’s net. It is the
-                         most followed sport worldwide, with an unparalleled level of 
-                         excitement and fan engagement.
-
-                         The January transfer window has barely been closed a week and Arsenal and Chelsea are among the clubs already plotting huge summer transfer moves.
-
-                            Arsenal failed to sign a striker in January but are ready to back Mikel Arteta with some big new signings for next season, with Alexander Isak and Nico Williams among their potential targets. The Gunners are also said to be plotting a shock move for Liverpool star Diogo Jota. Chelsea had a quiet January too, and their two priorities in the summer are new forwards and a new goalkeeper. The Blues are being linked with Bournemouth star Antoine Semenyo.
-
-
-                    Liverpool are said be eyeing up a potential replacement for Virgil van Dijk amid uncertainty over his future at Anfield, Manchester United are keen on Geovany Quenda and Fermin Lopez, and Arsenal could face a fight to keep hold of William Saliba amid interest from Real Madrid. Tottenham also look set for a busy summer as they continue to rebuild their squad. Follow all the latest news, gossip and rumours below!
-                    </p>
-                    <p>
-                        Football, also known as soccer, is played with two teams aiming to 
-                        score goals by kicking the ball into the opponent’s net. It is the
-                         most followed sport worldwide, with an unparalleled level of 
-                         excitement and fan engagement.
-                    </p>
-                    <p>
-                        Major leagues such as the English Premier League and La Liga attract millions of viewers weekly. The FIFA World Cup, held every four years, remains the biggest sporting event, uniting fans globally.
-                    </p>
-                    <p>
-                        Whether it's the skillful dribbles, stunning goals, or tactical battles, football never fails to entertain. The sport continues to evolve, captivating new generations with its rich history and competitive spirit.
-                    </p>
                 </div>
-
+                
+                    {/* Message */}
+                    {message && <div className="mt-4 text-sm text-gray-600">{message}</div>}
                 {/* Sidebar Section */}
                 <div className="px-4 h-max   dark:text-black text-white rounded-2xl shadow-lg sticky top-8">
                     {/* Author Section */}
                     <h2 className="text-xl  dark:text-black font-semibold mb-4">Author</h2>
                     
                     <div className="flex items-center gap-4">
-                        <Image src="myphoto.jpg" className="w-14 h-14 rounded-full object-cover" w="56" h="56" />
+                    {postData.creator.blogProfile && <img src={postData.creator.blogProfile} className="w-14 h-14 
+                    rounded-full object-cover" width="56" height="56" />}
                         <div>
-                            <Link to="#" className="text-blue-400 font-semibold text-lg hover:underline">Smart</Link>
-                            <p className="text-gray-400  dark:text-black text-sm">Football & Sports Analyst</p>
+                            <Link to="#" className="text-blue-400 font-semibold text-lg hover:underline">
+                            {postData?.creator?.blogName || "Unknown Creator"}
+
+                            </Link>
                         </div>
                     </div>
 
                     {/* Author Bio */}
                     <p className="mt-4 text-gray-400 text-sm">
-                        Passionate sports writer covering football news, game strategies, and match analyses.
+                        {postData.creator.blogDescription}
                     </p>
+                
 
                     {/* Social Links */}
                     <div className="flex gap-3 mt-4">
@@ -172,7 +237,8 @@ const SinglePostPage = () => {
                     {/* Post Menu Actions */}
                     <div className="mt-6">
                         <h2 className="text-lg font-semibold mb-3">Actions</h2>
-                        <PostMenuActions />
+                        <PostMenuActions
+                                />
                     </div>
 
                     {/* Categories Section */}
@@ -193,10 +259,101 @@ const SinglePostPage = () => {
                         <h1 className="text-sm font-medium   mb-4">Search</h1>
                         <SearchBar />  
                     </div>
+                    
                 </div>
             </div>
-            <Comments/>
+
+              {/* Related Posts Section */}
+              {/* Related Posts in the Middle of Content */}
+              <div className="my-10">
+                <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center pt-48 border-b-2 border-gray-300 dark:border-gray-700">
+                    Related Posts
+                </h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    {isLoadingRelatedPosts ? (
+                    <Skeleton className="w-full h-48" />
+                    ) : relatedPosts.length > 0 ? (
+                    relatedPosts.map((post) => (
+                        <Link key={post.id} to={`/${post.slug}`} className="block">
+                        <PostCard 
+                         src={post.img}
+                         alt={post.title}
+                        post={post}
+                         />
+                        
+                        <p className="text-xs text-gray-300 dark:text-gray-800 mt-2 line-clamp-1">
+                        {post.category}
+                        </p>
+                        </Link>
+                    ))
+                    ) : (
+                    <p className="text-gray-500">No related posts found.</p>
+                    )}
+                </div>
+
+                            
+                  {/* Your existing post content */}
+                  <div className="pt-4 pb-4">
+                  <button
+                onClick={handleLike}
+                disabled={isLiking}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+            {isLiking ? 'Liking...' : '★ Like'}
+                <span >{likes}</span>
+            </button>
+            {likeMessage && <p>{likeMessage}</p>}
+            {/* Your existing post content */}
+                    {/* Message */}
+            {message && <div className="mt-4 text-sm text-gray-600">{message}</div>}
+            </div>
+
+            <div className="flex gap-4">
+                <FacebookShareButton
+                    url={postUrl}
+                    quote="Check out this post!"
+                    onClick={() => handleShare('Facebook')}
+                >
+                    <button
+                        disabled={isSharing}
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    >
+                        {isSharing ? 'Sharing...' : 'Share on Facebook'}
+                    </button>
+                </FacebookShareButton>
+                <TwitterShareButton
+                    url={postUrl}
+                    title="Check out this post!"
+                    onClick={() => handleShare('Twitter')}
+                >
+                    <button
+                        disabled={isSharing}
+                        className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-black hover:text-white"
+                    >
+                        {isSharing ? 'Sharing...' : 'Share on X'}
+                    </button>
+                </TwitterShareButton>
+                <LinkedinShareButton
+                    url={postUrl}
+                    title="Check out this post!"
+                    onClick={() => handleShare('LinkedIn')}
+                >
+                    <button
+                        disabled={isSharing}
+                        className="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800"
+                    >
+                        {isSharing ? 'Sharing...' : 'Share on LinkedIn'}
+                    </button>
+                </LinkedinShareButton>
+            </div>
+            {shareMessage && <p>{shareMessage}</p>}
+             <Comments postId={postData.id} />
+             
+            </div>
         </div>
+
+    
     );
 };
 

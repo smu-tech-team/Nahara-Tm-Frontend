@@ -1,39 +1,51 @@
-import { Link } from "react-router-dom";
-import Image from "./Image";
+import { Link,  } from "react-router-dom";
+// import { format } from "timeago.js";
 
-const PostListItem = () => {
-    return (
-        <div className="flex flex-row gap-6 w-full bg-gray-800 dark:bg-transparent text-white dark:bg-gray-900
-         dark:text-gray-800 p-4 rounded-2xl shadow-lg hover:shadow-xl dark:shadow-black transition">
-            {/* Image */}
-            <div className="w-1/3">
-                <Image src="SmartLogoMain.png" className="rounded-2xl object-cover" w="730" />
-            </div>
-            {/* Details */}
-            <div className="flex flex-col gap-4 w-2/3">
-                <Link to="/test" className="text-2xl font-semibold hover:text-blue-400 transition">
-                    Another test
-                </Link>
-                <div className="flex items-center gap-2 dark:text-gray-600 text-gray-300 text-sm">
-                    <span>Written</span>
-                    <Link className="text-blue-400 hover:underline">John Doe</Link>
-                    <span>on</span>
-                    <Link className="text-blue-400 hover:underline">Sport News</Link>
-                    <span>2 days ago</span>
-                </div>
-                <p className="text-gray-300 dark:text-gray-800 items-center">
-                    Best in football and new games. Football, also known as soccer or association 
-                    football, is a team sport where two teams compete to score goals by moving a 
-                    ball into the other team's net. It's the most popular sport in the world, 
-                    with billions of viewers watching the World Cup every four years.
-                </p>
-                {/* Read More Link */}
-                <Link to="/test" className="text-blue-400 hover:text-blue-300 font-semibold animate-pulse">
-                    Read More →
-                </Link>
-            </div>
+const PostListItem = ({ post }) => {
+  const localTime = new Date(post.createdAt).toLocaleString(); // Converts to local time
+
+
+  
+
+  return (
+    <div className="flex flex-col md:flex-row gap-6 w-full bg-gray-800 dark:bg-gray-900 text-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
+      {/* Image Section */}
+      {post.img && (
+        <div className="w-full md:w-1/3">
+          <img src={post.img} className="rounded-xl object-cover w-full h-48 md:h-56" alt="Post" />
         </div>
-    );
+      )}
+
+      {/* Details Section */}
+      <div className="flex flex-col gap-3 md:w-2/3">
+        <Link to={`/${post.slug}`} className="text-2xl font-semibold hover:text-blue-400 transition">
+          {post.title}
+        </Link>
+
+        {/* Meta Info */}
+        <div className="flex flex-wrap items-center gap-2 text-gray-400 text-sm">
+          <span>Written by</span>
+          <Link to="#" className="text-blue-400 hover:underline">
+            {post?.creator?.blogName || "Unknown Creator"}
+          </Link>
+          <span>on</span>
+          <Link to="#" className="text-blue-400 hover:underline">{post.category}</Link>
+          <span>•</span>
+          <span>{localTime}</span> {/* Displays proper local time */}
+        </div>
+
+        {/* Description */}
+        <p className="text-gray-300 dark:text-gray-400 leading-relaxed">
+          {post.desc}
+        </p>
+
+        {/* Read More Link */}
+        <Link to={`/${post.slug}`} className="text-blue-400 hover:text-blue-300 font-semibold transition">
+          Read More →
+        </Link>
+      </div>
+    </div>
+  );
 };
 
 export default PostListItem;

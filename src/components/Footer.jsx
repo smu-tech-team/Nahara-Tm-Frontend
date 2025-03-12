@@ -1,8 +1,32 @@
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const Footer = () => {
+    const [localTime, setLocalTime] = useState("");
+
+    useEffect(() => {
+        // Function to update time
+        const updateTime = () => {
+            const now = new Date();
+            const userTime = new Intl.DateTimeFormat("en-US", {
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+            }).format(now);
+            setLocalTime(userTime);
+        };
+
+        // Update time every second
+        updateTime();
+        const interval = setInterval(updateTime, 1000);
+
+        // Cleanup on unmount
+        return () => clearInterval(interval);
+    }, []);
+
     useEffect(() => {
         const script = document.createElement("script");
         script.src = "https://images.dmca.com/Badges/DMCABadgeHelper.min.js";
@@ -11,17 +35,19 @@ const Footer = () => {
     }, []);
 
     return (
-        <footer className="bg-gray-900 text-white py-10 dark:bg-gray-600">
+        <footer className="bg-gray-900 text-white py-10 dark:bg-gray-600 ">
             <div className="max-w-6xl border-r-4 mx-auto px-6">
                 {/* Top Section */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {/* About Section */}
                     <div>
+                    <p className="mt-2 font-semibold pb-3">Local Time: {localTime}</p>
+
                         <h2 className="text-xl font-semibold mb-4">About Us</h2>
                         <p className="text-gray-400 text-sm leading-relaxed">
-                        <span className="font-bold text-red-600">SMU</span> is an online news platform that allows writers to retain ownership of their articles and get
-                         compensation, while <span className="font-bold text-red-500">SMUTV</span> serves as a legitimate news outlet for all writers.                       
-                          </p>
+                            <span className="font-bold text-red-600">SMU</span> is an online news platform that allows writers to retain ownership of their articles and get
+                            compensation, while <span className="font-bold text-red-500">SMUTV</span> serves as a legitimate news outlet for all writers.
+                        </p>
                     </div>
 
                     {/* Quick Links */}
@@ -54,17 +80,17 @@ const Footer = () => {
 
                 {/* DMCA Badge */}
                 <div className="text-center text-green-400 my-4">
-                <a href="//www.dmca.com/Protection/Status.aspx?ID=81a566d0-06bc-4029-a130-0da6412863cb" title="DMCA.com Protection Status" class="dmca-badge">
-                 <img src ="https://images.dmca.com/Badges/dmca_protected_sml_120m.png?ID=81a566d0-06bc-4029-a130-0da6412863cb" 
-                 alt="DMCA.com Protection Status" /></a>  
-                 <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"> 
-                 </script>
+                    <a href="//www.dmca.com/Protection/Status.aspx?ID=81a566d0-06bc-4029-a130-0da6412863cb" title="DMCA.com Protection Status" className="dmca-badge">
+                        <img src="https://images.dmca.com/Badges/dmca_protected_sml_120m.png?ID=81a566d0-06bc-4029-a130-0da6412863cb" 
+                        alt="DMCA.com Protection Status" />
+                    </a>
+                    <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"></script>
                 </div>
 
                 {/* Bottom Section */}
                 <div className="text-center text-sm text-gray-400">
-                    <p>&copy; {new Date().getFullYear()} SmartMediaUpdate. All Rights Reserved.<br></br>
-                        Designed and developed by SMU TECH TEAM
+                    <p>&copy; {new Date().getFullYear()} SmartMediaUpdate. All Rights Reserved.<br />
+                        Developed and Maintained by SMU TECH TEAM ❤
                     </p>
                 </div>
             </div>

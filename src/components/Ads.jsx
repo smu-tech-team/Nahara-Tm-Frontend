@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { animateMini, motion } from "framer-motion";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const AdvertiseWithUs = () => {
   const [name, setName] = useState("");
@@ -28,17 +29,17 @@ const AdvertiseWithUs = () => {
       });
 
       if (response.status === 200) {
-        alert("Inquiry sent successfully!");
+        toast.alert("Inquiry sent successfully!");
         setName("");
         setEmail("");
         setMessage("");
         setPaymentType("Credit Card");
       } else {
-        alert("Failed to send the inquiry.");
+       toast.alert("Failed to send the inquiry.");
       }
     } catch (error) {
       console.error("Error sending inquiry:", error);
-      alert("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -106,7 +107,7 @@ const AdvertiseWithUs = () => {
 
         <button
           type="submit"
-          className="mt-6 w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded flex justify-center items-center"
+          className="mt-6 w-full bg-blue-500  hover:bg-blue-600 text-white py-2 px-4 rounded flex justify-center items-center"
           disabled={loading}
         >
           {loading ? "Sending..." : "Send Inquiry"}

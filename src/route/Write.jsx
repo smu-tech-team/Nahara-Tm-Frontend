@@ -4,15 +4,29 @@ import "react-quill/dist/quill.snow.css";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import {jwtDecode} from "jwt-decode"; // Properly import jwt-decode
+import { toast } from "react-toastify";
+import DOMPurify from "dompurify";
+
+
+
 
 const Write = () => {
     const [user, setUser] = useState(null);
     const [userRole, setUserRole] = useState(null);
     const [token, setToken] = useState("");
     const [coverImage, setCoverImage] = useState(null);
+    const [videoFile, setVideoFile] = useState(null);
     const fileInputRef = useRef(null);
+    const videoFileInputRef = useRef(null);
+    const [isEditorLoaded, setIsEditorLoaded] = useState(false);
+
+        useEffect(() => {
+    setIsEditorLoaded(true);
+        }, []);
 
 
+
+    
 
    const fetchUserInfo = async () => {
   try {
@@ -50,13 +64,33 @@ useEffect(() => {
   fetchUserInfo();
 }, []);
 
+const handleAddVideoLink = () => {
+    const videoUrl = prompt("Enter Video URL:");
+    if (videoUrl) {
+        setContent((prev) => prev + `<p><iframe className="ql-video" src="${videoUrl}"/></p>`);
+        toast.success("Video link added successfully!");
+    }
+};
+
+const handleVideoUpload = (event) => {
+    const file = event.target.files[0];
+    if (file && !["video/mp4", "video/webm", "video/ogg"].includes(file.type)) {
+        toast.error("Invalid video format. Only MP4, WebM, and OGG are allowed.");
+        return;
+    }
+    setVideoFile(file);
+    toast.success("Video uploaded successfully!");
+};
+
     const [title, setTitle] = useState("");
-    const [category, setCategory] = useState("");
+    const [category, setCategory] = useState("general");
     const [content, setContent] = useState("");
     const [description, setDescription] = useState("");
     const [images, setImages] = useState([]);
     const [isPublishing, setIsPublishing] = useState(false);
     const [errors, setErrors] = useState({});
+    const quillRef = useRef(null); // Reference to Quill
+
 
     const mutation = useMutation({
         mutationFn: async (newPost) => {
@@ -66,7 +100,20 @@ useEffect(() => {
         },
         onSuccess: () => {
             setIsPublishing(false);
-            alert("Post Published! 🎉");
+            toast.success("Post Published Successfully! 🎉");
+
+            // Reset form fields
+            setTitle("");
+            setCategory("general"); // Reset category
+            setContent("");
+            setDescription("");
+            setCoverImage(null);
+            setVideoFile(null);
+            setImages([]);
+
+            // Reset file inputs
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            if (videoFileInputRef.current) videoFileInputRef.current.value = "";
         },
         onError: (error) => {
             setIsPublishing(false);
@@ -79,6 +126,9 @@ useEffect(() => {
 
     const handleAddImage = () => {
         setImages([...images, ""]);
+    };
+    const handleContentChange = (html) => {
+        setContent(DOMPurify.sanitize(html)); // Sanitize input
     };
 
     const validateForm = () => {
@@ -94,23 +144,39 @@ useEffect(() => {
     const handlePublish = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
-    
-        if (!coverImage) {
-            setErrors((prev) => ({ ...prev, coverImage: "Feature image is required" }));
+
+        if (!title || !content  || !description || !category) {
+            toast.error("All fields are required");
             return;
         }
     
-        setIsPublishing(true);
     
+        if (!coverImage) {
+            toast.error("Please upload a cover image");
+            return;
+        }
+        const plainTextContent = getPlainText(); // Extract text before sending
+
+
+        
+     
+        setIsPublishing(true);
+
+        const hashtags = generateHashtags(`${title} ${description}`);
+
         const formData = new FormData();
         formData.append("title", title);
-        formData.append("category", category);
-        formData.append("content", content);
+        formData.append("category", category || "general"); // Ensure it's always set
         formData.append("description", description);
-        formData.append("slug", title.toLowerCase().replace(/\s+/g, "-"));
+        formData.append("slug", generateSlug(title));
         formData.append("coverImage", coverImage); // Ensure this is included
         formData.append("featureImage", coverImage); // Ensure correct key
+        formData.append("content", plainTextContent + "\n\n" + hashtags.join(" ")); // Store only text
         images.forEach((image, index) => formData.append(`image${index}`, image));
+        if (videoFile) {
+            formData.append("videoFile", videoFile);
+        }
+       
     
         mutation.mutate(formData);
     };
@@ -125,10 +191,42 @@ useEffect(() => {
             setErrors((prev) => ({ ...prev, coverImage: "" })); // Clear error on selection
         }
     };
+    const generateHashtags = (text) => {
+        if (!text) return [];
+    
+        const words = text
+            .toLowerCase()
+            .match(/\b(\w+)\b/g) // Extract words
+            .filter(word => word.length > 3) // Remove short words
+            .slice(0, 5); // Limit to 5 hashtags
+    
+        return words.map(word => `#${word.replace(/[^a-zA-Z0-9]/g, "")}`);
+    };
+   
+
+    const getPlainText = () => {
+        if (quillRef.current) {
+            return quillRef.current.getEditor().getText(); // Extract plain text
+        }
+        return "";
+    };
+
+    const handleCategoryChange = (e) => {
+        setCategory(e.target.value);
+        console.log("Selected Category:", e.target.value);
+    };
+    const generateSlug = (title) => {
+        return title.toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+            .replace(/\s+/g, "-") // Replace spaces with dashes
+            .trim();
+    };
+    
+
     
 
     return (
-        <div className="max-w-2xl mt-8 gap-6 flex-col flex md:h-[calc(100vh-80px)] h-[calc(100vh-64px)] 
+        <div className="max-w-2xl mt-8 gap-6 flex-col flex md:h-[calc(150vh-80px)] h-[calc(130vh-64px)] 
          mx-auto p-4 bg-gray-100 dark:bg-gray-900 shadow-lg rounded-lg">
             <h1 className="text-2xl font-bold shadow-sm mb-4 text-gray-800 dark:text-white">Create a New Post</h1>
             <form className="space-y-4 flex flex-col gap-6 flex-1 mb-6" onSubmit={handlePublish}>
@@ -142,10 +240,10 @@ useEffect(() => {
                     onChange={handleCoverImageChange}
                 />
                 {coverImage && (
-                    <img src={URL.createObjectURL(coverImage)} alt="Cover Preview" className="w-full h-40 object-cover rounded-lg" />
+                    <img src={URL.createObjectURL(coverImage)} alt="Cover Preview" className="w-20 h-20 object-cover rounded-lg" />
                 )}
 
-<input
+                <input
                     type="text"
                     placeholder="News Update"
                     value={title}
@@ -159,11 +257,9 @@ useEffect(() => {
                     <label className="text-sm font-medium mb-1 text-gray-800 dark:text-white">Choose a category</label>
                     <select
                         value={category}
-                        onChange={(e) => setCategory(e.target.value)}
+                        onChange={handleCategoryChange}
                         className="p-2 border border-gray-300 shadow-sm rounded-xl text-gray-900 dark:text-white dark:bg-gray-800"
-                        name="category"
                     >
-                        <option value="">-- Select Category --</option>
                         <option value="general">General</option>
                         <option value="sports-news">Sports News</option>
                         <option value="celebrity-news">Celebrity News</option>
@@ -171,6 +267,7 @@ useEffect(() => {
                         <option value="betting-tips">Betting Tips</option>
                         <option value="hot-gist">Hot Gist</option>
                     </select>
+
                 </div>
                 {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
 
@@ -205,15 +302,38 @@ useEffect(() => {
                     </button>
                 </div>
 
-                <Suspense fallback={<p className="text-gray-800 dark:text-white">Loading editor...</p>}>
-                    <ReactQuill 
-                        theme="snow" 
-                        value={content} 
-                        onChange={setContent} 
-                        className="flex-1 rounded-xl shadow-md bg-white dark:bg-gray-800 dark:text-white text-black"
-                    />
+                {isEditorLoaded && (
+                     <Suspense fallback={<p className="text-gray-800 dark:text-white">Loading editor...</p>}>                            
+                <ReactQuill 
+                ref={quillRef} 
+                theme="snow" 
+                value={content} 
+                onChange={handleContentChange} 
+                className="rounded-xl shadow-md bg-white  dark:bg-gray-500 dark:text-white text-black"
+                style={{ height: "300px", overflowY: "auto" }} // Set a fixed height
+            />
                 </Suspense>
+            )}
                 {errors.content && <p className="text-red-500 text-sm">{errors.content}</p>}
+                               {/* Video Section */}
+                               <div className="flex items-center gap-4">
+                                <button type="button" onClick={handleAddVideoLink} className="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm">
+                                    + Add Video Link
+                                </button>
+
+                                <input
+                                    type="file"
+                                    accept="video/*"
+                                    ref={videoFileInputRef}
+                                    className="hidden"
+                                    onChange={handleVideoUpload}
+                                />
+                                <button type="button" onClick={() => videoFileInputRef.current.click()} className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm">
+                                    Upload Video
+                                </button>
+                            </div>
+                            {videoFile && <p className="text-green-600">Selected Video: {videoFile.name}</p>}
+
 
                 <button
                     type="submit"

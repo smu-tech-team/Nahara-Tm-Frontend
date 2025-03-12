@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import ThemeToggle from "../components/ThemeToggle";
 import CookieConsent from "../components/Cookies";
 import FloatingVideo from "../components/FloatingVideo.jsx";
+import { ToastContainer } from "react-toastify";
 
 const MainLayout = () => {
     const videoUrl = "https://youtu.be/N3VdeCtd8oY?si=4HKjo7tvVYX5Gv51"; 
@@ -16,6 +17,8 @@ const MainLayout = () => {
             <FloatingVideo videoUrl={videoUrl} />
             <ThemeToggle/>,
             <Footer/>
+            <ToastContainer />
+
         </div>
     )
 }

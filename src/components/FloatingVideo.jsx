@@ -53,8 +53,8 @@ const FloatingVideo = ({ videoUrl }) => {
         {isLoading && <img src={logo} alt="Loading logo" style={styles.loadingLogo} />}
         {embedUrl && (
           <iframe
-            width="300"
-            height="169"
+            width="350"
+            height="250"
             src={embedUrl}
             title="Video player"
             frameBorder="0"

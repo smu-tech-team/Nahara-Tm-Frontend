@@ -39,8 +39,8 @@ const PostList = () => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12 mb-8">
             {data.map((post) => (
-                <React.Fragment key={post.id}>
-                    <PostListItem key={post.id} post={post} />
+                <React.Fragment key={post._id}>
+                    <PostListItem key={post._id} post={post} />
                 </React.Fragment>
             ))}
         </div>

@@ -5,68 +5,68 @@ import { Link } from "react-router-dom";
 import DefaultAvatar from "../assert/icons8-avatar.gif";
 import Profile from "../route/ProfileUpdate";
 import axios from "axios";
+import EarningsDashboard from "../components/EarningsDashboard";
 
-const CreatorDashboard = () => {
+const CreatorDashboard = ({creatorId }) => {
   const user = useAuthStore.getState().user;
-  const [stats, setStats] = useState([]);
+  const [stats, setStats] = useState({});
   const [totalViews, setTotalViews] = useState(0);
   const [followers, setFollowers] = useState(0);
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [totalPosts, setTotalPosts] = useState(0);
 
-  const API_BASE_URL = "https://your-backend-url.com/api";
+  const API_BASE_URL = "http://localhost:8087/api/creator";
   const TOTALVIEW_API_URL = "http://localhost:8087/api/creator/";
-  const FOLLOWERS_API_URL = "http://localhost:8087/api/creator/";
-  const TOTALEARNINGS_API_URL = "https://your-backend-url.com/api";
-  const TOTALPOST_API_URL = "http://localhost:8087/api/creator/";
+  const FOLLOWERS_API_URL = "http://localhost:8087/api/creator/creators/";
+  const TOTALEARNINGS_API_URL = " http://localhost:8087/api/earnings/calculate";
+  const TOTALPOST_API_URL = " http://localhost:8087/api/creator/";
 
 
-  useEffect(() => {
-    if (!user?.id) return;
-  
-    const fetchAndSchedule = async () => {
-      try {
-        await fetchCreatorData(user.id);
-      } catch (error) {
-        console.error("Error fetching creator data:", error);
-      }
-      setTimeout(fetchAndSchedule, 604800000); // 7 days
-    };
-  
-    fetchAndSchedule();
-  
-    return () => clearTimeout(fetchAndSchedule);
-  }, [user?.id, followers]);  // Dependency added to update when followers change
-  
-  const refreshDashboard = async () => {
-    if (!user?.id) return;
+ 
+  const fetchCreatorData = async ({creatorId}) => {
     try {
-      await fetchCreatorData(user.id);
-    } catch (error) {
-      console.error("Failed to refresh dashboard:", error);
-    }
-  };
-  
-  const fetchCreatorData = async (creatorId) => {
-    try {
+      console.log("Fetching creator data...");
+
       const [statsRes, viewsRes, followersRes, earningsRes, postsRes] = await Promise.all([
         axios.get(`${API_BASE_URL}/creators/${creatorId}/stats`),
         axios.get(`${TOTALVIEW_API_URL}/creators/${creatorId}/total-views`),
-        axios.get(`${FOLLOWERS_API_URL}/creators/${creatorId}/followers` ),  // Fixed URL
-        axios.get(`${TOTALEARNINGS_API_URL}/creators/${creatorId}/totalEarnings`),
-        axios.get(`${TOTALPOST_API_URL}/creators/${creatorId}/total-posts`), // Fixed double slash
+        axios.get(`${FOLLOWERS_API_URL}/creators/${creatorId}/followers`),
+        axios.get(`${TOTALEARNINGS_API_URL}`),
+        axios.get(`${TOTALPOST_API_URL}/creators/${creatorId}/total-posts`)
       ]);
-  
+
       setStats(statsRes.data);
       setTotalViews(viewsRes.data.totalViews || 0);
-      setFollowers(followersRes.data.totalFollowers || 0); // Ensure correct property name
+      setFollowers(followersRes.data.totalFollowers || 0);
       setTotalEarnings(earningsRes.data.totalEarnings || 0);
       setTotalPosts(postsRes.data.totalPosts || 0);
+
+      console.log("Data updated successfully!");
     } catch (error) {
-      console.error("Error fetching creator data:", error);
+      console.error("Error fetching creator data:", error.response?.data || error);
     }
   };
-  
+
+  // Function to increment post views
+  const incrementViews = async () => {
+    try {
+      console.log("Calling incrementPostViews API...");
+      await axios.post(`${API_BASE_URL}/posts/${creatorId}/increment-views`);
+      console.log("Increment successful! Fetching new data...");
+      setTimeout(fetchCreatorData, 1000); // Delay fetching to ensure backend updates
+    } catch (error) {
+      console.error("Error incrementing views:", error.response?.data || error);
+    }
+  };
+
+  // useEffect to increment views on component mount & auto-refresh UI
+  useEffect(() => {
+    if (creatorId) {
+      incrementViews(); // Increment post views when component loads
+      const interval = setInterval(fetchCreatorData, 5000); // Auto-refresh every 5 seconds
+      return () => clearInterval(interval); // Cleanup interval on unmount
+    }
+  }, [creatorId]);
 
   const blogName = user?.blogName || "Your Blog Name";
   const email = user?.email || "creator@example.com";
@@ -79,7 +79,7 @@ const CreatorDashboard = () => {
     <div className="container mx-auto p-4">
       <div className="flex flex-col items-center space-y-4">
         <div className="flex flex-col items-center dark:bg-black bg-transparent shadow-white rounded-lg shadow-lg p-6 w-full md:w-1/2">
-          <img src={blogProfile} alt="Profile" className="w-32 animate-pulse h-32 rounded-full border-4 border-blue-500" />
+          <img src={blogProfile} alt="Profile" className="w-32  h-32 rounded-full border-4 border-blue-500" />
           <h2 className="text-2xl font-semibold mt-4">{username}</h2>
           <p className="text-lg text-gray-600">{blogName}</p>
           <p className="text-sm text-gray-500">{email}</p>
@@ -94,13 +94,12 @@ const CreatorDashboard = () => {
               <p className="text-lg font-semibold">{totalPosts}</p>
               <p className="text-sm text-gray-600  font-bold">Posts</p>
             </div>
-            <div className="p-4 text-green-500 dark:bg-gray-800 rounded-lg text-center">
+            <div className="p-4 flex flex-col item-center text-green-500 dark:bg-gray-800 rounded-lg text-center">
               <p className="text-lg font-semibold">{totalViews}</p>
-              <p className="text-sm text-gray-600  font-bold">Total Views</p>
+              <p className="text-sm text-gray-600 text-center font-bold">Total Views</p>
             </div>
             <div className="p-4 text-green-500 dark:bg-gray-800 rounded-lg text-center">
-              <p className="text-lg font-semibold">${totalEarnings}</p>
-              <p className="text-sm text-gray-600  font-bold">Earnings</p>
+              <p className="text-lg font-semibold"><EarningsDashboard totalEarnings={500} /></p>
             </div>
           </div>
         </div>
