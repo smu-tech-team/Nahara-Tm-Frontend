@@ -3,18 +3,14 @@ import { Link } from "react-router-dom";
 import PostMenuActions from "./PostMenuAction";
 import SearchBar from "./Search";
 import Comments from "./Comments";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState,  } from "react";
 import {  useParams } from "react-router-dom";
 import axios from "axios";
-import {
-    FacebookShareButton,
-    TwitterShareButton,
-    LinkedinShareButton,
-} from 'react-share';
 // import { Helmet } from 'react-helmet';
 import { useQuery } from "@tanstack/react-query";
 import PostCard from "../components/PostCard";
 import  Skeleton  from "../components/Skelete";
+import PostShareActions from "./PostShareActions";
 
 
 
@@ -22,7 +18,6 @@ import  Skeleton  from "../components/Skelete";
 const fetchPost = async (slug) => {
     try {
         const response = await axios.get(`http://localhost:8087/api/post/post/${slug}`);
-        console.log(response.data);
         return response.data; // ✅ Return the data
     } catch (error) {
         console.error("Error fetching post:", error);
@@ -30,21 +25,17 @@ const fetchPost = async (slug) => {
     }
 };
 
-const SinglePostPage = ({postId}) => {
+const SinglePostPage = () => {
     const { slug } = useParams();
+    console.log("Slug from URL:", slug);
     const [views, setViews] = useState(0);
     const [likes, setLikes] = useState(0);
     const [isLiking, setIsLiking] = useState(false);
-    const [likeMessage, setLikeMessage] = useState('');
-    const postUrl = useMemo(() => `http://localhost:8087/api/post/${postId}`, [postId]);
-    const [isSharing, setIsSharing] = useState(false);
-    const [shareMessage, setShareMessage] = useState('');
+    const [likeMessage, setLikeMessage] = useState('');;
     const [message] = useState(null);
-
-    
-
-
-    console.log("Extracted Post ID:", postId);  // ✅ Debugging step
+    const { postId } = useParams(); // Retrieve postId from the URL
+    const [postDetails, setPostDetails] = useState(null);
+    const [isLoading, setIsLoading] = useState(true); // Loading state
 
 
     const fetchRelatedPosts = async (slug) => {
@@ -55,25 +46,71 @@ const SinglePostPage = ({postId}) => {
         return response.data;
     };
     
-
-
-
-   
+    // Fetch post data and update views
     useEffect(() => {
-        if (!postId) return;
-        const updateViews = async () => {
-            const viewedPosts = JSON.parse(localStorage.getItem("viewedPosts")) || [];
-            if (!viewedPosts.includes(postId)) {
-                const response = await axios.post(`http://localhost:8087/api/post/${postId}/view`);
-                setViews(response.data);
-                localStorage.setItem("viewedPosts", JSON.stringify([...viewedPosts, postId]));
+        if (!slug) {
+            console.error("slug is undefined");
+            return;
+        }
+
+        const fetchPost = async () => {
+            try {
+                const response = await axios.get(` http://localhost:8087/api/post/post/${slug}`);
+                setPostDetails(response.data); // ✅ Now this will work
+                console.log("Fetched post:", response.data);
+            } catch (error) {
+                console.error("Error fetching post:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
+
+    
+
+        const updateViews = async () => {
+            const viewedPosts = JSON.parse(localStorage.getItem("viewedPosts")) || [];
+            if (!viewedPosts.includes(slug)) {
+                try {
+                    const response = await axios.post(
+                        `http://localhost:8087/api/post/${slug}/view`,
+                        {},
+                        { withCredentials: true }
+                    );
+                    setViews(response.data.views); // ✅ Correct state update
+                    localStorage.setItem("viewedPosts", JSON.stringify([...viewedPosts, slug]));
+                    console.log("Updated views:", response.data);
+                } catch (error) {
+                    console.error("Error updating views:", error);
+                }
+            }
+        };
+
+        fetchPost();
         updateViews();
-    }, [postId]);
+    }, [setPostDetails, slug]);
+
+    useEffect(() => {
+        if (postDetails) {
+            setViews(postDetails.views); // Ensure views are updated correctly
+        }
+    }, [postDetails]);
     
-    
-        
+       
+
+    const handleLike = async () => {
+        if (!postData?.id) return;
+        setIsLiking(true);
+        try {
+            const response = await axios.post(`http://localhost:8087/api/post/${postData.id}/like`);
+            setLikes(response.data.likes || 0);
+            setLikeMessage("Post liked!");
+        } catch (error) {
+            console.error("Error liking post:", error);
+            setLikeMessage("Failed to like post.");
+        } finally {
+            setIsLiking(false);
+        }
+    };
         useEffect(() => {
             const script = document.createElement("script");
             script.src = "https://images.dmca.com/Badges/DMCABadgeHelper.min.js";
@@ -81,36 +118,7 @@ const SinglePostPage = ({postId}) => {
             document.body.appendChild(script);
         }, []);
 
-    const handleLike = async () => {
-    if (!postId) return;
-    setIsLiking(true);
-    try {
-        const { data } = await axios.post(`http://localhost:8087/api/post/${postId}/like`);
-        setLikes(data.likes || 0);
-        setLikeMessage('Post liked!');
-    } catch (error) {
-        console.error('Error liking post', error);
-        setLikeMessage('Failed to like post.');
-    } finally {
-        setIsLiking(false);
-    }
-};
 
-
-
-    const handleShare = async (platform) => {
-        setIsSharing(true);
-        try {
-            // Simulate a share action
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            setShareMessage(`Post shared on ${platform}!`);
-        } catch (error) {
-            console.error(`Error sharing post on ${platform}`, error);
-            setShareMessage(`Failed to share post on ${platform}.`);
-        } finally {
-            setIsSharing(false);
-        }
-    };
 
     const { 
         isLoading: isLoadingRelatedPosts, 
@@ -142,7 +150,7 @@ const SinglePostPage = ({postId}) => {
         return <Skeleton className="w-full h-64" />;
     }
     
-    if (!postData) {
+    if (!postDetails) {
         return <p className="text-center text-gray-500">Post not found</p>;
     }      
     const localTime = postData?.createdAt ? new Date(postData.createdAt).toLocaleString() : "Unknown Date";
@@ -157,28 +165,31 @@ const SinglePostPage = ({postId}) => {
                 <div className="lg:w-3/5 flex flex-col gap-6">
                
                     <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold leading-tight">
-                        {postData.title}
+                        {postDetails.title}
                     </h1>
                     {/* Post Meta Info */}
                     <div className="flex items-center gap-3 text-gray-500 text-sm">
                         <span>Written by</span>
-                        <Link to="#" className="text-blue-700 font-semibold hover:underline">
-                        {postData?.creator?.blogName || "Unknown Creator"}
+                        <Link to={`/creator/${postDetails?.creator?.id}`} 
+                         className="text-blue-700 font-semibold hover:underline">
+                        {postDetails?.creator?.blogName || "Unknown Creator"}
                         </Link>
                         <span>on</span>
-                        <Link to="#" className="text-blue-700 font-semibold hover:underline">{postData.category}</Link>
+                        <Link to="cat" className="text-blue-700 font-semibold hover:underline">{postData.category}</Link>
                         <span>{localTime}</span> {/* Displays proper local time */}
-                        <span className="ml-4 text-gray-600 dark:text-gray-400">👁️ {views} views</span>
+                        <span className="ml-4 text-gray-600 dark:text-gray-400">👁️ <span className="text-green-400">{postData.views} </span>
+                        <span className="font-bold">views</span> 
+                        </span>
                     </div>
                     {/* Post Intro */}
                     <p className="text-gray-400 dark:text-gray-400 leading-relaxed">
-                        {postData.desc}
+                        {postDetails.desc}
                     </p>
                 </div>
 
                 {/* Advertisement Image */}
-                { postData.img && <div className="hidden lg:block lg:w-2/5">
-                   <img src={postData.img} width="500" className="rounded-2xl shadow-lg" />
+                { postDetails.img && <div className="hidden lg:block lg:w-2/5">
+                   <img src={postDetails.img} width="500" className="rounded-2xl shadow-lg" />
                 </div>}
             </div>
 
@@ -187,7 +198,7 @@ const SinglePostPage = ({postId}) => {
                 {/* Article Content */}
                 <div className="lg:w-3/5 text-lg leading-relaxed space-y-6 text-justify">
                 <p>
-                        {postData.content}
+                        {postDetails.content}
                     </p>
 
                     {/* 🔹 Ad Space (In-Article Ad) */}
@@ -208,11 +219,13 @@ const SinglePostPage = ({postId}) => {
                     <h2 className="text-xl  dark:text-black font-semibold mb-4">Author</h2>
                     
                     <div className="flex items-center gap-4">
-                    {postData.creator.blogProfile && <img src={postData.creator.blogProfile} className="w-14 h-14 
+                    
+                    {postDetails.creator.blogProfile && <img src={postDetails.creator.blogProfile} className="w-14 h-14 
                     rounded-full object-cover" width="56" height="56" />}
                         <div>
-                            <Link to="#" className="text-blue-400 font-semibold text-lg hover:underline">
-                            {postData?.creator?.blogName || "Unknown Creator"}
+                            <Link to={`/creator/${postDetails?.creator?.id}`} 
+                            className="text-blue-400 font-semibold text-lg hover:underline">
+                            {postDetails?.creator?.blogName ?? "Unknown Creator"}
 
                             </Link>
                         </div>
@@ -220,7 +233,7 @@ const SinglePostPage = ({postId}) => {
 
                     {/* Author Bio */}
                     <p className="mt-4 text-gray-400 text-sm">
-                        {postData.creator.blogDescription}
+                        {postDetails.creator.blogDescription}
                     </p>
                 
 
@@ -237,8 +250,8 @@ const SinglePostPage = ({postId}) => {
                     {/* Post Menu Actions */}
                     <div className="mt-6">
                         <h2 className="text-lg font-semibold mb-3">Actions</h2>
-                        <PostMenuActions
-                                />
+                        <PostMenuActions postId={postDetails.id} creatorId={postDetails.creatorId} content={postDetails.content}  userId={postDetails.id}/>
+
                     </div>
 
                     {/* Categories Section */}
@@ -262,11 +275,13 @@ const SinglePostPage = ({postId}) => {
                     
                 </div>
             </div>
+            <PostShareActions slug={slug} />
+
 
               {/* Related Posts Section */}
               {/* Related Posts in the Middle of Content */}
               <div className="my-10">
-                <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center pt-48 border-b-2 border-gray-300 dark:border-gray-700">
+                <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center pt-30 border-b-2 border-gray-300 dark:border-gray-700">
                     Related Posts
                 </h2>
 
@@ -308,47 +323,9 @@ const SinglePostPage = ({postId}) => {
                     {/* Message */}
             {message && <div className="mt-4 text-sm text-gray-600">{message}</div>}
             </div>
-
-            <div className="flex gap-4">
-                <FacebookShareButton
-                    url={postUrl}
-                    quote="Check out this post!"
-                    onClick={() => handleShare('Facebook')}
-                >
-                    <button
-                        disabled={isSharing}
-                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                    >
-                        {isSharing ? 'Sharing...' : 'Share on Facebook'}
-                    </button>
-                </FacebookShareButton>
-                <TwitterShareButton
-                    url={postUrl}
-                    title="Check out this post!"
-                    onClick={() => handleShare('Twitter')}
-                >
-                    <button
-                        disabled={isSharing}
-                        className="px-4 py-2 bg-blue-400 text-white rounded hover:bg-black hover:text-white"
-                    >
-                        {isSharing ? 'Sharing...' : 'Share on X'}
-                    </button>
-                </TwitterShareButton>
-                <LinkedinShareButton
-                    url={postUrl}
-                    title="Check out this post!"
-                    onClick={() => handleShare('LinkedIn')}
-                >
-                    <button
-                        disabled={isSharing}
-                        className="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800"
-                    >
-                        {isSharing ? 'Sharing...' : 'Share on LinkedIn'}
-                    </button>
-                </LinkedinShareButton>
-            </div>
-            {shareMessage && <p>{shareMessage}</p>}
-             <Comments postId={postData.id} />
+             <Comments 
+             postId={postDetails.id}
+             userId={postDetails.id} />
              
             </div>
         </div>

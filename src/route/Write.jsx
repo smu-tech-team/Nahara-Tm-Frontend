@@ -6,10 +6,6 @@ import axios from "axios";
 import {jwtDecode} from "jwt-decode"; // Properly import jwt-decode
 import { toast } from "react-toastify";
 import DOMPurify from "dompurify";
-
-
-
-
 const Write = () => {
     const [user, setUser] = useState(null);
     const [userRole, setUserRole] = useState(null);
@@ -19,6 +15,7 @@ const Write = () => {
     const fileInputRef = useRef(null);
     const videoFileInputRef = useRef(null);
     const [isEditorLoaded, setIsEditorLoaded] = useState(false);
+    const [sportsSubcategory, setSportsSubcategory] = useState("");
 
         useEffect(() => {
     setIsEditorLoaded(true);
@@ -131,6 +128,7 @@ const handleVideoUpload = (event) => {
         setContent(DOMPurify.sanitize(html)); // Sanitize input
     };
 
+    
     const validateForm = () => {
         const newErrors = {};
         if (!title.trim()) newErrors.title = "Title is required";
@@ -215,6 +213,8 @@ const handleVideoUpload = (event) => {
         setCategory(e.target.value);
         console.log("Selected Category:", e.target.value);
     };
+    
+      
     const generateSlug = (title) => {
         return title.toLowerCase()
             .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
@@ -253,23 +253,18 @@ const handleVideoUpload = (event) => {
                 />
                 {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
 
-                <div className="flex items-center gap-4">
-                    <label className="text-sm font-medium mb-1 text-gray-800 dark:text-white">Choose a category</label>
-                    <select
-                        value={category}
-                        onChange={handleCategoryChange}
-                        className="p-2 border border-gray-300 shadow-sm rounded-xl text-gray-900 dark:text-white dark:bg-gray-800"
-                    >
-                        <option value="general">General</option>
+                <div className="flex flex-col gap-4">
+                        {/* Main Category Dropdown */}
+                                                <label className="text-sm font-medium mb-1 text-gray-800 dark:text-white">Choose a category</label> 
+                        <select value={category} onChange={handleCategoryChange} className="p-2 border border-gray-300 shadow-sm rounded-xl text-gray-900 dark:text-white dark:bg-gray-800" > 
+                        <option value="general">General</option> 
                         <option value="sports-news">Sports News</option>
-                        <option value="celebrity-news">Celebrity News</option>
-                        <option value="politics">Politics</option>
-                        <option value="betting-tips">Betting Tips</option>
+                         <option value="celebrity-news">Celebrity News</option>
+                          <option value="politics">Politics</option> 
+                          <option value="betting-tips">Betting Tips</option> 
                         <option value="hot-gist">Hot Gist</option>
-                    </select>
-
-                </div>
-                {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
+                         </select>
+                          </div> {errors.category && <p className="text-red-500 text-sm">{errors.category}</p>}
 
                 <textarea
                     name="description"

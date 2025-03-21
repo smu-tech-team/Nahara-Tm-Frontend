@@ -83,6 +83,45 @@ const Comments = ({ postId }) => {
   const currentComments = data.slice(indexOfFirstComment, indexOfLastComment); // Paginated comments
   const commentsLeft = totalComments - indexOfLastComment;
 
+  // Delete comment mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (commentId) => {
+      if (!commentId) throw new Error("Comment ID is required for deletion.");
+      const token = localStorage.getItem("token");
+      return axios.delete(
+        `http://localhost:8087/api/comments/delete-comment/${commentId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    },  
+    onMutate: async (commentId) => {
+      await queryClient.cancelQueries(["comments", postId]);
+      const previousComments = queryClient.getQueryData(["comments", postId]);
+      queryClient.setQueryData(
+        ["comments", postId],
+        (old) => old.filter((comment) => comment._id !== commentId)
+      );
+      return { previousComments };
+    },
+    onError: (error, commentId, context) => {
+      toast.error("Failed to delete comment");
+      if (context?.previousComments) {
+        queryClient.setQueryData(["comments", postId], context.previousComments);
+      }
+    },
+    onSuccess: () => {
+      toast.success("Comment deleted successfully!");
+      queryClient.invalidateQueries(["comments", postId]);
+    },
+  });
+
+  const handleDelete = (commentId) => {
+    if (!commentId) {
+      console.error("Comment ID is undefined or null");
+      return;
+    }
+    deleteMutation.mutate(commentId);
+  };
+  
   const handleNextPage = () => {
     if (indexOfLastComment < totalComments) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -129,10 +168,13 @@ const Comments = ({ postId }) => {
          {currentComments.map((comment) => (
                 <Comment
                     key={comment._id || comment.createdAt} // Fallback to createdAt if _id is missing
+                    _id={comment._id} // Pass the unique ID
                     userImage={comment.userImage}
                     userName={comment.userName}
                     desc={comment.desc}
                     createdAt={comment.createdAt}
+                    {...comment}
+                  onDelete={handleDelete}
                 />
                 ))}
 

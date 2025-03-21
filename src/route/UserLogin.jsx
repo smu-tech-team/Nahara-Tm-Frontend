@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import BackGroundVideo from "../assert/backgroundvide.mp4"
+import HomeLogo from "../assert/SmartLogoMain.png"
 
 const UserLogin = () => {
   const [userName, setUserName] = useState("");
@@ -15,7 +17,6 @@ const UserLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Validation checks
     if (!userName || !password) {
       setError("All fields are required.");
       return;
@@ -32,10 +33,8 @@ const UserLogin = () => {
       });
 
       setSuccess(response.data.message);
-      // Store the token (you can use local storage or cookies)
       localStorage.setItem("token", response.data.token);
-      // Redirect to the dashboard or another protected route
-      setTimeout(() => navigate("/"), 2000); // Redirect after 2 seconds
+      setTimeout(() => navigate("/"), 2000); 
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message);
@@ -48,31 +47,57 @@ const UserLogin = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex items-center justify-center min-h-screen">
+       {/* Background Video */}
+       <video
+      className="absolute top-0 left-0 w-full h-full object-cover z-0"
+      src={BackGroundVideo} 
+      autoPlay 
+      loop 
+      muted
+    />
+    
+    {/* Overlay to darken the video */}
+    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0"></div>
+
+  
+
+
+      <div className=" bg-transparent p-8 rounded-lg shadow-lg w-full max-w-md transform transition-all duration-300 ease-in-out">
+      <div
+        onClick={() => navigate('/')} // Navigates back to the homepage
+        className="cursor-pointer mx-auto w-fit text-center"
+      >
+        <img
+          src={HomeLogo} // Replace with the actual logo file path
+          alt="Logo"
+          className="h-16 w-16 object-contain mx-auto"
+        />
+                <p className="text-white font-bold text-lg mb-2">Go Home</p>
+        </div>
       
-      <div className=" dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md transform transition-all duration-300 ease-in-out">
-        <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 dark:text-white">WELCOME BACK READER</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center text-white dark:text-gray-300">WELCOME BACK READER</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         {success && <p className="text-green-500 text-center mb-4">{success}</p>}
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label htmlFor="userName" className="block text-gray-700 dark:text-gray-300">User Name:</label>
+            <label htmlFor="userName" className="block text-gray-300 dark:text-gray-300">User Name:</label>
             <input
               type="text" 
               id="userName"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             />
           </div>
           <div className="mb-4 relative pb-5">
-            <label htmlFor="password" className="block text-gray-700 dark:text-gray-300">Password:</label>
+            <label htmlFor="password" className="block text-gray-300 dark:text-gray-300">Password:</label>
             <input
               type={showPassword ? "text" : "password"}
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none flex items-center focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none flex items-center focus:ring-2  text-black focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             />
             <button
               type="button"

@@ -49,7 +49,7 @@ const FloatingVideo = ({ videoUrl }) => {
   return (
     isOpen && (
       <div style={styles.floatingVideo}>
-        <button style={styles.closeButton} onClick={handleClose}>✖</button>
+        <button style={styles.closeButton} className='dark:text-gray-800 text-black' onClick={handleClose}>✖</button>
         {isLoading && <img src={logo} alt="Loading logo" style={styles.loadingLogo} />}
         {embedUrl && (
           <iframe

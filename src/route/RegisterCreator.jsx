@@ -56,7 +56,7 @@ const CreatorRegister = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex items-center justify-center min-h-screen">
     {showPopup && (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
         <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-2xl">
@@ -109,7 +109,7 @@ const CreatorRegister = () => {
               type="text"
               value={blogName}
               onChange={(e) => setBlogName(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white"
+              className="w-full px-4 py-2 border rounded-lg text-black dark:bg-gray-700 dark:text-white"
             />
           </div>
           <div className="mb-4">
@@ -118,7 +118,7 @@ const CreatorRegister = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white"
+              className="w-full px-4 py-2 border rounded-lg text-black dark:bg-gray-700 dark:text-white"
             />
           </div>
           <div className="mb-4">
@@ -128,15 +128,16 @@ const CreatorRegister = () => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white"
+                className="w-full px-4 py-2 border rounded-lg text-black dark:bg-gray-700 dark:text-white"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-3 flex items-center text-gray-500 dark:text-gray-300"
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+
             </div>
 
           <div className="mb-4">
@@ -145,7 +146,7 @@ const CreatorRegister = () => {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             >
               <option value="CREATOR">Creator</option>
               {/* Add other roles here if needed */}

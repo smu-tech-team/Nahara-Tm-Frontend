@@ -13,6 +13,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [profileUpdated, setProfileUpdated] = useState(false);
   const [userRole, setUserRole] = useState(null);
+  
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -68,7 +69,7 @@ const Navbar = () => {
     } else if (userRole === "ADMIN") {
       navigate("/admin-profile");
     } else {
-      navigate("/profile");
+      navigate("/user-profile");
     }
   
     try {
@@ -115,7 +116,7 @@ const Navbar = () => {
           <span className="text-gray-800 dark:text-white">SMUTV.</span>
         </Link>
 
-        {/* ✅ MOBILE MENU */}
+       {/* ✅ MOBILE MENU */}
         <div className="md:hidden">
           <div
             className="cursor-pointer text-gray-800 dark:text-white text-4xl"
@@ -124,7 +125,8 @@ const Navbar = () => {
             {isOpen ? "✖" : "☰"}
           </div>
           {isOpen && (
-            <div className="w-full h-screen flex flex-col items-center gap-6 text-lg font-medium justify-center absolute top-16 left-0 bg-gray-300 dark:bg-slate-600 transition-all duration-500">
+            <div 
+            className="w-full h-screen flex flex-col items-center gap-6 text-lg font-medium justify-center absolute top-16 left-0 bg-gray-300 dark:bg-slate-600 transition-all duration-500">
               <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
               <Link to="/trending" onClick={() => setIsOpen(false)}>Trending News</Link>
               <Link to="/popular" onClick={() => setIsOpen(false)}>Most Popular</Link>
@@ -142,19 +144,25 @@ const Navbar = () => {
                 </>
               ) : (
                 <div className="flex flex-col items-center gap-3">
-                  {/* ✅ PROFILE IMAGE */}
-                  <img
-                    src={`${user.blogProfile || user.adminProfile || user.img || DefaultAvatar}?t=${new Date().getTime()}`}
-  alt="Profile"
-                    className="w-12 h-12 rounded-full cursor-pointer"
-                    onClick={handleProfileClick}
-                  />
-
+                {/* ✅ PROFILE IMAGE WITH STYLISH FRAME */}
+                <div className="relative w-16 h-16">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-green-400 to-pink-500 p-1 animate-gradient-border">
+                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+                      <img
+                        src={`${user.blogProfile || user.adminProfile || user.img || DefaultAvatar}?t=${new Date().getTime()}`}
+                        alt="Profile"
+                        className="w-12 h-12 rounded-full object-cover cursor-pointer"
+                        onClick={handleProfileClick}
+                      />
+                    </div>
+                  </div>
+                </div>
+              
                   {/* ✅ SHOW DASHBOARD BASED ON ROLE */}
                   {userRole === "CREATOR" && (
                     <Link to="/creator-dashboard">
                       <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-600">
-                        View Dashboard
+                         Dashboard
                       </button>
                     </Link>
                   )}
@@ -176,16 +184,12 @@ const Navbar = () => {
         </div>
 
         {/* ✅ DESKTOP NAVBAR */}
-        <div className="hidden md:flex items-center gap-8 text-gray-800 dark:text-white">
-          <Link to="/trending">Trending News</Link>
-          <Link to="/popular">Most Popular</Link>
-
+        <div className="hidden md:flex items-center gap-6 text-gray-800 dark:text-white">        <Link to="/trending" className="hover:text-blue-500 transition">Trending News</Link>
+        <Link to="/popular" className="hover:text-blue-500 transition">Popular</Link>
           {/* ✅ SHOW DASHBOARD BASED ON ROLE */}
           {userRole === "CREATOR" && (
-            <Link to="/creator-dashboard">
-              <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-600">
-                View Dashboard
-              </button>
+            <Link to="/creator-dashboard" className="hover:text-blue-500 transition font-bold">
+                              Dashboard
             </Link>
           )}
           {userRole === "ADMIN" && (
@@ -208,10 +212,11 @@ const Navbar = () => {
             </>
           ) : (
             <div className="flex items-center gap-4">
+              
               {/* ✅ PROFILE IMAGE */}
               <img
-                src={user.blogProfile || DefaultAvatar}
-                alt="Profile"
+                    src={`${user.blogProfile || user.adminProfile || user.img || DefaultAvatar}?t=${new Date().getTime()}`}
+                    alt="Profile"
                 className="w-10 h-10 rounded-full cursor-pointer"
                 onClick={handleProfileClick}
               />

@@ -54,7 +54,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex items-center justify-center min-h-screen ">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md transform transition-all duration-300 ease-in-out">
         <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 dark:text-white">Register as reader</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -67,7 +67,7 @@ const Register = () => {
               id="userName"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             />
           </div>
           <div className="mb-4">
@@ -77,7 +77,7 @@ const Register = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             />
           </div>
           <div className="mb-4 relative pb-5">
@@ -87,7 +87,7 @@ const Register = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none flex items-center focus:ring-2
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none text-black flex items-center focus:ring-2
                focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             />
             <button
@@ -104,7 +104,7 @@ const Register = () => {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             >
               <option value="Reader">USER</option>
             </select>

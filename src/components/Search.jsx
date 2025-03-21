@@ -72,7 +72,7 @@ const SearchBar = () => {
             {results.slice(0, 4).map((post) => ( // Limit to the first 4 results
               <li key={post.id}>
                 <Link
-                  to={`/${post.slug}`}
+                  to={`/posts?search=${post.slug}`}
                   className="block px-4 py-2 hover:bg-gray-100 text-gray-700"
                 >
                   {post.title}

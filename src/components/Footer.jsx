@@ -1,6 +1,9 @@
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
+import Smu from "../assert/smu_logo-removebg-preview.png"
+import Smuport from "../assert/SMUSPORTNEWS-removebg-preview.png"
+import SabiPredic from "../assert/SabiPredictLogo.png"
 
 const Footer = () => {
     const [localTime, setLocalTime] = useState("");
@@ -27,70 +30,79 @@ const Footer = () => {
         return () => clearInterval(interval);
     }, []);
 
-    useEffect(() => {
-        const script = document.createElement("script");
-        script.src = "https://images.dmca.com/Badges/DMCABadgeHelper.min.js";
-        script.async = true;
-        document.body.appendChild(script);
-    }, []);
-
     return (
-        <footer className="bg-gray-900 text-white py-10 dark:bg-gray-600 ">
-            <div className="max-w-6xl border-r-4 mx-auto px-6">
+        <footer className="bg-gray-900 text-white py-12 dark:bg-gray-800">
+            <div className="max-w-7xl mx-auto px-6">
                 {/* Top Section */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-10 pb-10 border-b border-gray-700">
                     {/* About Section */}
                     <div>
-                    <p className="mt-2 font-semibold pb-3">Local Time: {localTime}</p>
-
-                        <h2 className="text-xl font-semibold mb-4">About Us</h2>
+                        <h2 className="text-2xl font-semibold mb-4">About Us</h2>
                         <p className="text-gray-400 text-sm leading-relaxed">
-                            <span className="font-bold text-red-600">SMU</span> is an online news platform that allows writers to retain ownership of their articles and get
-                            compensation, while <span className="font-bold text-red-500">SMUTV</span> serves as a legitimate news outlet for all writers.
+                            <span className="font-bold text-red-500">SMU</span> is a modern news platform where writers retain full ownership of their content while <span className="font-bold text-red-400">SMUTV</span> serves as a global news outlet with integrity.
                         </p>
+                        <p className="text-gray-200 mt-4 text-sm">Current Time: {localTime}</p>
                     </div>
 
                     {/* Quick Links */}
                     <div>
-                        <h2 className="text-xl font-semibold mb-4">Quick Links</h2>
-                        <ul className="space-y-2">
-                            <li><Link to="/disclaimer" className="hover:text-blue-500 transition">Disclaimer</Link></li>
-                            <li><Link to="/about-us" className="hover:text-blue-500 transition">About</Link></li>
-                            <li><Link to="/contact" className="hover:text-blue-500 transition">Contact</Link></li>
-                            <li><Link to="/report-post" className="hover:text-blue-500 transition">Report post</Link></li>
-                            <li><Link to="/ads" className="hover:text-blue-500 transition">Advertise with us</Link></li>
-                            <li><Link to="/privacy-policy" className="hover:text-blue-500 transition">Privacy Policy</Link></li>
+                        <h2 className="text-2xl font-semibold mb-4">Quick Links</h2>
+                        <ul className="space-y-3">
+                            <li><Link to="/disclaimer" className="hover:text-red-500 transition">Disclaimer</Link></li>
+                            <li><Link to="/about-us" className="hover:text-red-500 transition">About</Link></li>
+                            <li><Link to="/contact" className="hover:text-red-500 transition">Contact</Link></li>
+                            <li><Link to="/report-post" className="hover:text-red-500 transition">Report post</Link></li>
+                            <li><Link to="/ads" className="hover:text-red-500 transition">Advertise with us</Link></li>
+                            <li><Link to="/privacy-policy" className="hover:text-red-500 transition">Privacy Policy</Link></li>
                         </ul>
                     </div>
 
+                    {/* Partners Section */}
+            <div>
+    <h2 className="text-2xl font-semibold mb-4">Our Partners</h2>
+    <div className="relative">
+        <div className="flex overflow-x-scroll space-x-4">
+            <a href="https://smutechteam.com" target="_blank" rel="noopener noreferrer">
+                <img
+                    src={Smu}
+                    alt="SMU TECH TEAM"
+                    className="w-full h-auto object-contain hover:scale-105 transform transition duration-300"
+                />
+            </a>
+            <a href="https://smusportnews.com" target="_blank" rel="noopener noreferrer">
+                <img
+                    src={Smuport}
+                    alt="SMU Sport News"
+                    className="w-full h-auto object-contain hover:scale-105 transform transition duration-300"
+                />
+            </a>
+            <a href="https://sabipredict.com" target="_blank" rel="noopener noreferrer">
+                <img
+                    src={SabiPredic}
+                    alt="Sabi Predict"
+                    className="w-full h-auto object-contain hover:scale-105 transform transition duration-300"
+                />
+            </a>
+        </div>
+            </div>
+        </div>
                     {/* Social Media Links */}
                     <div>
-                        <h2 className="text-xl font-semibold mb-4">Follow Us</h2>
+                        <h2 className="text-2xl font-semibold mb-4">Stay Connected</h2>
+                        <p className="text-gray-400 mb-4">Follow us on social media for the latest updates:</p>
                         <div className="flex space-x-4">
-                            <Link to="#" className="hover:text-blue-500 transition"><Facebook size={22} /></Link>
-                            <Link to="#" className="hover:text-blue-500 transition"><Twitter size={22} /></Link>
-                            <Link to="#" className="hover:text-blue-500 transition"><Instagram size={22} /></Link>
-                            <Link to="#" className="hover:text-blue-500 transition"><Youtube size={22} /></Link>
+                            <Link to="#" className="hover:text-blue-500 transition"><Facebook size={24} /></Link>
+                            <Link to="#" className="hover:text-sky-500 transition"><Twitter size={24} /></Link>
+                            <Link to="#" className="hover:text-pink-500 transition"><Instagram size={24} /></Link>
+                            <Link to="#" className="hover:text-red-500 transition"><Youtube size={24} /></Link>
                         </div>
                     </div>
                 </div>
 
-                {/* Divider */}
-                <div className="border-t border-gray-700 my-6"></div>
-
-                {/* DMCA Badge */}
-                <div className="text-center text-green-400 my-4">
-                    <a href="//www.dmca.com/Protection/Status.aspx?ID=81a566d0-06bc-4029-a130-0da6412863cb" title="DMCA.com Protection Status" className="dmca-badge">
-                        <img src="https://images.dmca.com/Badges/dmca_protected_sml_120m.png?ID=81a566d0-06bc-4029-a130-0da6412863cb" 
-                        alt="DMCA.com Protection Status" />
-                    </a>
-                    <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"></script>
-                </div>
-
                 {/* Bottom Section */}
-                <div className="text-center text-sm text-gray-400">
+                <div className="text-center text-sm text-gray-500 mt-8">
                     <p>&copy; {new Date().getFullYear()} SmartMediaUpdate. All Rights Reserved.<br />
-                        Developed and Maintained by SMU TECH TEAM ❤
+                        Built and Maintained by <span className="text-red-500">SMU Tech Team</span> ❤
                     </p>
                 </div>
             </div>

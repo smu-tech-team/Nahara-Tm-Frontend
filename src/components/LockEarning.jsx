@@ -13,7 +13,7 @@ const LockEarnings = ({ onClose }) => {
       const response = await fetch("http://localhost:8087/api/earnings/lock-status", {
         credentials: "include",
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
       });
@@ -74,7 +74,7 @@ const LockEarnings = ({ onClose }) => {
         method: "POST",
         credentials: "include",
         headers: {
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
         },
       });
@@ -92,37 +92,46 @@ const LockEarnings = ({ onClose }) => {
   return (
     <>
       <Modal isOpen={true} onClose={onClose} title="Lock Earnings">
-        <p className="text-gray-800 dark:text-white">
-          Once locked, your earnings will be unavailable for withdrawal for <strong>30 days</strong>.
-        </p>
-        <p>Are you sure you want to continue?</p>
+        <div className="space-y-4">
+          <p className="text-gray-700 dark:text-gray-300">
+            Lock your earnings to secure them for a specified duration. Once locked, they will be unavailable for withdrawal for <strong>30 days</strong>.
+          </p>
 
-        {loading ? (
-          <p className="mt-2 text-gray-500">Checking lock status...</p>
-        ) : lockExpiry ? (
-          <p className="mt-2 text-red-500 font-bold">Locked until: {lockExpiry.toLocaleString()}</p>
-        ) : (
-          <p className="mt-2 text-green-500">Earnings are not locked.</p>
-        )}
+          {/* Status Section */}
+          {loading ? (
+            <p className="text-gray-500">Fetching lock status...</p>
+          ) : lockExpiry ? (
+            <div>
+              <p className="text-red-500 font-bold">Locked Until: {lockExpiry.toLocaleString()}</p>
+            </div>
+          ) : (
+            <p className="text-green-500">Earnings are not currently locked.</p>
+          )}
 
-        {lockExpiry && (
+          {/* Lock Button */}
           <button
-            className="mt-4 w-full bg-blue-500 text-white py-2 rounded"
-            onClick={() => setShowCountdownModal(true)}
+            className={`w-full px-4 py-2 mt-4 text-white rounded-lg ${
+              lockExpiry ? "bg-gray-500 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+            }`}
+            onClick={lockEarnings}
+            disabled={!!lockExpiry}
           >
-            Show Countdown
+            {lockExpiry ? "Already Locked" : "Lock Earnings"}
           </button>
-        )}
 
-        <button
-          className="mt-4 w-full bg-green-500 text-white py-2 rounded"
-          onClick={lockEarnings}
-          disabled={!!lockExpiry}
-        >
-          {lockExpiry ? "Already Locked" : "Yes, Lock Earnings"}
-        </button>
+          {/* Countdown Modal Trigger */}
+          {lockExpiry && (
+            <button
+              className="w-full mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              onClick={() => setShowCountdownModal(true)}
+            >
+              Show Countdown Timer
+            </button>
+          )}
+        </div>
       </Modal>
 
+      {/* Countdown Modal */}
       {showCountdownModal && (
         <Modal isOpen={true} onClose={() => setShowCountdownModal(false)} title="Countdown Timer">
           <p className="text-xl font-bold text-blue-500">Time Remaining: {remainingTime}</p>

@@ -29,6 +29,8 @@ import UserLogin from './route/UserLogin'
 import CreatorDashboard from "./components/CreatorDashboard";
 import ProtectedRoute from "./route/ProtectedRoute"; 
 import ProfileImageUploader from './components/ProfileImageUploader'
+import UserProfileCard from './components/UserProfileCard'
+import CreatorProfile from './components/CreatorProfile'
 
 
 const queryClient = new QueryClient();
@@ -68,6 +70,10 @@ const router = createBrowserRouter([
       element: <ProfileUpdate/>
      },
      {
+      path: "/user-profile",
+      element: <UserProfileCard/>
+     },
+     {
       path: "/profile",
       element: <ProfileImageUploader/>
      },
@@ -104,10 +110,15 @@ const router = createBrowserRouter([
       element: <PrivacyPolicy/>
      },
      {
+      path: "/creator/:creatorId",
+      element: <CreatorProfile />
+
+     },
+     {
       path: "/creator-dashboard",
       element: (
         <ProtectedRoute>
-          <CreatorDashboard />
+          <CreatorDashboard/>
          </ProtectedRoute>
       ),
     },

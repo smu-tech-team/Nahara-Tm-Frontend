@@ -11,14 +11,16 @@ export default defineConfig({
     'process.env': process.env, // Ensures environment variables work properly
     'process.env.VITE_CLERK_PUBLISHABLE_KEY': JSON.stringify(process.env.VITE_CLERK_PUBLISHABLE_KEY),
   },
-  server: {
-    headers: {
-      "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
-    },
+server: {
+  headers: {
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
   },
-  optimizeDeps: {
-    include: ["react-quill"]
-  },
- 
+  hmr: {
+      overlay: false, // Prevent unnecessary UI reloads
+  }
+},
+optimizeDeps: {
+  include: ["react-quill"]
+}
   
 });

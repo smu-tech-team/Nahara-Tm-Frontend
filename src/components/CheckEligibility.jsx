@@ -5,6 +5,7 @@ const CheckEligibility = ({ onClose }) => {
   const [eligible, setEligible] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // Check eligibility logic
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -12,14 +13,14 @@ const CheckEligibility = ({ onClose }) => {
       setEligible(false);
       return;
     }
-  
+
     setLoading(true);
     console.log("🔄 Sending request to check eligibility...");
-  
+
     fetch("http://localhost:8087/api/earnings/check-eligibility", {
       credentials: "include",
       headers: {
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => {
@@ -37,19 +38,59 @@ const CheckEligibility = ({ onClose }) => {
       })
       .finally(() => setLoading(false));
   }, []);
-  
-  
+
   return (
     <Modal isOpen={true} onClose={onClose} title="Eligibility Check">
-      {loading ? (
-        <p className="text-center text-gray-600">Checking...</p>
-      ) : eligible ? (
-        <p className="flex items-center justify-center gap-2 text-green-600">✅ You are eligible!</p>
-      ) : (
-        <p className="text-red-500">❌ Not eligible. Follow the instructions to qualify.</p>
-      )}
-      <h2><p>To be eligible for earning on <span className="font-bold text-red-600">SMU</span> you need to have aleast 1k followers<br>
-      </br> and 3k views</p></h2>
+      <div className="space-y-6 text-center">
+        {/* Eligibility Status */}
+        {loading ? (
+          <p className="text-gray-500 animate-pulse">🔍 Checking your eligibility...</p>
+        ) : eligible ? (
+          <div className="flex flex-col items-center text-green-600">
+            <span className="text-5xl">🎉</span>
+            <p className="text-2xl font-bold">You are eligible!</p>
+            <p className="text-sm text-gray-500 mt-1">Congratulations! You meet the requirements.</p>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center text-red-500">
+            <span className="text-5xl">😞</span>
+            <p className="text-2xl font-bold">Not Eligible</p>
+            <p className="text-sm text-gray-500 mt-1">Follow the steps below to qualify:</p>
+          </div>
+        )}
+
+        {/* Instructions */}
+        <div className="bg-blue-50 dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+          <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-400 mb-2">
+            Eligibility Requirements
+          </h2>
+          <p className="text-gray-700 dark:text-gray-300">
+            To be eligible for earning on <span className="font-bold text-red-600">SMU</span>, you need:
+          </p>
+          <ul className="list-disc list-inside text-left mt-2 text-gray-600 dark:text-gray-400">
+            <li>At least <strong>1,000 followers</strong></li>
+            <li>Minimum of <strong>3,000 views</strong></li>
+          </ul>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex justify-end gap-4 mt-6">
+          <button
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+            onClick={onClose}
+          >
+            Close
+          </button>
+          {!eligible && (
+            <a
+              href="/help"
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+            >
+              Learn How to Qualify
+            </a>
+          )}
+        </div>
+      </div>
     </Modal>
   );
 };

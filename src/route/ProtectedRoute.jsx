@@ -1,40 +1,51 @@
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
-import useAuthStore from "../store/authStore";
-import { useState, useEffect } from "react";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const ProtectedRoute = ({ children }) => {
-  const [userRole, setUserRole] = useState(null);
+  const [creatorId, setCreatorId] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkUserRole = async () => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
       try {
-        const storedToken = localStorage.getItem("token"); // Retrieve token
-        if (!storedToken) {
+        const decodedToken = jwtDecode(token);
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (decodedToken.exp < currentTime) {
+          console.error("Token expired!");
+          localStorage.removeItem("token");
           setLoading(false);
           return;
         }
 
-        // Decode token to get user role
-        const decodedToken = jwtDecode(storedToken);
-        setUserRole(decodedToken.roles ? decodedToken.roles[0] : null);
+        // Use userId instead of creatorId
+        if (decodedToken.roles?.includes("CREATOR") && decodedToken.userId) {
+          setCreatorId(decodedToken.userId);
+        } else {
+          console.error("User is not a creator or userId is missing!");
+        }
       } catch (error) {
         console.error("Error decoding token:", error);
       }
-      setLoading(false);
-    };
+    } else {
+      console.error("No token found!");
+    }
 
-    checkUserRole();
+    setLoading(false);
   }, []);
 
-  if (loading) return <div className="text-center text-gray-500">Checking access...</div>;
-
-  if (userRole !== "CREATOR") {
-    return <Navigate to="/" />;
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  return children;
+  if (!creatorId) {
+    console.error("Redirecting: User ID missing or user unauthorized!");
+    return <Navigate to="/login" replace />;
+  }
+
+  return React.isValidElement(children) ? React.cloneElement(children, { creatorId }) : children;
 };
 
 export default ProtectedRoute;
