@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Smu from "../assert/smu_logo-removebg-preview.png"
 import Smuport from "../assert/SMUSPORTNEWS-removebg-preview.png"
 import SabiPredic from "../assert/SabiPredictLogo.png"
+import SecurityBadge from "../components/SecurityBadge";
 
 const Footer = () => {
     const [localTime, setLocalTime] = useState("");
@@ -99,6 +100,7 @@ const Footer = () => {
                     </div>
                 </div>
 
+                <SecurityBadge/>
                 {/* Bottom Section */}
                 <div className="text-center text-sm text-gray-500 mt-8">
                     <p>&copy; {new Date().getFullYear()} SmartMediaUpdate. All Rights Reserved.<br />

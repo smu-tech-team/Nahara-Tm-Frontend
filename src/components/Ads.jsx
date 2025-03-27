@@ -50,7 +50,7 @@ const AdvertiseWithUs = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="p-6 max-w-3xl mx-auto mt-6 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-lg"
+      className="p-6 max-w-3xl mx-auto mt-6 mb-6 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-lg"
     >
       <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white">
         Advertise With Us

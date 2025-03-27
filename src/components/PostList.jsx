@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -23,11 +23,12 @@ const fetchPosts = async ({ page, size, searchParams }) => {
 const PostList = () => {
     const [searchParams] = useSearchParams();
     const [posts, setPosts] = useState([]);
-    const [page, setPage] = useState(0); // Start at 1 (change from 0)
+    const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const pageSize = 10;
 
-    const loadMorePosts = async (newPage) => {
+    // Use useCallback to prevent function recreation
+    const loadMorePosts = useCallback(async (newPage) => {
         try {
             console.log("Loading posts for page:", newPage);
             const data = await fetchPosts({ page: newPage, size: pageSize, searchParams });
@@ -37,26 +38,33 @@ const PostList = () => {
             }
 
             setPosts((prevPosts) => (newPage === 0 ? data : [...prevPosts, ...data]));
-            setPage(newPage + 0);
+            setPage(newPage + 1); // Fix: Increment page correctly
         } catch (error) {
             console.error("Error fetching posts:", error);
         }
-    };
+    }, [searchParams]); // Depend only on searchParams to avoid unnecessary re-creation
 
     // Fetch posts on mount & when search params change
     useEffect(() => {
         setPosts([]); // Reset posts when params change
         setHasMore(true);
-        setPage(0); // Start from page 1
-        loadMorePosts(0); // Fetch first set of posts
-    }, [searchParams]);
+        setPage(0);
+        loadMorePosts(0);
+    }, [searchParams, loadMorePosts]); // ✅ Include loadMorePosts
 
     return (
         <InfiniteScroll
             dataLength={posts.length}
             next={() => loadMorePosts(page)}
             hasMore={hasMore}
-            loader={<p>Loading...</p>}
+            loader={<p className="text-center text-gray-500">Loading...</p>}
+            endMessage={
+                posts.length > 0 && !hasMore ? (
+                    <p className="text-center text-green-600 font-semibold mt-4 animate-bounce">
+                        Posts done loading
+                    </p>
+                ) : null
+            }
         >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {posts.length > 0 ? (
@@ -67,6 +75,6 @@ const PostList = () => {
             </div>
         </InfiniteScroll>
     );
-};
+}    
 
 export default PostList;

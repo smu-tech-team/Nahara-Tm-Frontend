@@ -4,6 +4,7 @@ import axios from "axios";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import BackGroundVideo from "../assert/backgroundvide.mp4"
 import HomeLogo from "../assert/SmartLogoMain.png"
+import { ShieldCheckIcon } from "lucide-react";
 
 const UserLogin = () => {
   const [userName, setUserName] = useState("");
@@ -58,7 +59,10 @@ const UserLogin = () => {
     />
     
     {/* Overlay to darken the video */}
-    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0"></div>
+    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0">  <p className="text-green-600 font-semibold flex ml-[50rem] pt-5 items-center gap-2">
+         <ShieldCheckIcon size={18} />
+       Secure Login Enabled 🔒
+        </p></div>
 
   
 

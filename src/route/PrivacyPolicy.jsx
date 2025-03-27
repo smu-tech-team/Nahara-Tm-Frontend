@@ -6,7 +6,7 @@ const PrivacyPolicy = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="p-6 max-w-3xl mx-auto bg-gray-100 mt-6 dark:bg-gray-900 rounded-lg shadow-lg"
+      className="p-6 max-w-3xl mx-auto bg-gray-100 mt-6 mb-6 dark:bg-gray-900 rounded-lg shadow-lg"
     >
       <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white">Privacy Policy</h1>
       <p className="mt-4 text-gray-600 dark:text-gray-300">

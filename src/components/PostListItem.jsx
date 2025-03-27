@@ -38,7 +38,10 @@ const PostListItem = ({ post }) => {
                     className="text-blue-400 hover:underline"
                 >
                 </Link>
-                <Link to={`/creator/${post?.creator?.id}`}>
+                <Link to={`/creator/${post?.creator?.id}`}
+                className="text-blue-400 hover:underline"
+
+                >
                 {post?.creator?.blogName || "Unknown Creator"}
                 </Link>
 

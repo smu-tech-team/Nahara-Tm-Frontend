@@ -17,6 +17,7 @@ body {
 .ql-container, .ql-toolbar, .ql-editor {
   border: none !important;
 }
+
 @keyframes shimmer {
   0% {
     transform: translateX(-100%);
@@ -29,6 +30,7 @@ body {
 .animate-shimmer {
   animation: shimmer 1.5s infinite linear;
 }
+
 @keyframes gradientBorder {
   0% {
     background-position: 0% 50%;
@@ -45,8 +47,16 @@ body {
   background-size: 200% 200%;
   animation: gradientBorder 4s ease infinite;
 }
+
 .bg-glass {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Correctly wrap these properties in a class or element selector */
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis; /* Shows "..." for truncated text */
+  white-space: nowrap; /* Prevents wrapping to the next line */
 }

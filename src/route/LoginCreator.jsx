@@ -4,6 +4,7 @@ import axios from "axios";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import BackGroundVideo from "../assert/854321-hd_1920_1080_24fps (1).mp4";
 import HomeLogo from "../assert/SmartLogoMain.png"
+import { ShieldCheck } from "lucide-react";
 
 
 const CreatorLogin = () => {
@@ -63,7 +64,12 @@ const CreatorLogin = () => {
       />
       
       {/* Overlay to darken the video */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0"></div>
+      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0">
+        <p className="text-green-600 font-semibold flex ml-[50rem] pt-5 items-center gap-2">
+     <ShieldCheck size={18} />
+   Secure Login Enabled 🔒
+    </p></div>
+      
 
       <div className="  p-8 rounded-lg shadow-lg w-full max-w-md transform transition-all duration-300 ease-in-out">
          <div
@@ -130,6 +136,7 @@ const CreatorLogin = () => {
           <Link to="/userLogin" className="text-blue-500 hover:underline dark:text-blue-400">
             Not a creator? Login as a USER here
           </Link>
+          
         </div>
       </div>
     </div>

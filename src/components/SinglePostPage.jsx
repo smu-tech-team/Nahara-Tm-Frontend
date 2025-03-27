@@ -33,7 +33,6 @@ const SinglePostPage = () => {
     const [isLiking, setIsLiking] = useState(false);
     const [likeMessage, setLikeMessage] = useState('');;
     const [message] = useState(null);
-    const { postId } = useParams(); // Retrieve postId from the URL
     const [postDetails, setPostDetails] = useState(null);
     const [isLoading, setIsLoading] = useState(true); // Loading state
 
@@ -119,6 +118,8 @@ const SinglePostPage = () => {
         }, []);
 
 
+        
+        
 
     const { 
         isLoading: isLoadingRelatedPosts, 
@@ -231,11 +232,10 @@ const SinglePostPage = () => {
                         </div>
                     </div>
 
-                    {/* Author Bio */}
-                    <p className="mt-4 text-gray-400 text-sm">
+                    <p className="mt-4 text-gray-400 text-sm break-words whitespace-pre-line max-w-md">
                         {postDetails.creator.blogDescription}
                     </p>
-                
+
 
                     {/* Social Links */}
                     <div className="flex gap-3 mt-4">
@@ -250,7 +250,12 @@ const SinglePostPage = () => {
                     {/* Post Menu Actions */}
                     <div className="mt-6">
                         <h2 className="text-lg font-semibold mb-3">Actions</h2>
-                        <PostMenuActions postId={postDetails.id} creatorId={postDetails.creatorId} content={postDetails.content}  userId={postDetails.id}/>
+                        <PostMenuActions
+                        postId={postDetails?.id}
+                        creatorId={postDetails?.id} // Ensure this exists
+                        content={postDetails?.content}
+                        userId={postDetails?.id}
+                        />
 
                     </div>
 
@@ -275,7 +280,18 @@ const SinglePostPage = () => {
                     
                 </div>
             </div>
-            <PostShareActions slug={slug} />
+            <PostShareActions slug={slug}  />
+            <button
+                onClick={() => (window.location.href = `/report-post?slug=${slug}`)} // Redirects user to report page
+                className="relative px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-700 rounded-lg shadow-lg hover:from-red-600 hover:to-red-800 focus:outline-none focus:ring focus:ring-red-300 transition-transform transform hover:scale-105 active:scale-95"
+                >
+                <span className="absolute inset-0 bg-red-700 opacity-25 rounded-lg blur-lg"></span>
+                <span className="relative">🚨 Report Post</span>
+                </button>
+
+
+
+
 
 
               {/* Related Posts Section */}
@@ -306,6 +322,7 @@ const SinglePostPage = () => {
                     <p className="text-gray-500">No related posts found.</p>
                     )}
                 </div>
+               
 
                             
                   {/* Your existing post content */}

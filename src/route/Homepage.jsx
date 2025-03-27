@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 import {jwtDecode} from "jwt-decode"; // Import jwt-decode
 
 const Homepage = () => {
-  const [localTime, setLocalTime] = useState("");
   const [isCreator, setIsCreator] = useState(false);
   const [username, setUsername] = useState(""); // State to store the username
+  const [localDateTime, setLocalDateTime] = useState("");
+
 
   const videoLink = "https://youtu.be/lTA9ChokOJI?si=3HspH9bVPaNGj1S-"; // Example link
 
@@ -34,20 +35,27 @@ const Homepage = () => {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      const userTime = new Intl.DateTimeFormat("en-US", {
+      const formattedDate = new Intl.DateTimeFormat("en-US", {
         timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        weekday: "long",
         hour: "2-digit",
         minute: "2-digit",
         second: "2-digit",
         hour12: true,
       }).format(now);
-      setLocalTime(userTime);
+
+      setLocalDateTime(formattedDate);
     };
 
     updateTime();
     const interval = setInterval(updateTime, 1000);
+
     return () => clearInterval(interval);
   }, []);
+
 
 
   // Function to determine the correct video embed type
@@ -100,12 +108,16 @@ const Homepage = () => {
         <span className="font-bold">.</span>
         <span className="text-blue-700 dark:text-blue-500">News and Bets</span>
       </div>
-      <p className="mt-2 font-semibold">Current Time: {localTime}</p>
+      <div>
+      <p className="mt-2 text-sm sm:text-base md:text-lg font-semibold text-gray-400  break-words">
+  {localDateTime}
+</p>
 
        {/* Welcome Message */}
-       <h2 className="text-xr pr-10 font-bold text-gray-500 dark:text-gray-400">
-        <span className="text-gray-500">Hey!👋</span>  {username}
-      </h2>
+       <h2 className="border rounded-lg">  
+  <span className="text-gray-500">  Hey!👋 </span> {username}
+</h2>
+</div>
 
       {/* INTRODUCTION */}
       <div className="flex items-center justify-between">

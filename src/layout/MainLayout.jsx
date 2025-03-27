@@ -9,6 +9,9 @@ import { ToastContainer } from "react-toastify";
 import AppDownloadPopup from "../components/AppDownloadPopup ";
 import NotificationSubscriptionPopup from "../components/NotificationSubscriptionPopup ";
 import { initializeOneSignal } from "../store/OneSignalSetup.js";
+import SecureBanner from "../components/SecureBanner";
+import setupAuthListener from "../store/authService"; // Adjust path as needed
+
 
 const MainLayout = () => {
   const videoUrl = "https://youtu.be/N3VdeCtd8oY?si=4HKjo7tvVYX5Gv51";
@@ -16,12 +19,16 @@ const MainLayout = () => {
   // Use useEffect to initialize OneSignal at the top level
   useEffect(() => {
     initializeOneSignal(); // Initialize OneSignal on app load
+    setupAuthListener();
   }, []); // Empty dependency array ensures it only runs once
 
+  
   return (
     <div className="px-4 md:px-8 lg:px-16 lx:px-32 2xl:px-64">
       {/* Navbar */}
       <Navbar />
+
+      <SecureBanner/>
 
       {/* Main Content */}
       <Outlet />

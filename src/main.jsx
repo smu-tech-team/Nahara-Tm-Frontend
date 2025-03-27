@@ -31,6 +31,9 @@ import ProtectedRoute from "./route/ProtectedRoute";
 import ProfileImageUploader from './components/ProfileImageUploader'
 import UserProfileCard from './components/UserProfileCard'
 import CreatorProfile from './components/CreatorProfile'
+import CreatorWebsite from './components/CreatorWebsite'
+import Newsletters from './components/Newsletters'
+
 
 
 const queryClient = new QueryClient();
@@ -101,6 +104,11 @@ const router = createBrowserRouter([
       path: "/ads",
       element: <AdvertiseWithUs/>
      },
+    
+     {
+      path: "/ads",
+      element: <Newsletters/>
+     },
      {
       path: "/about-us",
       element: <About/>
@@ -112,6 +120,12 @@ const router = createBrowserRouter([
      {
       path: "/creator/:creatorId",
       element: <CreatorProfile />
+
+     },
+     {
+       path: "/creator-website" ,
+       element: <CreatorWebsite />
+
 
      },
      {

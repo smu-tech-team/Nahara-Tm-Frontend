@@ -226,23 +226,66 @@ const handleVideoUpload = (event) => {
     
 
     return (
-        <div className="max-w-2xl mt-8 gap-6 flex-col flex md:h-[calc(150vh-80px)] h-[calc(130vh-64px)] 
+        <div className="max-w-2xl mt-8 mb-8 gap-6 flex-col flex md:h-[calc(150vh-80px)] h-[calc(130vh-64px)] 
          mx-auto p-4 bg-gray-100 dark:bg-gray-900 shadow-lg rounded-lg">
             <h1 className="text-2xl font-bold shadow-sm mb-4 text-gray-800 dark:text-white">Create a New Post</h1>
             <form className="space-y-4 flex flex-col gap-6 flex-1 mb-6" onSubmit={handlePublish}>
-                <button type="button" onClick={handleCoverImageClick} className="w-max px-4 py-2 shadow-sm bg-gray-700 text-white rounded-xl">
-                    Add a cover image
-                </button>
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    className="hidden"
-                    onChange={handleCoverImageChange}
-                />
-                {coverImage && (
-                    <img src={URL.createObjectURL(coverImage)} alt="Cover Preview" className="w-20 h-20 object-cover rounded-lg" />
-                )}
+            <button
+        type="button"
+        onClick={() => fileInputRef.current.click()}
+        className="w-max px-4 py-2 shadow-sm bg-gray-700 text-white rounded-xl"
+    >
+        Add a cover (Image/Video)
+    </button>
+    <input
+        type="file"
+        ref={fileInputRef}
+        className="hidden"
+        accept="image/*,video/*"
+        onChange={(e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const isVideo = file.type.startsWith("video/");
+            setCoverImage(isVideo ? null : file);
+            setVideoFile(isVideo ? file : null);
+        }}
+    />
+               {/* Cover Preview */}
+             {(coverImage || videoFile) && (
+        <div className="relative mt-4 w-40 h-30 bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
+            {/* Remove Button */}
+            <button
+                type="button"
+                onClick={() => {
+                    setCoverImage(null);
+                    setVideoFile(null);
+                    fileInputRef.current.value = "";
+                }}
+                className="absolute top-2 right-2 bg-red-500 text-white text-sm px-2 py-1 rounded-lg"
+            >
+                Remove
+            </button>
 
+            {/* Show Image or Video */}
+            {coverImage && (
+                <img
+                    src={URL.createObjectURL(coverImage)}
+                    alt="Cover Preview"
+                    className="w-full h-full object-cover"
+                />
+            )}
+            {videoFile && (
+                <video
+                    controls
+                    className="w-full h-full object-cover"
+                >
+                    <source src={URL.createObjectURL(videoFile)} type={videoFile.type} />
+                    Your browser does not support the video tag.
+                </video>
+            )}
+        </div>
+    )}
                 <input
                     type="text"
                     placeholder="News Update"

@@ -6,7 +6,7 @@ const About = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
-      className="p-6 max-w-3xl mx-auto bg-gray-100 dark:bg-gray-900 mt-6 rounded-lg shadow-lg"
+      className="p-6 max-w-3xl mx-auto bg-gray-100 dark:bg-gray-900 mt-6  mb-6 rounded-lg shadow-lg"
     >
       <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white">About Smart Media Update (SMU Sport News)</h1>
       <p className="mt-4 text-gray-600 dark:text-gray-300 text-center">
