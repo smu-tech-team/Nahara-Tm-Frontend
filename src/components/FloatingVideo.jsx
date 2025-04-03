@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import logo from '../assert/SmartLogoMain.png'; // Correct path to the logo
+import React, { useState, useEffect } from "react";
+import logo from "/SmartLogoMain.png"; // Correct path to the logo
 
 const FloatingVideo = ({ videoUrl }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
-  const [embedUrl, setEmbedUrl] = useState('');
+  const [embedUrl, setEmbedUrl] = useState("");
 
   useEffect(() => {
     const convertToEmbedUrl = (url) => {
       try {
         let embedLink = url;
-        let videoId = '';
+        let videoId = "";
 
-        if (url.includes('youtube.com') || url.includes('youtu.be')) {
-          if (url.includes('youtube.com/watch?v=')) {
+        if (url.includes("youtube.com") || url.includes("youtu.be")) {
+          if (url.includes("youtube.com/watch?v=")) {
             const urlParams = new URL(url).searchParams;
-            videoId = urlParams.get('v');
-          } else if (url.includes('youtu.be/')) {
-            videoId = url.split('/')[3].split('?')[0]; // Extracts only the video ID
+            videoId = urlParams.get("v");
+          } else if (url.includes("youtu.be/")) {
+            videoId = url.split("/")[3].split("?")[0]; // Extracts only the video ID
           }
 
           if (videoId) {
@@ -25,10 +25,9 @@ const FloatingVideo = ({ videoUrl }) => {
           }
         }
 
-        console.log('Converted Embed URL:', embedLink); // Debugging
         return embedLink;
       } catch (error) {
-        console.error('Error processing video URL:', error);
+        console.error("Error processing video URL:", error);
         return url;
       }
     };
@@ -48,20 +47,24 @@ const FloatingVideo = ({ videoUrl }) => {
 
   return (
     isOpen && (
-      <div style={styles.floatingVideo}>
-        <button style={styles.closeButton} className='dark:text-gray-800 text-black' onClick={handleClose}>✖</button>
-        {isLoading && <img src={logo} alt="Loading logo" style={styles.loadingLogo} />}
+      <div style={styles.floatingVideoContainer}>
+        <button style={styles.closeButton} onClick={handleClose}>
+          ✖
+        </button>
+        {isLoading && (
+          <div style={styles.loadingContainer}>
+            <img src={logo} alt="Loading..." style={styles.loadingLogo} />
+          </div>
+        )}
         {embedUrl && (
           <iframe
-            width="350"
-            height="250"
             src={embedUrl}
             title="Video player"
             frameBorder="0"
             allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             onLoad={handleLoad}
-            style={isLoading ? { display: 'none' } : {}}
+            style={isLoading ? { display: "none" } : styles.videoFrame}
           ></iframe>
         )}
       </div>
@@ -70,31 +73,44 @@ const FloatingVideo = ({ videoUrl }) => {
 };
 
 const styles = {
-  floatingVideo: {
-    position: 'fixed',
-    bottom: '20px',
-    left: '20px',
+  floatingVideoContainer: {
+    position: "fixed",
+    bottom: "10px",
+    left: "10px",
+    right: "10px",
     zIndex: 1000,
-    backgroundColor: 'white',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
-    borderRadius: '8px',
-    overflow: 'hidden',
+    backgroundColor: "white",
+    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+    borderRadius: "8px",
+    width: "90%",
+    maxWidth: "400px", // Keeps it constrained for wider screens
   },
   closeButton: {
-    position: 'absolute',
-    top: '5px',
-    right: '5px',
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    fontSize: '16px',
+    position: "absolute",
+    top: "5px",
+    right: "5px",
+    background: "none",
+    border: "none",
+    cursor: "pointer",
+    fontSize: "16px",
+    zIndex: 1001,
+    color: "#333",
+  },
+  loadingContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "200px",
   },
   loadingLogo: {
-    width: '100px',
-    height: '100px',
-    display: 'block',
-    margin: 'auto',
-    padding: '20px',
+    width: "60px",
+    height: "60px",
+    display: "block",
+  },
+  videoFrame: {
+    width: "100%",
+    height: "200px", // Fully adjusts for small screens
+    borderRadius: "8px",
   },
 };
 

@@ -327,9 +327,8 @@ const WeatherIcon = ({ weatherCode }) => {
 
     return (
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* LEFT SECTION - Main Featured Post */}
             
-            <div className="lg:col-span-2 flex flex-col bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden max-h-[600px]">
+            <div className="lg:col-span-2 flex flex-col bg-gray-800 dark:bg-white shadow-sm rounded-lg overflow-hidden max-h-[600px]">
             {posts[0]?.img && (
           <img src={posts[0].img} 
           alt={posts[0].title}
@@ -344,15 +343,15 @@ const WeatherIcon = ({ weatherCode }) => {
               </Link>
             </div>
             <span className="text-gray-400">{localTime}</span>
-            <span className="text-gray-400 font-bold">{posts[0]?.views}  views</span>
+            <span className="text-green-400 font-bold">{posts[0]?.views}  views</span>
 
           </div>
-          <Link to={posts[0]?.slug} className="block text-2xl font-semibold text-gray-900 dark:text-white hover:text-blue-500 transition">
+          <Link to={posts[0]?.slug} className="block text-2xl font-semibold text-gray-300 dark:text-gray-700 hover:text-blue-500 transition">
             {posts[0]?.title}
             {posts[0]?.views}
 
           </Link>
-          <p className="text-gray-700 dark:text-gray-500 mt-3 line-clamp-3">
+          <p className="text-white dark:text-gray-500 mt-3 line-clamp-3">
             {posts[0]?.desc || "Discover more insights in this article."}
           </p>
           <Link to={posts[0]?.slug} className="mt-4 inline-block text-blue-500 hover:text-blue-700 font-medium">
@@ -361,7 +360,6 @@ const WeatherIcon = ({ weatherCode }) => {
         </div>
       </div>
 
-      {/* NEWSLETTER SECTION */}
   <div className="flex flex-col bg-gray-800 dark:bg-gray-900 shadow-lg rounded-lg p-6 text-white">
   <h3 className="text-xl font-bold text-center mb-4">📩 Stay Updated</h3>
   <p className="text-center text-gray-300 mb-6">
@@ -428,14 +426,13 @@ const WeatherIcon = ({ weatherCode }) => {
   ) : (
     <>
       <button
-        onClick={() => setShowPopup(true)} // Show popup for unsubscribe confirmation
+        onClick={() => setShowPopup(true)} 
         className="w-full bg-red-500 text-white py-2 px-3 rounded-md hover:bg-red-600 transition"
         disabled={loading}
       >
         {loading ? "Unsubscribing..." : "Unsubscribe"}
       </button>
 
-      {/* Popup for confirming unsubscription */}
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full">
@@ -448,16 +445,16 @@ const WeatherIcon = ({ weatherCode }) => {
             </p>
             <div className="flex justify-end gap-4">
               <button
-                onClick={() => setShowPopup(false)} // Cancel the popup
+                onClick={() => setShowPopup(false)} 
                 className="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 transition"
               >
                 Cancel
               </button>
               <button
                 onClick={() => {
-                  handleUnsubscribe(); // Call the unsubscribe logic
-                  setShowPopup(false); // Close the popup
-                  setIsSubscribed(false); // Reset subscription status
+                  handleUnsubscribe(); 
+                  setShowPopup(false); 
+                  setIsSubscribed(false); 
                 }}
                 className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition"
               >
@@ -474,11 +471,9 @@ const WeatherIcon = ({ weatherCode }) => {
     <p className="mt-4 text-center text-green-500">{subscriptionMessage}</p>
   )}
 
-      {/* Weather Forecast */}
       <div className="mt-6 p-4 bg-gray-700 rounded-lg shadow-md">
         <h4 className="text-lg font-semibold text-center ">🌍 Check Your Weather</h4>
 
-        {/* Country Selector */}
         <div className="mt-3">
           <label className="block text-sm  font-medium mb-2">Select Country:</label>
           <select
@@ -494,8 +489,6 @@ const WeatherIcon = ({ weatherCode }) => {
           </select>
         </div>
 
-        {/* Weather Info */}
-       {/* Weather Info */}
         {weatherLoading ? (
         <p className="text-center text-gray-300 mt-3">Fetching weather...</p>
         ) : weather ? (
@@ -513,11 +506,9 @@ const WeatherIcon = ({ weatherCode }) => {
       </div>
     </div>
 
-            {/* RIGHT SECTION - Ads */}
             <div className="lg:col-span-1 flex flex-col gap-8">
                 <h2 className="text-lg font-bold dark:text-gray-600 text-gray-300">Sponsored Ads</h2>
                 
-                {/* Ads */}
                 {[
                     { img: "SMUADS2.PNG.jpg", text: "Sabipredict is your number one prediction and free prediction site." },
                     { img: "SMUADS.PNG.jpg", text: "Exclusive deals for sports fans!" }

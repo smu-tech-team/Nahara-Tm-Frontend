@@ -7,7 +7,9 @@ import { LineChart, Line,
 import { motion } from "framer-motion"; // For animations
 import useAuthStore from "../store/authStore";
 import axios from "axios";
-import DefaultAvatar from "../assert/anonymous-8291223_1280.webp";
+import DefaultAvatar from "/anonymous-8291223_1280.webp";
+import AddYourLiveNews from "../components/AddYourLiveNews";
+
 
 // Import your modals
 import WithdrawEarnings from "../components/Withdraw";
@@ -24,6 +26,7 @@ const CreatorDashboard = ({ creatorId }) => {
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [totalPosts, setTotalPosts] = useState(0);
   const [activeModal, setActiveModal] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   const API_BASE_URL = "http://localhost:8087/api/creator";
@@ -130,10 +133,13 @@ const CreatorDashboard = ({ creatorId }) => {
         return <LockEarnings onClose={() => setActiveModal(null)} />;
       case "checkEligibility":
         return <CheckEligibility onClose={() => setActiveModal(null)} />;
+      case "addLiveNews":
+        return <AddYourLiveNews onClose={() => setActiveModal(null)} />;
       default:
         return null;
     }
   };
+  
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -188,6 +194,22 @@ const CreatorDashboard = ({ creatorId }) => {
 
       {/* Action Buttons */}
       <div className="flex justify-center gap-4 mt-6">
+       {/* Button to open Add Live News modal */}
+       <button
+        onClick={() => setIsModalOpen(true)}
+        className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 mt-4"
+      >
+        Add Live News
+      </button>
+
+      {isModalOpen && (
+        <AddYourLiveNews
+          onClose={() => setIsModalOpen(false)} // Close modal
+          blogName={user?.blogName}
+          blogProfile={user?.blogProfile}
+
+        />
+      )}
         <button
           className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
           onClick={() => setActiveModal("lockEarnings")}

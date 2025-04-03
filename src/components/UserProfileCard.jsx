@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import DefaultAvatar from "../assert/anonymous-8291223_1280.webp";
+import DefaultAvatar from "/anonymous-8291223_1280.webp";
 import axios from "axios";
 
 const UserProfileCard = () => {

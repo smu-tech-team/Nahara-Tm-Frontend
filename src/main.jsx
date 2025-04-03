@@ -33,6 +33,9 @@ import UserProfileCard from './components/UserProfileCard'
 import CreatorProfile from './components/CreatorProfile'
 import CreatorWebsite from './components/CreatorWebsite'
 import Newsletters from './components/Newsletters'
+import RecentLiveNews from './components/RecentLiveNews'
+import ResetPassword from './route/ResetPassword'
+import UserResetPassword from './route/UserRestPassword'
 
 
 
@@ -118,6 +121,10 @@ const router = createBrowserRouter([
       element: <PrivacyPolicy/>
      },
      {
+      path: "/live-Streams-Trending-Updates",
+      element: <RecentLiveNews/>
+     },
+     {
       path: "/creator/:creatorId",
       element: <CreatorProfile />
 
@@ -127,6 +134,14 @@ const router = createBrowserRouter([
        element: <CreatorWebsite />
 
 
+     },
+     {
+      path: "/reset-password",
+      element: <ResetPassword/>
+     },
+     {
+      path: "/user-reset-password",
+      element: <UserResetPassword/>
      },
      {
       path: "/creator-dashboard",

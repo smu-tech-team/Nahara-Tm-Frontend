@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import PostCard from "../components/PostCard";
 import  Skeleton  from "../components/Skelete";
 import PostShareActions from "./PostShareActions";
+import LikeButton from "./LikeButton ";
 
 
 
@@ -29,12 +30,11 @@ const SinglePostPage = () => {
     const { slug } = useParams();
     console.log("Slug from URL:", slug);
     const [views, setViews] = useState(0);
-    const [likes, setLikes] = useState(0);
-    const [isLiking, setIsLiking] = useState(false);
-    const [likeMessage, setLikeMessage] = useState('');;
     const [message] = useState(null);
     const [postDetails, setPostDetails] = useState(null);
     const [isLoading, setIsLoading] = useState(true); // Loading state
+
+ 
 
 
     const fetchRelatedPosts = async (slug) => {
@@ -44,9 +44,9 @@ const SinglePostPage = () => {
         }
         return response.data;
     };
+
     
-    // Fetch post data and update views
-    useEffect(() => {
+        useEffect(() => {
         if (!slug) {
             console.error("slug is undefined");
             return;
@@ -63,8 +63,6 @@ const SinglePostPage = () => {
                 setIsLoading(false);
             }
         };
-
-    
 
         const updateViews = async () => {
             const viewedPosts = JSON.parse(localStorage.getItem("viewedPosts")) || [];
@@ -87,40 +85,6 @@ const SinglePostPage = () => {
         fetchPost();
         updateViews();
     }, [setPostDetails, slug]);
-
-    useEffect(() => {
-        if (postDetails) {
-            setViews(postDetails.views); // Ensure views are updated correctly
-        }
-    }, [postDetails]);
-    
-       
-
-    const handleLike = async () => {
-        if (!postData?.id) return;
-        setIsLiking(true);
-        try {
-            const response = await axios.post(`http://localhost:8087/api/post/${postData.id}/like`);
-            setLikes(response.data.likes || 0);
-            setLikeMessage("Post liked!");
-        } catch (error) {
-            console.error("Error liking post:", error);
-            setLikeMessage("Failed to like post.");
-        } finally {
-            setIsLiking(false);
-        }
-    };
-        useEffect(() => {
-            const script = document.createElement("script");
-            script.src = "https://images.dmca.com/Badges/DMCABadgeHelper.min.js";
-            script.async = true;
-            document.body.appendChild(script);
-        }, []);
-
-
-        
-        
-
     const { 
         isLoading: isLoadingRelatedPosts, 
         error: relatedPostsError, 
@@ -154,6 +118,8 @@ const SinglePostPage = () => {
     if (!postDetails) {
         return <p className="text-center text-gray-500">Post not found</p>;
     }      
+
+    
     const localTime = postData?.createdAt ? new Date(postData.createdAt).toLocaleString() : "Unknown Date";
 
 
@@ -162,49 +128,50 @@ const SinglePostPage = () => {
         <div className="flex flex-col gap-12 p-4 md:p-8">
             {/* Post Details */}
             <div className="flex flex-col lg:flex-row gap-8">
-                {/* Left Content */}
-                <div className="lg:w-3/5 flex flex-col gap-6">
+            {/* Left Content */}
+            <div className="lg:w-3/5 flex flex-col gap-6">
                
-                    <h1 className="text-2xl md:text-4xl xl:text-5xl font-bold leading-tight">
-                        {postDetails.title}
+            <h1 className="text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-bold leading-tight">
+            {postDetails.title}
                     </h1>
                     {/* Post Meta Info */}
-                    <div className="flex items-center gap-3 text-gray-500 text-sm">
-                        <span>Written by</span>
+                    <div className="flex flex-wrap items-center gap-3 text-gray-500 text-sm">
+                    <span>Written by</span>
                         <Link to={`/creator/${postDetails?.creator?.id}`} 
-                         className="text-blue-700 font-semibold hover:underline">
+                        className="text-blue-700 font-semibold hover:underline"
+          >
                         {postDetails?.creator?.blogName || "Unknown Creator"}
                         </Link>
                         <span>on</span>
-                        <Link to="cat" className="text-blue-700 font-semibold hover:underline">{postData.category}</Link>
+                        <Link to="cat"
+                         className="text-blue-700 font-semibold hover:underline"
+                         >{postData.category}</Link>
                         <span>{localTime}</span> {/* Displays proper local time */}
-                        <span className="ml-4 text-gray-600 dark:text-gray-400">👁️ <span className="text-green-400">{postData.views} </span>
+                        <span className="ml-4 text-gray-600 dark:text-gray-400">
+                            👁️ {" "}
+                             <span className="text-green-400">{postData.views} </span> {" "}
                         <span className="font-bold">views</span> 
                         </span>
                     </div>
-                    {/* Post Intro */}
-                    <p className="text-gray-400 dark:text-gray-400 leading-relaxed">
+                    <p className="text-gray-400 dark:text-gray-400 leading-relaxed text-sm sm:text-base">
                         {postDetails.desc}
                     </p>
                 </div>
 
-                {/* Advertisement Image */}
                 { postDetails.img && <div className="hidden lg:block lg:w-2/5">
                    <img src={postDetails.img} width="500" className="rounded-2xl shadow-lg" />
                 </div>}
             </div>
 
-            {/* Content & Sidebar Section */}
             <div className="flex flex-col md:flex-row gap-10">
                 {/* Article Content */}
-                <div className="lg:w-3/5 text-lg leading-relaxed space-y-6 text-justify">
-                <p>
+                <div className="lg:w-3/5 text-base leading-relaxed space-y-6">
+                <p className="text-justify">
                         {postDetails.content}
                     </p>
 
-                    {/* 🔹 Ad Space (In-Article Ad) */}
                     <div>
-                    <h1 className="flex flex-col items-center font-bold">Advertisment</h1>
+                    <h1 className="text-center font-bold">Advertisment</h1>
 
                    <div className="flex justify-center my-8">
                          <Image src="myphoto.jpg" w="300" h="250" className="rounded-lg shadow-md" />
@@ -212,23 +179,23 @@ const SinglePostPage = () => {
                     </div>
                 </div>
                 
-                    {/* Message */}
-                    {message && <div className="mt-4 text-sm text-gray-600">{message}</div>}
-                {/* Sidebar Section */}
-                <div className="px-4 h-max   dark:text-black text-white rounded-2xl shadow-lg sticky top-8">
-                    {/* Author Section */}
-                    <h2 className="text-xl  dark:text-black font-semibold mb-4">Author</h2>
-                    
+                <div className="md:w-1/3 px-4 py-4 bg-gray-800 dark:bg-white text-white dark:text-black rounded-2xl shadow-lg sticky top-8">
+                    <h2 className="text-lg font-semibold mb-4">Author</h2>
                     <div className="flex items-center gap-4">
-                    
-                    {postDetails.creator.blogProfile && <img src={postDetails.creator.blogProfile} className="w-14 h-14 
-                    rounded-full object-cover" width="56" height="56" />}
+                        {postDetails.creator.blogProfile && (
+                        <img
+                            src={postDetails.creator.blogProfile}
+                            className="w-14 h-14 rounded-full object-cover"
+                            alt="Author Profile"
+                        />
+                        )}
                         <div>
-                            <Link to={`/creator/${postDetails?.creator?.id}`} 
-                            className="text-blue-400 font-semibold text-lg hover:underline">
+                        <Link
+                            to={`/creator/${postDetails?.creator?.id}`}
+                            className="text-blue-400 font-semibold text-lg hover:underline"
+                        >
                             {postDetails?.creator?.blogName ?? "Unknown Creator"}
-
-                            </Link>
+                        </Link>
                         </div>
                     </div>
 
@@ -237,10 +204,11 @@ const SinglePostPage = () => {
                     </p>
 
 
-                    {/* Social Links */}
                     <div className="flex gap-3 mt-4">
                         <Link to="#">
-                            <Image src="2021_Facebook_icon.svg.png" className="h-8 w-8 hover:opacity-80 transition" />
+                            <Image src="2021_Facebook_icon.svg.png" 
+                             className="h-8 w-8 hover:opacity-80 transition"
+            />
                         </Link>
                         <Link to="#">
                             <Image src="instagram.svg" className="h-8 w-8 hover:opacity-80 transition" />
@@ -252,15 +220,14 @@ const SinglePostPage = () => {
                         <h2 className="text-lg font-semibold mb-3">Actions</h2>
                         <PostMenuActions
                         postId={postDetails?.id}
-                        creatorId={postDetails?.id} // Ensure this exists
+                        creatorId={postDetails?.id} 
                         content={postDetails?.content}
                         userId={postDetails?.id}
                         />
 
                     </div>
 
-                    {/* Categories Section */}
-                    <div className="mt-6  dark:text-black">
+                    <div className="mt-6 ">
                         <h1 className="text-sm font-medium  mb-4">Categories</h1>
                         <div className="flex flex-col gap-2 text-sm">
                             <Link className="hover:underline">All</Link>
@@ -272,7 +239,6 @@ const SinglePostPage = () => {
                         </div>
                     </div>
 
-                    {/* Search Section */}
                     <div className="mt-6">
                         <h1 className="text-sm font-medium   mb-4">Search</h1>
                         <SearchBar />  
@@ -280,22 +246,19 @@ const SinglePostPage = () => {
                     
                 </div>
             </div>
+            <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center">
+            <LikeButton postId={postDetails.id} />
             <PostShareActions slug={slug}  />
+            </div>
             <button
                 onClick={() => (window.location.href = `/report-post?slug=${slug}`)} // Redirects user to report page
-                className="relative px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-700 rounded-lg shadow-lg hover:from-red-600 hover:to-red-800 focus:outline-none focus:ring focus:ring-red-300 transition-transform transform hover:scale-105 active:scale-95"
+                className="relative px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-700
+                 rounded-lg shadow-lg hover:from-red-600 hover:to-red-800 focus:outline-none focus:ring focus:ring-red-300 
+                 transition-transform transform hover:scale-105 active:scale-95"
                 >
                 <span className="absolute inset-0 bg-red-700 opacity-25 rounded-lg blur-lg"></span>
                 <span className="relative">🚨 Report Post</span>
                 </button>
-
-
-
-
-
-
-              {/* Related Posts Section */}
-              {/* Related Posts in the Middle of Content */}
               <div className="my-10">
                 <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center pt-30 border-b-2 border-gray-300 dark:border-gray-700">
                     Related Posts
@@ -325,20 +288,9 @@ const SinglePostPage = () => {
                
 
                             
-                  {/* Your existing post content */}
                   <div className="pt-4 pb-4">
-                  <button
-                onClick={handleLike}
-                disabled={isLiking}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-            {isLiking ? 'Liking...' : '★ Like'}
-                <span >{likes}</span>
-            </button>
-            {likeMessage && <p>{likeMessage}</p>}
-            {/* Your existing post content */}
-                    {/* Message */}
-            {message && <div className="mt-4 text-sm text-gray-600">{message}</div>}
+            {message && 
+            <div className="mt-4 text-sm text-gray-600">{message}</div>}
             </div>
              <Comments 
              postId={postDetails.id}

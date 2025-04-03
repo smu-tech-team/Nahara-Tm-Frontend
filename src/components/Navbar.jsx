@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../assert/SmartLogoMain.png";
+import Logo from "/SmartLogoMain.png";
 import useAuthStore from "../store/authStore";
-import DefaultAvatar from "../assert/icons8-avatar.gif";
+import DefaultAvatar from "/icons8-avatar.gif";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 

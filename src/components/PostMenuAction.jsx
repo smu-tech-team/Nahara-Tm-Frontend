@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bookmark, Trash2, Edit, Loader2 } from "lucide-react";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode"; 
+import {jwtDecode} from "jwt-decode";
 import { toast } from "react-toastify";
-import FollowButton from "./FollowButton"; // Ensure this is correctly imported
+import FollowCreatorButton from "./FollowCreatorButton ";
 
 const PostMenuActions = ({ postId, slug }) => {
-  const [postDetails, setPostDetails] = useState(null); // New state for post details
+  const [postDetails, setPostDetails] = useState(null);
   const [isSaved, setIsSaved] = useState(false);
   const [loadingSave, setLoadingSave] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -29,24 +29,41 @@ const PostMenuActions = ({ postId, slug }) => {
     }
   }, [token]);
 
-  // Fetch post details
   useEffect(() => {
     if (!postId) return;
-  
+
     const fetchPostDetails = async () => {
+      if (!postId) return;
+    
       try {
-        const response = await axios.get(`http://localhost:8087/api/post/${postId}`);
-        console.log("Fetched post details:", response.data); // Debugging output
+        console.log("Fetching post details for Post ID:", postId);
+        
+        const response = await axios.get(`http://localhost:8087/api/post/${postId}`, {
+          params: {
+            category: Math.random().toString(36).substring(2, 10),
+            blogName: Math.random().toString(36).substring(2, 10),
+            searchQuery: Math.random().toString(36).substring(2, 10),
+            sort: Math.random().toString(36).substring(2, 10),
+            featured: false,
+            page: Math.floor(Math.random() * 100),
+            size: Math.floor(Math.random() * 100),
+            q: Math.random().toString(36).substring(2, 10),
+            limit: Math.floor(Math.random() * 100),
+          },
+        });
+    
+        console.log("Fetched post details:", response.data);
         setPostDetails(response.data);
       } catch (error) {
-        console.error("Error fetching post details:", error);
+        console.error("Error fetching post details:", error.response?.data || error.message);
+        toast.error(
+          error.response?.data?.message || "Failed to fetch post details. Please try again later."
+        );
       }
     };
-  
+    
     fetchPostDetails();
-  }, [postId]);
-  
-
+  }, [postId]);      
   const handleSavePost = async () => {
     if (!postId) {
       toast.error("Unable to save post. Missing post information.");
@@ -104,12 +121,22 @@ const PostMenuActions = ({ postId, slug }) => {
 
       {userRole === "CREATOR" && (
         <>
-          <div className="flex items-center gap-3 cursor-pointer hover:text-yellow-500 transition" onClick={handleEditPost}>
+          <div
+            className="flex items-center gap-3 cursor-pointer hover:text-yellow-500 transition"
+            onClick={handleEditPost}
+          >
             <Edit size={20} />
             <span className="text-sm dark:text-black font-medium">Edit Post</span>
           </div>
-          <div className="flex items-center gap-3 cursor-pointer hover:text-red-500 transition mt-3" onClick={handleDeletePost}>
-            {loadingDelete ? <Loader2 size={20} className="animate-spin" /> : <Trash2 size={20} />}
+          <div
+            className="flex items-center gap-3 cursor-pointer hover:text-red-500 transition mt-3"
+            onClick={handleDeletePost}
+          >
+            {loadingDelete ? (
+              <Loader2 size={20} className="animate-spin" />
+            ) : (
+              <Trash2 size={20} />
+            )}
             <span className="text-sm dark:text-black font-medium">Delete this Post</span>
           </div>
         </>
@@ -117,16 +144,23 @@ const PostMenuActions = ({ postId, slug }) => {
 
       {userRole === "USER" && (
         <>
-          <div className="flex items-center gap-3 cursor-pointer hover:text-blue-500 transition mt-3" onClick={handleSavePost}>
-            {loadingSave ? <Loader2 size={20} className="animate-spin" /> : <Bookmark size={20} />}
-            <span className="text-sm font-medium">{isSaved ? "Unsave Post" : "Save this Post"}</span>
+          <div
+            className="flex items-center gap-3 cursor-pointer hover:text-blue-500 transition mt-3"
+            onClick={handleSavePost}
+          >
+            {loadingSave ? (
+              <Loader2 size={20} className="animate-spin" />
+            ) : (
+              <Bookmark size={20} />
+            )}
+            <span className="text-sm font-medium">
+              {isSaved ? "Unsave Post" : "Save this Post"}
+            </span>
           </div>
 
-          {/* Follow Button (Uses the reusable component) */}
+          {/* Follow Button */}
           <div className="mt-3">
-            {postDetails?.creator?.id && (
-              <FollowButton creatorId={postDetails.creator.id} token={token} />
-            )}
+            {postDetails && <FollowCreatorButton post={postDetails} />}
           </div>
         </>
       )}

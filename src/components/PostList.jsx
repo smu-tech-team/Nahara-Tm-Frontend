@@ -66,13 +66,14 @@ const PostList = () => {
                 ) : null
             }
         >
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {posts.length > 0 ? (
-                    posts.map((post) => <PostListItem key={post._id} post={post} />)
+                    posts.map((post) => <PostListItem key={post._id || post.slug} post={post} />)
                 ) : (
                     <p className="text-center text-gray-500">No posts found.</p>
                 )}
-            </div>
+                </div>
+
         </InfiniteScroll>
     );
 }    

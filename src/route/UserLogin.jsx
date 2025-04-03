@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import BackGroundVideo from "../assert/backgroundvide.mp4"
-import HomeLogo from "../assert/SmartLogoMain.png"
+import BackGroundVideo from "/backgroundvide.mp4"
+import HomeLogo from "/SmartLogoMain.png"
 import { ShieldCheckIcon } from "lucide-react";
 
 const UserLogin = () => {
@@ -14,6 +14,13 @@ const UserLogin = () => {
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [rememberMe, setRememberMe] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [email, setEmail] = useState("");
+  const [forgotPassword, setForgotPassword] = useState(false);
+  
+  
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -45,6 +52,27 @@ const UserLogin = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+   const handleForgotPassword = async () => {
+      if (!email) {
+          setEmailError("Email is required.");
+          return;
+      }
+  
+      try {
+          const response = await axios.get(`http://localhost:8087/api/user/verify-email`, {
+              params: { email }  
+          });
+  
+          if (response.data.message === "Email exists") {
+              navigate(`/user-reset-password?email=${email}`);
+          } else {
+              setEmailError("Email not found. Please check and try again.");
+          }
+      } catch (error) {
+          setEmailError("Error verifying email. Please try again.");
+      }
   };
 
   return (
@@ -111,6 +139,20 @@ const UserLogin = () => {
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
+
+            {/* Remember Me Checkbox */}
+            <div className="flex items-center mb-4">
+                        <input
+                            type="checkbox"
+                            id="rememberMe"
+                            checked={rememberMe}
+                            onChange={() => setRememberMe(!rememberMe)}
+                            className="mr-2 w-4 h-4 cursor-pointer"
+                        />
+                        <label htmlFor="rememberMe" className="text-gray-300 cursor-pointer">Remember Me</label>
+                    </div>
+
+
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out"
@@ -126,6 +168,31 @@ const UserLogin = () => {
             )}
           </button>
         </form>
+
+         <div className="mt-4 text-center">
+                            <button onClick={() => setForgotPassword(true)} className="text-blue-500 hover:underline">Forgot Password?</button>
+                        </div>
+        
+                        {/* Forgot Password Popup */}
+                        {forgotPassword && (
+                            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60">
+                                <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                                    <h2 className="text-lg font-bold text-gray-800 mb-4"><span className="font-bold text-blue-500 animate-pulse">Welcome!</span> Kindly verify email</h2>
+                                    <input
+                                        type="email"
+                                        placeholder="Enter your email"
+                                        value={email}
+                                        onChange={(e) => setEmail(e.target.value)}
+                                        className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                    />
+                                    {emailError && <p className="text-red-500 text-sm mt-2">{emailError}</p>}
+                                    <div className="mt-4 flex justify-end space-x-2">
+                                        <button onClick={() => setForgotPassword(false)} className="px-4 py-2 bg-gray-400 text-white rounded">Cancel</button>
+                                        <button onClick={handleForgotPassword} className="px-4 py-2 bg-blue-500 text-white rounded">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
       </div>
     </div>
   );

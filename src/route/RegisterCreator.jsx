@@ -57,47 +57,47 @@ const CreatorRegister = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-    {showPopup && (
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-2xl">
-          <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 dark:text-white">
-            📢 Important Guidelines for <span className="font-bold text-red-600">SMUTV</span> Creators
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4 text-lg leading-relaxed">
-            As a content creator, you play a key role in shaping public opinion. It is essential to ensure that all 
-            news and information you share are **verified, accurate, and responsible**. 
-          </p>
-          <p className="text-gray-700 dark:text-gray-300 mb-4 text-lg">
-            ❌ <span className="font-bold text-red-600">Do not</span> publish or distribute **fake news** or **unverified information**.  
-            🛑 Any misleading content will be removed immediately when reported.  
-            ✅ Always fact-check before posting to maintain credibility.  
-          </p>
-          <p className="text-gray-700 dark:text-gray-300 text-lg">
-            Fake news can harm individuals, damage reputations, and mislead communities. Let&apos;s work together to promote
-            **truthful and impactful content**. By proceeding, you agree to uphold these standards.
-          </p>
-          <label className="flex items-center text-lg mt-4">
-            <input
-              type="checkbox"
-              className="mr-3 w-5 h-5"
-              checked={agreed}
-              onChange={(e) => setAgreed(e.target.checked)}
-            />
-            <span className="text-gray-900 dark:text-gray-300">I agree to follow these guidelines.</span>
-          </label>
-          <button
-            className={`mt-6 w-full py-3 text-lg rounded-lg text-white font-semibold transition ${
-              agreed ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-400 cursor-not-allowed"
-            }`}
-            onClick={() => agreed && setShowPopup(false)}
-            disabled={!agreed}
-          >
-            Proceed
-          </button>
-        </div>
-      </div>
-    )}
-    
+   {showPopup && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-xl w-11/12 sm:w-4/5 md:w-3/5 max-w-2xl">
+      <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 text-center text-gray-900 dark:text-white">
+        📢 Important Guidelines for <span className="font-bold text-red-600">SMUTV</span> Creators
+      </h2>
+      <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
+        As a content creator, you play a key role in shaping public opinion. It is essential to ensure that all news and
+        information you share are **verified, accurate, and responsible**.
+      </p>
+      <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 mb-4">
+        ❌ <span className="font-bold text-red-600">Do not</span> publish or distribute **fake news** or **unverified information**.  
+        🛑 Any misleading content will be removed immediately when reported.  
+        ✅ Always fact-check before posting to maintain credibility.  
+      </p>
+      <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300">
+        Fake news can harm individuals, damage reputations, and mislead communities. Let&apos;s work together to promote
+        **truthful and impactful content**. By proceeding, you agree to uphold these standards.
+      </p>
+      <label className="flex items-center text-sm sm:text-base md:text-lg mt-4">
+        <input
+          type="checkbox"
+          className="mr-3 w-4 sm:w-5 h-4 sm:h-5"
+          checked={agreed}
+          onChange={(e) => setAgreed(e.target.checked)}
+        />
+        <span className="text-gray-900 dark:text-gray-300">I agree to follow these guidelines.</span>
+      </label>
+      <button
+        className={`mt-6 w-full py-2 sm:py-3 text-sm sm:text-lg rounded-lg text-white font-semibold transition ${
+          agreed ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-400 cursor-not-allowed"
+        }`}
+        onClick={() => agreed && setShowPopup(false)}
+        disabled={!agreed}
+      >
+        Proceed
+      </button>
+    </div>
+  </div>
+)}
+
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 dark:text-white">Register Creator</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}

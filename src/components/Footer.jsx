@@ -1,10 +1,11 @@
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import Smu from "../assert/smu_logo-removebg-preview.png"
-import Smuport from "../assert/SMUSPORTNEWS-removebg-preview.png"
-import SabiPredic from "../assert/SabiPredictLogo.png"
+import Smu from "/smu_logo-removebg-preview.png"
+import Smuport from "/SMUSPORTNEWS-removebg-preview.png"
+import SabiPredic from "/SabiPredictLogo.png"
 import SecurityBadge from "../components/SecurityBadge";
+import RestrictedComponent from "../components/RestrictedComponent";
 
 const Footer = () => {
     const [localTime, setLocalTime] = useState("");
@@ -62,7 +63,7 @@ const Footer = () => {
             <div>
     <h2 className="text-2xl font-semibold mb-4">Our Partners</h2>
     <div className="relative">
-        <div className="flex overflow-x-scroll space-x-4">
+        <div className="flex  bg-gray-500 rounded-lg space-x-4">
             <a href="https://smutechteam.com" target="_blank" rel="noopener noreferrer">
                 <img
                     src={Smu}
@@ -86,6 +87,7 @@ const Footer = () => {
             </a>
         </div>
             </div>
+            <RestrictedComponent className="mt-5"/>
         </div>
                     {/* Social Media Links */}
                     <div>

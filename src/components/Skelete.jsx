@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../assert/SmartLogoMain.png";
+import logo from "/SmartLogoMain.png";
 
 const Skeleton = ({ className }) => {
   return (

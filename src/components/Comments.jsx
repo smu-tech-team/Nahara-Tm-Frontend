@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Comment from "../components/Comment";
-import Image from "../assert/anonymous-8291223_1280.webp";
+import Image from "/anonymous-8291223_1280.webp";
 
 // Function to fetch comments
 const fetchComments = async (postId) => {

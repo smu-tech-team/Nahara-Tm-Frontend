@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode"; // Correct import for jwt-decode
 import axios from "axios"; // Import axios
 import { formatDistanceToNow } from "date-fns";
-import Image from "../assert/anonymous-8291223_1280.webp"; // Default fallback image
+import Image from "/anonymous-8291223_1280.webp"; // Default fallback image
 
 const Comment = ({ userImage, userName, desc, createdAt, _id, onDelete }) => {
   const [userId, setUserId] = useState(null);
