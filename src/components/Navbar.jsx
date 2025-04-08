@@ -5,13 +5,14 @@ import useAuthStore from "../store/authStore";
 import DefaultAvatar from "/icons8-avatar.gif";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { useUI } from "../components/UIProvider "; // Import the custom hook
 
 const Navbar = () => {
   const [showRolePopup, setShowRolePopup] = useState(false);
   const { user, setUser, clearUser } = useAuthStore();
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
-  const [profileUpdated, setProfileUpdated] = useState(false);
+  const { isNavbarOpen, setIsNavbarOpen } = useUI(); // Access shared state
+   const [profileUpdated, setProfileUpdated] = useState(false);
   const [userRole, setUserRole] = useState(null);
   
 
@@ -97,10 +98,6 @@ const Navbar = () => {
     }
   };
   
-  
-  
-  
-  
   const handleLogout = () => {
     clearUser();
     localStorage.removeItem("token");
@@ -109,42 +106,54 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="w-full h-16 flex items-center justify-between bg-white dark:bg-black px-4 md:px-8 border-b border-gray-300 dark:border-gray-700 sticky">
-        {/* ✅ LOGO */}
-        <Link to="/" className="flex items-center gap-4 text-2xl font-bold">
-          <img src={Logo} className="w-16 h-16" alt="SMUTV Logo" />
-          <span className="text-gray-800 dark:text-white">SMUTV.</span>
-        </Link>
+<div className="w-full h-16 flex items-center justify-between bg-white dark:bg-black  rounded-lg px-4 md:px-8 border-b border-gray-300 dark:border-gray-700 sticky top-0 z-50">
+{/* ✅ LOGO */}
+    <Link to="/" className="flex items-center gap-4 text-2xl font-bold">
+      <img src={Logo} className="w-16 h-16" alt="SMUTV Logo" />
+      <span className="text-gray-800 dark:text-white">SMUTV.</span>
+    </Link>
 
-       {/* ✅ MOBILE MENU */}
-        <div className="md:hidden">
-          <div
-            className="cursor-pointer text-gray-800 dark:text-white text-4xl"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? "✖" : "☰"}
-          </div>
-          {isOpen && (
-            <div 
-            className="w-full h-screen flex flex-col items-center gap-6 text-lg font-medium justify-center absolute top-16 left-0 bg-gray-300 dark:bg-slate-600 transition-all duration-500">
-              <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
-              <Link to="/trending" onClick={() => setIsOpen(false)}>Trending News</Link>
-              <Link to="/popular" onClick={() => setIsOpen(false)}>Most Popular</Link>
-              <Link to="/about" onClick={() => setIsOpen(false)}>About us</Link>
+    {/* ✅ MOBILE MENU */}
+    <div className="md:hidden">
+        <div
+          className="cursor-pointer text-gray-800 dark:text-white text-4xl"
+          onClick={() => setIsNavbarOpen(!isNavbarOpen)} // Toggle navbar state
+        >
+          {isNavbarOpen ? "✖" : "☰"}
+        </div>
+        {isNavbarOpen && (
+          <>
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-40"
+              onClick={() => setIsNavbarOpen(false)} // Close on click
+            ></div>
 
-              {/* ✅ SHOW REGISTER & LOGIN IF NO USER */}
-              {!user ? (
-                <>
-                  <button onClick={handleLoginClick} className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-600">
-                    Login 👋
-                  </button>
-                  <button onClick={handleRegisterClick} className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
-                    Register
-                  </button>
-                </>
-              ) : (
-                <div className="flex flex-col items-center gap-3">
-                {/* ✅ PROFILE IMAGE WITH STYLISH FRAME */}
+            {/* Mobile Menu */}
+            <div className="w-full h-screen flex flex-col items-center gap-6 text-lg font-medium justify-center fixed top-16 left-0 bg-gray-500 dark:bg-slate-600 transition-all duration-500 z-50">
+              <Link to="/" onClick={() => setIsNavbarOpen(false)}>Home</Link>
+              <Link to="/trending" onClick={() => setIsNavbarOpen(false)}>Trending News</Link>
+              <Link to="/popular" onClick={() => setIsNavbarOpen(false)}>Most Popular</Link>
+              <Link to="/live-scores" className="font-bold border py-2 px-4 rounded-3xl bg-white text-black hover:bg-red-400" 
+              onClick={() => setIsNavbarOpen(false)}><sapn className="animate-pulse">🔴</sapn>Live Scores</Link>
+            {/* ✅ Show Register & Login If No User */}
+            {!user ? (
+              <>
+                <button 
+                  onClick={handleLoginClick} 
+                  className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-600"
+                >
+                  Login 👋
+                </button>
+                <button 
+                  onClick={handleRegisterClick} 
+                  className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600"
+                >
+                  Register
+                </button>
+              </>
+            ) : (
+              <div className="flex flex-col items-center gap-3">
+                {/* ✅ Profile Image with Stylish Frame */}
                 <div className="relative w-16 h-16">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-green-400 to-pink-500 p-1 animate-gradient-border">
                     <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
@@ -157,96 +166,99 @@ const Navbar = () => {
                     </div>
                   </div>
                 </div>
-              
-                  {/* ✅ SHOW DASHBOARD BASED ON ROLE */}
-                  {userRole === "CREATOR" && (
-                    <Link to="/creator-dashboard">
-                      <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-600">
-                         Dashboard
-                      </button>
-                    </Link>
-                  )}
-                  {userRole === "ADMIN" && (
-                    <Link to="/admin-dashboard">
-                      <button className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
-                        View Admin Dashboard
-                      </button>
-                    </Link>
-                  )}
 
-                  <button onClick={handleLogout} className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
+                {/* ✅ SHOW DASHBOARD BASED ON ROLE */}
+                {userRole === "CREATOR" && (
+                  <Link to="/creator-dashboard">
+                    <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-600">
+                      Dashboard
+                    </button>
+                  </Link>
+                )}
+                {userRole === "ADMIN" && (
+                  <Link to="/admin-dashboard">
+                    <button className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
+                      View Admin Dashboard
+                    </button>
+                  </Link>
+                )}
 
-        {/* ✅ DESKTOP NAVBAR */}
-        <div className="hidden md:flex items-center gap-6 text-gray-800 dark:text-white">        <Link to="/trending" className="hover:text-blue-500 transition">Trending News</Link>
-        <Link to="/popular" className="hover:text-blue-500 transition">Popular</Link>
-          {/* ✅ SHOW DASHBOARD BASED ON ROLE */}
-          {userRole === "CREATOR" && (
-            <Link to="/creator-dashboard" className="hover:text-blue-500 transition font-bold">
-                              Dashboard
-            </Link>
-          )}
-          {userRole === "ADMIN" && (
-            <Link to="/admin-dashboard">
-              <button className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
-                View Admin Dashboard
-              </button>
-            </Link>
-          )}
-
-          {/* ✅ SHOW LOGIN/REGISTER OR USER MENU */}
-          {!user ? (
-            <>
-              <button onClick={handleRegisterClick} className="py-2 px-4 bg-red-600 text-white rounded-md">
-                Register
-              </button>
-              <button onClick={handleLoginClick} className="py-2 px-4 bg-blue-600 text-white rounded-md">
-                Login
-              </button>
-            </>
-          ) : (
-            <div className="flex items-center gap-4">
-              
-              {/* ✅ PROFILE IMAGE */}
-              <img
-                    src={`${user.blogProfile || user.adminProfile || user.img || DefaultAvatar}?t=${new Date().getTime()}`}
-                    alt="Profile"
-                className="w-10 h-10 rounded-full cursor-pointer"
-                onClick={handleProfileClick}
-              />
-              <button onClick={handleLogout} className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ✅ ROLE SELECTION POPUP */}
-      {showRolePopup && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white dark:bg-gray-900 p-6 rounded-lg w-96 shadow-xl">
-            <h2 className="text-xl font-bold text-center text-gray-900 dark:text-white">
-              Select Your Role
-            </h2>
-            <div className="flex justify-around mt-4">
-              <button onClick={() => handleRoleSelection("USER")} className="py-2 px-4 bg-green-500 text-white rounded-md">
-                USER
-              </button>
-              <button onClick={() => handleRoleSelection("CREATOR")} className="py-2 px-4 bg-purple-500 text-white rounded-md">
-                CREATOR
-              </button>
-            </div>
+                <button onClick={handleLogout} className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
+        </>
+      )}
+    </div>
+
+    {/* ✅ DESKTOP NAVBAR */}
+    <div className="hidden md:flex items-center gap-6 text-gray-800 dark:text-white">
+      <Link to="/trending" className="hover:text-blue-500 transition">Trending News</Link>
+      <Link to="/popular" className="hover:text-blue-500 transition">Popular</Link>
+
+      {/* ✅ SHOW DASHBOARD BASED ON ROLE */}
+      {userRole === "CREATOR" && (
+        <Link to="/creator-dashboard" className="hover:text-blue-500 transition font-bold">
+          Dashboard
+        </Link>
+      )}
+      {userRole === "ADMIN" && (
+        <Link to="/admin-dashboard">
+          <button className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
+            View Admin Dashboard
+          </button>
+        </Link>
+      )}
+
+      {/* ✅ SHOW LOGIN/REGISTER OR USER MENU */}
+      {!user ? (
+        <>
+          <button onClick={handleRegisterClick} className="py-2 px-4 bg-red-600 text-white rounded-md">
+            Register
+          </button>
+          <button onClick={handleLoginClick} className="py-2 px-4 bg-blue-600 text-white rounded-md">
+            Login
+          </button>
+        </>
+      ) : (
+        <div className="flex items-center gap-4">
+          {/* ✅ PROFILE IMAGE */}
+          <img
+            src={`${user.blogProfile || user.adminProfile || user.img || DefaultAvatar}?t=${new Date().getTime()}`}
+            alt="Profile"
+            className="w-10 h-10 rounded-full cursor-pointer"
+            onClick={handleProfileClick}
+          />
+          <button onClick={handleLogout} className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
+            Logout
+          </button>
         </div>
       )}
-    </>
+    </div>
+  </div>
+
+  {/* ✅ ROLE SELECTION POPUP */}
+  {showRolePopup && (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-lg w-96 shadow-xl">
+        <h2 className="text-xl font-bold text-center text-gray-900 dark:text-white">
+          Select Your Role
+        </h2>
+        <div className="flex justify-around mt-4">
+          <button onClick={() => handleRoleSelection("USER")} className="py-2 px-4 bg-green-500 text-white rounded-md">
+            USER
+          </button>
+          <button onClick={() => handleRoleSelection("CREATOR")} className="py-2 px-4 bg-purple-500 text-white rounded-md">
+            CREATOR
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
+</>
+
   );
 };
 

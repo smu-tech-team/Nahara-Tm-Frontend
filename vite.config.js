@@ -7,7 +7,6 @@ dotenv.config();
 export default defineConfig({
   plugins: [react()],
   define: {
-    
   },
   server: {
     headers: {
@@ -15,6 +14,13 @@ export default defineConfig({
     },
     hmr: {
       overlay: false,
+    },
+    proxy: {
+      '/api': {
+        target: 'https://api.soccersapi.com', 
+        changeOrigin: true, 
+        rewrite: (path) => path.replace(/^\/api/, ''), 
+      },
     },
   },
   optimizeDeps: {

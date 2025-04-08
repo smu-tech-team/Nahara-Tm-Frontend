@@ -31,14 +31,18 @@ const PostList = () => {
     const loadMorePosts = useCallback(async (newPage) => {
         try {
             console.log("Loading posts for page:", newPage);
-            const data = await fetchPosts({ page: newPage, size: pageSize, searchParams });
+            
+            // Simulate delay with setTimeout
+            setTimeout(async () => {
+                const data = await fetchPosts({ page: newPage, size: pageSize, searchParams });
 
-            if (data.length < pageSize) {
-                setHasMore(false);
-            }
+                if (data.length < pageSize) {
+                    setHasMore(false);
+                }
 
-            setPosts((prevPosts) => (newPage === 0 ? data : [...prevPosts, ...data]));
-            setPage(newPage + 1); // Fix: Increment page correctly
+                setPosts((prevPosts) => (newPage === 0 ? data : [...prevPosts, ...data]));
+                setPage(newPage + 1); // Increment page correctly
+            }, 600); // Artificial delay of 1.5 seconds
         } catch (error) {
             console.error("Error fetching posts:", error);
         }

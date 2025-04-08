@@ -81,11 +81,20 @@ const MainCategories = () => {
                     Politice
                 </Link>
                 <Link
-                    to="/posts?cat=betting-tips"
-                    className="hover:bg-blue-800 hover:text-white rounded-full px-4 py-2"
-                >
-                    Betting Tips
-                </Link>
+                    to="/live-scores"
+                    className="group relative inline-flex items-center px-6 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-black font-semibold shadow-lg transition-all duration-300 hover:bg-blue-800 hover:text-white"
+                    >
+                    <span className="flex items-center gap-3">
+                        <span className="text-base">LIVE SCORES</span>
+
+                        {/* Blinking red dot */}
+                        <span className="relative flex items-center justify-center">
+                        <span className="absolute animate-pulse-smooth h-4 w-4 rounded-full bg-red-600 shadow-md"></span>
+                        <span className="relative h-3 w-3 rounded-full bg-red-600 border-2 border-white shadow-md"></span>
+                        </span>
+
+                    </span>
+                    </Link>
                 <Link
                     to="/posts?cat=hot-gist"
                     className="hover:bg-blue-800 hover:text-white rounded-full px-4 py-2"

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import ThemeToggle from "../components/ThemeToggle";
 import CookieConsent from "../components/Cookies";
@@ -8,9 +7,12 @@ import FloatingVideo from "../components/FloatingVideo.jsx";
 import { ToastContainer } from "react-toastify";
 import AppDownloadPopup from "../components/AppDownloadPopup ";
 import NotificationSubscriptionPopup from "../components/NotificationSubscriptionPopup ";
-// import { initializeOneSignal } from "../store/OneSignalSetup.js";
 import SecureBanner from "../components/SecureBanner";
-// import setupAuthListener from "../store/authService"; // Adjust path as needed
+import TopButton from "../components/TopButton";
+import Navbar from "../components/Navbar";
+import { UIProvider } from "../components/UIProvider "; // Import UIContext
+
+
 
 
 const MainLayout = () => {
@@ -25,8 +27,11 @@ const MainLayout = () => {
   
   return (
     <div className="px-4 md:px-8 lg:px-16 lx:px-32 2xl:px-64">
-      <Navbar />
-
+      <UIProvider>
+       <Navbar />
+      </UIProvider>
+       
+      
       <SecureBanner/>
 
       <Outlet />
@@ -44,6 +49,7 @@ const MainLayout = () => {
       <NotificationSubscriptionPopup />
 
       <ToastContainer />
+      <TopButton/>
     </div>
   );
 };

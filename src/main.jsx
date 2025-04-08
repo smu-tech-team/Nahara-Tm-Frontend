@@ -36,6 +36,7 @@ import Newsletters from './components/Newsletters'
 import RecentLiveNews from './components/RecentLiveNews'
 import ResetPassword from './route/ResetPassword'
 import UserResetPassword from './route/UserRestPassword'
+import LiveScores from './components/LiveScore'
 
 
 
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
      {
       path: "/ads",
       element: <AdvertiseWithUs/>
+     },
+     {
+      path: "/live-scores",
+      element: <LiveScores/>
      },
     
      {
