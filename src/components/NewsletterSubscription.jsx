@@ -123,7 +123,7 @@ const NewsletterSubscription = () => {
             <label className="block text-sm font-medium">Name</label>
             <input
               type="text"
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-black dark:text-white dark:bg-gray-700"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-800 focus:outline-none text-black dark:text-white dark:bg-gray-700"
               value={subscriptionData.name}
               onChange={(e) =>
                 setSubscriptionData({
@@ -138,7 +138,7 @@ const NewsletterSubscription = () => {
             <label className="block text-sm font-medium">Email</label>
             <input
               type="email"
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 text-black dark:text-white focus:outline-none dark:bg-gray-700"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-800 text-black dark:text-white focus:outline-none dark:bg-gray-700"
               value={subscriptionData.email}
               onChange={(e) =>
                 setSubscriptionData({
@@ -153,7 +153,7 @@ const NewsletterSubscription = () => {
             <label className="block text-sm font-medium">Preferences</label>
             <input
               type="text"
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-black dark:text-white dark:bg-gray-700"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-800 focus:outline-none text-black dark:text-white dark:bg-gray-700"
               placeholder="E.g., Sports, Tech, Business"
               value={subscriptionData.preferences}
               onChange={(e) =>
@@ -166,7 +166,7 @@ const NewsletterSubscription = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-3 rounded-md hover:bg-blue-600 transition"
+            className="w-full bg-blue-800 text-white py-2 px-3 rounded-md hover:bg-blue-800 transition"
             disabled={loading}
           >
             {loading ? "Subscribing..." : "Subscribe"}

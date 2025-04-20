@@ -74,7 +74,6 @@ const UserProfileCard = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
-        {/* Profile Info */}
         <div className="flex items-center gap-6 border-b pb-4">
           <div className="w-40 h-40 rounded-full bg-gradient-to-tr from-purple-500 to-green-400 p-1">
             <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
@@ -90,7 +89,6 @@ const UserProfileCard = () => {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="flex justify-between mt-4 text-center">
           <div>
             <h4 className="text-lg font-bold bg-white text-gray-900 p-2 rounded">{savedPosts.length}</h4>
@@ -102,9 +100,7 @@ const UserProfileCard = () => {
           </div>
         </div>
 
-        {/* Saved Posts & Followed Creators */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
-          {/* Saved Posts */}
           <div className="bg-white rounded-lg shadow-lg p-4">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Saved Posts</h3>
             <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">

@@ -188,7 +188,7 @@ const RecentLiveNews = () => {
               className={`px-4 py-2 rounded-md ${
                 currentPage === 1
                   ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                  : "bg-blue-500 text-white hover:bg-blue-600"
+                  : "bg-blue-800 text-white hover:bg-blue-600"
               }`}
             >
               Previous
@@ -202,7 +202,7 @@ const RecentLiveNews = () => {
               className={`px-4 py-2 rounded-md ${
                 indexOfLastNews >= liveNewsList.length
                   ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                  : "bg-blue-500 text-white hover:bg-blue-600"
+                  : "bg-blue-800 text-white hover:bg-blue-600"
               }`}
             >
               Next

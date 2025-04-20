@@ -50,7 +50,7 @@ const LiveScores = () => {
     <div className="flex flex-col lg:flex-row bg-gray-900 text-white min-h-screen">
       {/* Main Content */}
       <div className="flex-1 p-4">
-        <h2 className="text-2xl font-bold text-center mb-6">🔴 Live Scores</h2>
+        <h2 className="text-2xl font-bold text-center mb-6"><span className="animate-pulse">🔴</span> Live Scores</h2>
 
         {/* Sports Tabs */}
         <div className="flex justify-start lg:justify-center space-x-4 mb-6 overflow-x-auto scrollbar-hide">

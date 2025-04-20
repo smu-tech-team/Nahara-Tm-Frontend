@@ -15,7 +15,6 @@ const Write = () => {
     const fileInputRef = useRef(null);
     const videoFileInputRef = useRef(null);
     const [isEditorLoaded, setIsEditorLoaded] = useState(false);
-    const [sportsSubcategory, setSportsSubcategory] = useState("");
 
         useEffect(() => {
     setIsEditorLoaded(true);
@@ -297,8 +296,7 @@ const handleVideoUpload = (event) => {
                 {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
 
                 <div className="flex flex-col gap-4">
-                        {/* Main Category Dropdown */}
-                                                <label className="text-sm font-medium mb-1 text-gray-800 dark:text-white">Choose a category</label> 
+                        <label className="text-sm font-medium mb-1 text-gray-800 dark:text-white">Choose a category</label> 
                         <select value={category} onChange={handleCategoryChange} className="p-2 border border-gray-300 shadow-sm rounded-xl text-gray-900 dark:text-white dark:bg-gray-800" > 
                         <option value="general">General</option> 
                         <option value="sports-news">Sports News</option>
@@ -355,7 +353,7 @@ const handleVideoUpload = (event) => {
                 {errors.content && <p className="text-red-500 text-sm">{errors.content}</p>}
                                {/* Video Section */}
                                <div className="flex items-center gap-4">
-                                <button type="button" onClick={handleAddVideoLink} className="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm">
+                                <button type="button" onClick={handleAddVideoLink} className="bg-blue-800 text-white px-3 py-1 rounded-lg text-sm">
                                     + Add Video Link
                                 </button>
 

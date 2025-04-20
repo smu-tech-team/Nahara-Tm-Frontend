@@ -23,7 +23,7 @@ const PostCard = ({ post, isLoading }) => {
         >
           {post.title}
           {post.isFeatured && (
-            <span className="text-xs text-white bg-blue-500 rounded-full px-2 py-1 ml-2">
+            <span className="text-xs text-white bg-blue-800 rounded-full px-2 py-1 ml-2">
               Featured
             </span>
           )}

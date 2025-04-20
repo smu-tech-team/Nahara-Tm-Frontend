@@ -27,7 +27,7 @@ const FollowCreatorButton = ({ post }) => {
     return (
       <button
         onClick={handleFollow}
-        className="px-6 py-3 text-sm font-medium text-white bg-blue-500 rounded-lg shadow-lg hover:bg-blue-600 transition-transform transform hover:scale-105 active:scale-95 focus:outline-none focus:ring focus:ring-blue-300"
+        className="px-6 py-3 text-sm font-medium text-white bg-blue-800 rounded-lg shadow-lg hover:bg-blue-600 transition-transform transform hover:scale-105 active:scale-95 focus:outline-none focus:ring focus:ring-blue-300"
       >
         Follow Creator
       </button>

@@ -111,7 +111,7 @@ const LockEarnings = ({ onClose }) => {
           {/* Lock Button */}
           <button
             className={`w-full px-4 py-2 mt-4 text-white rounded-lg ${
-              lockExpiry ? "bg-gray-500 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+              lockExpiry ? "bg-gray-500 cursor-not-allowed" : "bg-blue-800 hover:bg-blue-600"
             }`}
             onClick={lockEarnings}
             disabled={!!lockExpiry}
@@ -122,7 +122,7 @@ const LockEarnings = ({ onClose }) => {
           {/* Countdown Modal Trigger */}
           {lockExpiry && (
             <button
-              className="w-full mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              className="w-full mt-2 px-4 py-2 bg-blue-800 text-white rounded-lg hover:bg-blue-600"
               onClick={() => setShowCountdownModal(true)}
             >
               Show Countdown Timer

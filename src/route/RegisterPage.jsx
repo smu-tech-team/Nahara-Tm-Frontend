@@ -67,7 +67,7 @@ const Register = () => {
               id="userName"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black focus:ring-blue-800 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             />
           </div>
           <div className="mb-4">
@@ -88,7 +88,7 @@ const Register = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none text-black flex items-center focus:ring-2
-               focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+               focus:ring-blue-800 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             />
             <button
               type="button"
@@ -104,14 +104,14 @@ const Register = () => {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black focus:ring-blue-800 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             >
               <option value="Reader">USER</option>
             </select>
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out"
+            className="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out"
             disabled={isLoading}
           >
             {isLoading ? (

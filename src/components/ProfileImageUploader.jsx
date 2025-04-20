@@ -96,7 +96,7 @@ const ProfileUpdater = () => {
         <input type="file" accept="image/*" className="hidden" id="fileInput" onChange={handleFileChange} />
         <label
           htmlFor="fileInput"
-          className="mt-6 w-full px-6 py-3 bg-blue-600 text-white text-base sm:text-lg font-semibold text-center rounded-lg cursor-pointer hover:bg-blue-700 transition"
+          className="mt-6 w-full px-6 py-3 bg-blue-800 text-white text-base sm:text-lg font-semibold text-center rounded-lg cursor-pointer hover:bg-blue-700 transition"
         >
           Choose Image
         </label>
@@ -126,7 +126,7 @@ const ProfileUpdater = () => {
           onClick={handleEmailUpdate}
           disabled={loading || !email}
           className={`mt-4 w-full px-6 py-3 text-base sm:text-lg font-semibold text-white rounded-lg transition ${
-            loading || !email ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"
+            loading || !email ? "bg-gray-400 cursor-not-allowed" : "bg-indigo-800 hover:bg-indigo-700"
           }`}
         >
           {loading ? "Updating..." : "Update Email"}

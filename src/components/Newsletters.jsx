@@ -19,7 +19,7 @@ function Newsletters() {
             <div key={newsletter.id} className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
               <h2 className="text-xl font-bold mb-2">{newsletter.title}</h2>
               <p className="text-sm text-gray-500 mb-4">{newsletter.date}</p>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+              <button className="bg-blue-800 text-white px-4 py-2 rounded-md hover:bg-blue-800">
                 Read More
               </button>
             </div>

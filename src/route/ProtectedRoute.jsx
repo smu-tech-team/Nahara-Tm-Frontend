@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
         }
 
         // Use userId instead of creatorId
-        if (decodedToken.roles?.includes("CREATOR") && decodedToken.userId) {
+        if (decodedToken.roles?.includes("CREATOR") && decodedToken.userId ) {
           setCreatorId(decodedToken.userId);
         } else {
           console.error("User is not a creator or userId is missing!");

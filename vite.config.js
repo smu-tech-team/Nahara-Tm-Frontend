@@ -1,12 +1,14 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import dotenv from 'dotenv';
+import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
 dotenv.config();
 
 export default defineConfig({
   plugins: [react()],
   define: {
+    global: 'globalThis',
   },
   server: {
     headers: {
@@ -24,6 +26,16 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ["react-quill"], 
+    include: ["react-quill"],
+    esbuildOptions: {
+      define: {
+        global: 'globalThis',
+      },
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          buffer: true,  
+        }),
+      ],
+    },
   },
 });

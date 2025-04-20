@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -15,6 +15,7 @@ const CreatorRegister = () => {
   const [showPopup, setShowPopup] = useState(true);
   const [agreed, setAgreed] = useState(false);
   const navigate = useNavigate();
+
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -87,7 +88,7 @@ const CreatorRegister = () => {
       </label>
       <button
         className={`mt-6 w-full py-2 sm:py-3 text-sm sm:text-lg rounded-lg text-white font-semibold transition ${
-          agreed ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-400 cursor-not-allowed"
+          agreed ? "bg-blue-800 hover:bg-blue-600" : "bg-gray-400 cursor-not-allowed"
         }`}
         onClick={() => agreed && setShowPopup(false)}
         disabled={!agreed}
@@ -146,15 +147,14 @@ const CreatorRegister = () => {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-800 dark:bg-gray-700 dark:text-white dark:border-gray-600"
             >
               <option value="CREATOR">Creator</option>
-              {/* Add other roles here if needed */}
             </select>
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out"
+            className="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -166,8 +166,29 @@ const CreatorRegister = () => {
               "Register"
             )}
           </button>
+          <div className="flex items-center mt-2 mb-4">
+        <input
+          type="checkbox"
+          checked={agreed}
+          onChange={(e) => setAgreed(e.target.checked)}
+          className="mr-2 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+        />
+        <label className="text-sm text-gray-700 dark:text-gray-300">
+          I agree to the{' '}
+          <Link
+            to="/termsAndConditions"
+            className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+            target="_blank"
+          >
+            Terms and Conditions
+          </Link>
+        </label>
+      </div>
+
+
         </form>
       </div>
+      
     </div>
   );
 };

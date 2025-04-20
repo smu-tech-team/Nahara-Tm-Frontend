@@ -64,19 +64,17 @@ const AddYourLiveNews = ({ onClose }) => {
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-      onClick={onClose} // Close modal when clicking outside
+      onClick={onClose} 
     >
       <div
         className="bg-white rounded-lg shadow-lg p-6 max-w-sm sm:max-w-md w-full relative"
-        onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
+        onClick={(e) => e.stopPropagation()} 
       >
-        {/* Modal Header */}
         <div className="text-center mb-4">
           <h1 className="text-2xl font-bold text-blue-600">Add Your Live News</h1>
           <p className="text-sm text-gray-600">Share a live video link with your audience!</p>
         </div>
 
-        {/* Video Link Input */}
         <input
           type="text"
           placeholder="Enter video link (YouTube, Twitch, Facebook, etc.)"
@@ -100,7 +98,7 @@ const AddYourLiveNews = ({ onClose }) => {
         <div className="mt-6 flex justify-between">
           <button
             onClick={handleAddNews}
-            className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition"
+            className="bg-blue-800 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition"
             disabled={!isValidLink}
           >
             Add News

@@ -37,6 +37,25 @@ import RecentLiveNews from './components/RecentLiveNews'
 import ResetPassword from './route/ResetPassword'
 import UserResetPassword from './route/UserRestPassword'
 import LiveScores from './components/LiveScore'
+import TermsAndConditions from './components/TermsAndConditions '
+import EditorialStandard from './components/EditorialStandard'
+import WritingStyleGuide from './components/WritingStyleGuide'
+import AdminRegistrationForm from './components/AdminRegistration'
+import AdminLoginForm from './route/LoginAdmin'
+import AdminDashboard from './components/AdminDashboard'
+import AdminMessageForm from './components/AdminMessageForm'
+import MusicPlayer from './components/MusicPlayer'
+import UploadPodcast from './podcast/UploadPodcast';
+import LandingPage from './podcast/LandingPage';
+import PodcastExplorer from './podcast/App';
+import EpisodePage from './podcast/EpisodePage';
+import PodcastUploaderWrapper from './podcast/PodcastUploaderWrapper'
+import VerificationSuccess from './route/VerificationSuccess'
+import VerificationFailed from './route/VerificationFailed'
+
+
+
+
 
 
 
@@ -81,6 +100,10 @@ const router = createBrowserRouter([
       element: <UserProfileCard/>
      },
      {
+      path: "/admin-dashboard/management/message",
+      element: <AdminMessageForm/>
+     },
+     {
       path: "/profile",
       element: <ProfileImageUploader/>
      },
@@ -92,6 +115,15 @@ const router = createBrowserRouter([
       path: "/register/creator",
       element: <RegisterCreator/>
      },
+     {
+      path: "/register/admin",
+      element: <AdminRegistrationForm/>
+     },
+     {
+      path: "/login/admin",
+      element: <AdminLoginForm/>
+     },
+    
      {
       path: "/contact",
       element: <Contact/>
@@ -112,7 +144,18 @@ const router = createBrowserRouter([
       path: "/live-scores",
       element: <LiveScores/>
      },
-    
+     {
+      path: "/termsAndConditions",
+      element: <TermsAndConditions/>
+     },
+     {
+      path: "/editorial-standard",
+      element: <EditorialStandard/>
+     },
+     {
+      path: "/writing-style-guide",
+      element: <WritingStyleGuide/>
+     },
      {
       path: "/ads",
       element: <Newsletters/>
@@ -137,8 +180,23 @@ const router = createBrowserRouter([
      {
        path: "/creator-website" ,
        element: <CreatorWebsite />
-
-
+     },
+     {
+     path: "/podcasts",
+      element: <LandingPage />
+     },
+     {
+       path:"/explore", 
+       element: <PodcastExplorer />
+     },
+     {
+      path: "/start-podcast",
+       element: <PodcastUploaderWrapper/>
+     },
+     {
+    path: "/episode/:id",
+     element: <EpisodePage />
+      
      },
      {
       path: "/reset-password",
@@ -149,11 +207,39 @@ const router = createBrowserRouter([
       element: <UserResetPassword/>
      },
      {
-      path: "/creator-dashboard",
+      path: "/stream-songs",
+      element: <MusicPlayer/>
+     },
+     {
+      path: "/admin/messages/:creatorId",
+      element: <AdminMessageForm />
+     },
+     {
+      path: "/admin-dashboard/management",
+      element: <AdminDashboard/>
+     },
+     {
+       path: "/verify-success",
+        element: <VerificationSuccess /> 
+     },
+     {
+      path: "/verify-failed", 
+      element: <VerificationFailed />
+    },
+    {
+      path: "/upload-podcast",
       element: (
         <ProtectedRoute>
-          <CreatorDashboard/>
-         </ProtectedRoute>
+          <UploadPodcast />
+        </ProtectedRoute>
+      )
+    }, 
+     {
+      path: "/creator-dashboard",
+      element: (
+        <ProtectedRoute >
+            <CreatorDashboard />
+          </ProtectedRoute>
       ),
     },
   ],

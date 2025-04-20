@@ -8,24 +8,18 @@ const AppDownloadPopup = () => {
 
   useEffect(() => {
     const showPopup = () => {
-      const lastSeen = localStorage.getItem("lastPopupSeen");
-      const now = Date.now();
-
-      // Show popup if not dismissed within the last 50 seconds
-      if (!lastSeen || now - parseInt(lastSeen, 10) > 50000) {
-        setIsVisible(true);
+      const popupShown = localStorage.getItem("popupShown"); // Check if popup was already shown
+      if (!popupShown) {
+        setIsVisible(true); // Show popup if not previously shown
+        localStorage.setItem("popupShown", "true"); // Mark popup as shown
       }
     };
 
-    showPopup(); // Initial check
-    const interval = setInterval(showPopup, 50000); // Check every 50 seconds
-
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    showPopup(); // Initial check on component mount
   }, []);
 
   const handleDismiss = () => {
-    setIsVisible(false);
-    localStorage.setItem("lastPopupSeen", Date.now()); // Save the dismissal time
+    setIsVisible(false); // Close the popup when dismissed
   };
 
   return (

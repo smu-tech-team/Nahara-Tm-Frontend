@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from "react";
 const UIContext = createContext();
 
 export const UIProvider = ({ children }) => {
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false); // Shared navbar state
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false); // Shared navbar statez
 
   return (
     <UIContext.Provider value={{ isNavbarOpen, setIsNavbarOpen }}>

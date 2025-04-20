@@ -10,7 +10,6 @@ export default function CreatorWebsite() {
 
     return (
         <div className="w-full h-screen bg-gray-50 flex flex-col">
-            {/* Top Navbar */}
             <div className="bg-white shadow-md px-6 py-3 flex items-center justify-between sticky top-0 z-50">
                 <button 
                     onClick={() => navigate(-1)} 
@@ -20,10 +19,8 @@ export default function CreatorWebsite() {
                     <span className="font-medium">Back to App</span>
                 </button>
                 <h1 className="text-lg font-semibold text-gray-800">Creator&apos;s Website</h1>
-                <div></div> {/* Placeholder for spacing */}
+                <div></div> 
             </div>
-
-            {/* Iframe Section */}
             <div className="flex-1 flex items-center justify-center">
                 {websiteUrl ? (
                     <>

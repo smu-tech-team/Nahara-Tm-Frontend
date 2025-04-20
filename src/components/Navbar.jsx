@@ -5,16 +5,19 @@ import useAuthStore from "../store/authStore";
 import DefaultAvatar from "/icons8-avatar.gif";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import { useUI } from "../components/UIProvider "; // Import the custom hook
+import { useUI } from "../components/UIProvider "; 
 
-const Navbar = () => {
+const Navbar = ({ refreshTrigger  }) => {
   const [showRolePopup, setShowRolePopup] = useState(false);
   const { user, setUser, clearUser } = useAuthStore();
   const navigate = useNavigate();
-  const { isNavbarOpen, setIsNavbarOpen } = useUI(); // Access shared state
+  const { isNavbarOpen, setIsNavbarOpen } = useUI(); 
    const [profileUpdated, setProfileUpdated] = useState(false);
   const [userRole, setUserRole] = useState(null);
-  
+
+  useEffect(() => {
+    console.log("Navbar refreshed due to trigger:", refreshTrigger);
+  }, [refreshTrigger]);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -23,6 +26,7 @@ const Navbar = () => {
         if (token) {
           const decodedToken = jwtDecode(token);
           const userId = decodedToken.userId;
+          const userName = decodedToken.userName;
           const roles = decodedToken.roles || [];
   
           let endpoint = `http://localhost:8087/api/user/getUser/${userId}`; // Default for normal users
@@ -31,7 +35,7 @@ const Navbar = () => {
             endpoint = `http://localhost:8087/api/user/creator/${userId}`;
             setUserRole("CREATOR");
           } else if (roles.includes("ADMIN")) {
-            endpoint = `http://localhost:8087/api/user/admin/${userId}`;
+            endpoint = `http://localhost:8087/api/user/admin/${userName}`;
             setUserRole("ADMIN");
           } else {
             setUserRole("USER"); // Default role
@@ -52,38 +56,49 @@ const Navbar = () => {
     };
   
     fetchUserProfile();
-  }, [setUser, clearUser, profileUpdated]); // ✅ Ensure `profileUpdated` triggers a refresh
+  }, [setUser, clearUser, profileUpdated]); 
   
     
-  const handleRegisterClick = () => setShowRolePopup(true);
+  const handleRegisterClick = () => {
+    setShowRolePopup(true);
+    setIsNavbarOpen(false); 
+  };
+  
   const handleRoleSelection = (role) => {
     setShowRolePopup(false);
+    setIsNavbarOpen(false); 
     navigate(role === "USER" ? "/register/reader" : "/register/creator");
   };
-
-  const handleLoginClick = () => navigate("/login");
+  
+  const handleLoginClick = () => {
+    setIsNavbarOpen(false); 
+    navigate("/login");
+  };
+  
   const handleProfileClick = async () => {
     console.log("User Role:", userRole);
-  
+    setIsNavbarOpen(false); 
     if (userRole === "CREATOR") {
       navigate("/creator-profile");
     } else if (userRole === "ADMIN") {
-      navigate("/admin-profile");
+      navigate("/admin-dashboard/management");
     } else {
       navigate("/user-profile");
     }
+  
   
     try {
       const token = localStorage.getItem("token");
       if (token) {
         const decodedToken = jwtDecode(token);
+        const userName = decodedToken.userName;
         const userId = decodedToken.userId;
   
         let endpoint = ` http://localhost:8087/api/user/getUser/${userId}`;
         if (userRole === "CREATOR") {
           endpoint = `http://localhost:8087/api/user/creator/${userId}`;
         } else if (userRole === "ADMIN") {
-          endpoint = ` http://localhost:8087/api/user/admin/${userId}`;
+          endpoint = ` http://localhost:8087/api/user/admin/${userName}`;
         }
   
         const response = await axios.get(endpoint, {
@@ -98,26 +113,43 @@ const Navbar = () => {
     }
   };
   
-  const handleLogout = () => {
-    clearUser();
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+  const handleLogout = async () => {
+    try {
+        setIsNavbarOpen(false);
+        const token = localStorage.getItem("token");
+        if (token) {
+            await axios.post(
+                " http://localhost:8087/api/user/logout", 
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+        }
+
+        clearUser();
+        localStorage.removeItem("token");
+        navigate("/login");
+    } catch (error) {
+        console.error("Failed to log out from the backend:", error.response?.data || error.message);
+    }
+};
+
 
   return (
     <>
 <div className="w-full h-16 flex items-center justify-between bg-white dark:bg-black  rounded-lg px-4 md:px-8 border-b border-gray-300 dark:border-gray-700 sticky top-0 z-50">
-{/* ✅ LOGO */}
     <Link to="/" className="flex items-center gap-4 text-2xl font-bold">
       <img src={Logo} className="w-16 h-16" alt="SMUTV Logo" />
-      <span className="text-gray-800 dark:text-white">SMUTV.</span>
+      <span className="text-gray-800 dark:text-white">NAHARA</span>
     </Link>
 
-    {/* ✅ MOBILE MENU */}
     <div className="md:hidden">
         <div
           className="cursor-pointer text-gray-800 dark:text-white text-4xl"
-          onClick={() => setIsNavbarOpen(!isNavbarOpen)} // Toggle navbar state
+          onClick={() => setIsNavbarOpen(!isNavbarOpen)} 
         >
           {isNavbarOpen ? "✖" : "☰"}
         </div>
@@ -125,22 +157,22 @@ const Navbar = () => {
           <>
             <div
               className="fixed inset-0 bg-black bg-opacity-50 z-40"
-              onClick={() => setIsNavbarOpen(false)} // Close on click
+              onClick={() => setIsNavbarOpen(false)} 
             ></div>
 
-            {/* Mobile Menu */}
             <div className="w-full h-screen flex flex-col items-center gap-6 text-lg font-medium justify-center fixed top-16 left-0 bg-gray-500 dark:bg-slate-600 transition-all duration-500 z-50">
               <Link to="/" onClick={() => setIsNavbarOpen(false)}>Home</Link>
               <Link to="/trending" onClick={() => setIsNavbarOpen(false)}>Trending News</Link>
               <Link to="/popular" onClick={() => setIsNavbarOpen(false)}>Most Popular</Link>
+                <Link to="/stream-songs" onClick={() => setIsNavbarOpen(false)} className="bg-blue-800 text-white py-2 px-4  rounded-md text-sm font-medium shadow-md hover:bg-blue-900 hover:scale-105 transition-transform duration-300 ease-in-out"> Listen Songs
+                    </Link> 
               <Link to="/live-scores" className="font-bold border py-2 px-4 rounded-3xl bg-white text-black hover:bg-red-400" 
               onClick={() => setIsNavbarOpen(false)}><sapn className="animate-pulse">🔴</sapn>Live Scores</Link>
-            {/* ✅ Show Register & Login If No User */}
             {!user ? (
               <>
                 <button 
                   onClick={handleLoginClick} 
-                  className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-600"
+                  className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-800"
                 >
                   Login 👋
                 </button>
@@ -153,7 +185,6 @@ const Navbar = () => {
               </>
             ) : (
               <div className="flex flex-col items-center gap-3">
-                {/* ✅ Profile Image with Stylish Frame */}
                 <div className="relative w-16 h-16">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-400 via-green-400 to-pink-500 p-1 animate-gradient-border">
                     <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
@@ -166,18 +197,16 @@ const Navbar = () => {
                     </div>
                   </div>
                 </div>
-
-                {/* ✅ SHOW DASHBOARD BASED ON ROLE */}
                 {userRole === "CREATOR" && (
-                  <Link to="/creator-dashboard">
-                    <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-600">
+                  <Link to="/creator-dashboard" onClick={() => setIsNavbarOpen(false)}>
+                    <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-800">
                       Dashboard
                     </button>
                   </Link>
                 )}
                 {userRole === "ADMIN" && (
-                  <Link to="/admin-dashboard">
-                    <button className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
+                  <Link to="/admin-dashboard/management" onClick={() => setIsNavbarOpen(false)}>
+                    <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-800">
                       View Admin Dashboard
                     </button>
                   </Link>
@@ -192,39 +221,32 @@ const Navbar = () => {
         </>
       )}
     </div>
-
-    {/* ✅ DESKTOP NAVBAR */}
     <div className="hidden md:flex items-center gap-6 text-gray-800 dark:text-white">
       <Link to="/trending" className="hover:text-blue-500 transition">Trending News</Link>
       <Link to="/popular" className="hover:text-blue-500 transition">Popular</Link>
-
-      {/* ✅ SHOW DASHBOARD BASED ON ROLE */}
       {userRole === "CREATOR" && (
         <Link to="/creator-dashboard" className="hover:text-blue-500 transition font-bold">
           Dashboard
         </Link>
       )}
       {userRole === "ADMIN" && (
-        <Link to="/admin-dashboard">
-          <button className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
+        <Link to="/admin-dashboard/management">
+          <button className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-800">
             View Admin Dashboard
           </button>
         </Link>
       )}
-
-      {/* ✅ SHOW LOGIN/REGISTER OR USER MENU */}
       {!user ? (
         <>
           <button onClick={handleRegisterClick} className="py-2 px-4 bg-red-600 text-white rounded-md">
             Register
           </button>
-          <button onClick={handleLoginClick} className="py-2 px-4 bg-blue-600 text-white rounded-md">
+          <button onClick={handleLoginClick} className="py-2 px-4 bg-blue-800 text-white rounded-md">
             Login
           </button>
         </>
       ) : (
         <div className="flex items-center gap-4">
-          {/* ✅ PROFILE IMAGE */}
           <img
             src={`${user.blogProfile || user.adminProfile || user.img || DefaultAvatar}?t=${new Date().getTime()}`}
             alt="Profile"
@@ -239,7 +261,6 @@ const Navbar = () => {
     </div>
   </div>
 
-  {/* ✅ ROLE SELECTION POPUP */}
   {showRolePopup && (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white dark:bg-gray-900 p-6 rounded-lg w-96 shadow-xl">
@@ -250,7 +271,7 @@ const Navbar = () => {
           <button onClick={() => handleRoleSelection("USER")} className="py-2 px-4 bg-green-500 text-white rounded-md">
             USER
           </button>
-          <button onClick={() => handleRoleSelection("CREATOR")} className="py-2 px-4 bg-purple-500 text-white rounded-md">
+          <button onClick={() => handleRoleSelection("CREATOR")} className="py-2 px-4 bg-blue-800 text-white rounded-md">
             CREATOR
           </button>
         </div>

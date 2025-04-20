@@ -9,14 +9,12 @@ const LocationDisplay = () => {
   useEffect(() => {
     const fetchLocation = async () => {
       try {
-        // Fetch user IP & region info
         const ipResponse = await fetch("https://ipinfo.io/json?token=302a6f025bd996");
         const ipData = await ipResponse.json();
-        const userIP = ipData.ip || "127.0.0.1"; // Fallback for local testing
+        const userIP = ipData.ip || "127.0.0.1"; 
 
         console.log("Detected IP:", userIP);
 
-        // Call backend API with IP
         const response = await fetch(`http://localhost:8087/api/geo/location?ip=${userIP}`);
 
         if (!response.ok) {

@@ -73,7 +73,7 @@ const Dashboard = ({ onUpdateUser }) => {
         />
         <input type="file" accept="image/*" onChange={handleImageChange} className="w-full p-2" />
         {preview && <img src={preview} alt="Preview" className="w-20 h-20 rounded-full mx-auto" />}
-        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded" disabled={uploading}>
+        <button type="submit" className="w-full bg-blue-800 text-white p-2 rounded" disabled={uploading}>
           {uploading ? 'Uploading...' : 'Save'}
         </button>
       </form>

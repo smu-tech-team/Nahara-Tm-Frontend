@@ -17,7 +17,7 @@ const LiveNewsIcon = ({ position = 'below' }) => {
             scale: [1, 1.1, 1],
             transition: { duration: 1.2, repeat: Infinity },
           }}
-          className="flex items-center bg-gradient-to-r from-blue-500 to-purple-500 text-white py-1 px-4 rounded-full shadow-lg hover:shadow-xl transition-all w-auto"
+          className="flex items-center bg-gradient-to-r from-blue-800 to-purple-500 text-white py-1 px-4 rounded-full shadow-lg hover:shadow-xl transition-all w-auto"
         >
           <FaRegBell className="mr-2 text-[16px] md:text-[20px] animate-ping" />
           <span className="font-medium text-xs md:text-sm">View Live News</span>
@@ -47,7 +47,7 @@ const LiveNewsIcon = ({ position = 'below' }) => {
             scale: [1, 1.1, 1],
             transition: { duration: 1.2, repeat: Infinity },
           }}
-          className="flex items-center bg-white dark:bg-black from-blue-500 text-white py-1 px-4 rounded-full shadow-lg hover:shadow-xl transition-all w-auto"
+          className="flex items-center bg-white dark:bg-black from-blue-800 text-white py-1 px-4 rounded-full shadow-lg hover:shadow-xl transition-all w-auto"
         >
           <FaRegBell className="mr-2 text-[16px] md:text-[20px] bg-red-600 border text-white dark:text-black  rounded-full animate-ping" />
           <span className="font-medium text-xs md:text-sm text-red-600">View Live News</span>

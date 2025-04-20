@@ -15,7 +15,7 @@ const getFootballTeamsFromLeague = async (leagueId, season) => {
   const cacheKey = `${leagueId}_${season}`;
   if (cache[cacheKey]) {
     console.log('Using cached data for', cacheKey);
-    return cache[cacheKey];  // Return cached data if available
+    return cache[cacheKey]; 
   }
 
   try {
@@ -39,7 +39,7 @@ const getFootballTeamsFromLeague = async (leagueId, season) => {
   } catch (err) {
     console.error('Error fetching teams:', err);
 
-    return [];  // Return empty array on error
+    return []; 
   }
 };
 

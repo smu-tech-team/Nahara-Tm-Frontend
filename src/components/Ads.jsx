@@ -107,7 +107,7 @@ const AdvertiseWithUs = () => {
 
         <button
           type="submit"
-          className="mt-6 w-full bg-blue-500  hover:bg-blue-600 text-white py-2 px-4 rounded flex justify-center items-center"
+          className="mt-6 w-full bg-blue-800  hover:bg-blue-600 text-white py-2 px-4 rounded flex justify-center items-center"
           disabled={loading}
         >
           {loading ? "Sending..." : "Send Inquiry"}

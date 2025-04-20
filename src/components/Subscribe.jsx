@@ -35,7 +35,7 @@ function Subscribe() {
             </label>
             <input
               type="text"
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-800 dark:bg-gray-700 dark:text-white"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
@@ -47,7 +47,7 @@ function Subscribe() {
             </label>
             <input
               type="email"
-              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-800 dark:bg-gray-700 dark:text-white"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
@@ -66,7 +66,7 @@ function Subscribe() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-all"
+            className="w-full bg-blue-800 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-all"
             disabled={loading}
           >
             {loading ? "Subscribing..." : "Subscribe"}

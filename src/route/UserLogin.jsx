@@ -85,9 +85,7 @@ const UserLogin = () => {
       loop 
       muted
     />
-    
-    {/* Overlay to darken the video */}
-    <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0">  <p className="text-green-600 font-semibold flex ml-[50rem] pt-5 items-center gap-2">
+        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0">  <p className="text-green-600 font-semibold flex ml-[50rem] pt-5 items-center gap-2">
          <ShieldCheckIcon size={18} />
        Secure Login Enabled 🔒
         </p></div>
@@ -97,11 +95,11 @@ const UserLogin = () => {
 
       <div className=" bg-transparent p-8 rounded-lg shadow-lg w-full max-w-md transform transition-all duration-300 ease-in-out">
       <div
-        onClick={() => navigate('/')} // Navigates back to the homepage
+        onClick={() => navigate('/')} 
         className="cursor-pointer mx-auto w-fit text-center"
       >
         <img
-          src={HomeLogo} // Replace with the actual logo file path
+          src={HomeLogo}
           alt="Logo"
           className="h-16 w-16 object-contain mx-auto"
         />
@@ -188,7 +186,7 @@ const UserLogin = () => {
                                     {emailError && <p className="text-red-500 text-sm mt-2">{emailError}</p>}
                                     <div className="mt-4 flex justify-end space-x-2">
                                         <button onClick={() => setForgotPassword(false)} className="px-4 py-2 bg-gray-400 text-white rounded">Cancel</button>
-                                        <button onClick={handleForgotPassword} className="px-4 py-2 bg-blue-500 text-white rounded">Submit</button>
+                                        <button onClick={handleForgotPassword} className="px-4 py-2 bg-blue-800 text-white rounded">Submit</button>
                                     </div>
                                 </div>
                             </div>

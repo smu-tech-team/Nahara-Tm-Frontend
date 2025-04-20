@@ -6,7 +6,6 @@ import PostSkeleton from "../components/PostSkeleton";
 import WeatherComponent from "../components/WeatherComponent";
 import NewsletterSubscription from "../components/NewsletterSubscription";
 import React, { useState, useEffect, useRef } from "react";
-import { useUI } from "../components/UIProvider "; // Import the custom hook
 
 
 const FeaturedPost = () => {
@@ -106,7 +105,7 @@ const FeaturedPost = () => {
               </Link>
             </div>
             <span className="text-gray-400">{localTime}</span>
-            <span className="text-green-400 font-bold">{posts[0].views} views</span>
+            <span className="text-green-400 font-bold">{posts[0]?.views} views</span>
           </div>
           <Link
             to={posts[0]?.slug}

@@ -39,9 +39,8 @@ export const fetchLikeCount = async (postId) => {
     }
 };
 
-// Toggle like for a post
 export const toggleLike = async (postId, isLiked) => {
-    const userId = getUserId(); // Ensure user ID is included
+    const userId = getUserId(); 
     const endpoint = `${BASE_URL}/${postId}/${isLiked ? "unlike" : "like"}?userId=${userId}`;
 
     try {

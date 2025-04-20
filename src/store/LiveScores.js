@@ -13,7 +13,7 @@ const fetchLiveScoresForAllSports = async () => {
   };
 
   const allResults = {};
-  const cacheExpirationTime = 3 * 60 * 1000; // Cache expiration time: 5 minutes
+  const cacheExpirationTime = 3 * 60 * 1000; 
 
   await Promise.all(
     Object.entries(SPORTS_ENDPOINTS).map(async ([sport, url]) => {
@@ -35,7 +35,7 @@ const fetchLiveScoresForAllSports = async () => {
           );
         } catch (err) {
           console.error(`Failed to fetch ${sport} scores:`, err.message);
-          allResults[sport] = []; // Fallback in case of error
+          allResults[sport] = []; 
         }
       }
     })

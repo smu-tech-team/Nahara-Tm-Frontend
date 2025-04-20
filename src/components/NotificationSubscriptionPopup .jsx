@@ -70,7 +70,7 @@ const NotificationSubscriptionPopup = () => {
             <div className="flex items-center gap-4 mt-4">
               <button
                 onClick={handleAccept}
-                className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-300"
+                className="bg-blue-800 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition duration-300"
               >
                 Accept
               </button>

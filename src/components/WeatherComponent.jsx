@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 
-// Function to map weather codes to corresponding emojis
 const getWeatherIcon = (weatherCode) => {
   if (!weatherCode) return "❓";
   const weatherIcons = {
@@ -16,8 +15,6 @@ const getWeatherIcon = (weatherCode) => {
   };
   return weatherIcons[weatherCode] || "❓";
 };
-
-// Animated weather icon function
 const getWeatherAnimation = (weatherCode) => {
   switch (true) {
     case weatherCode >= 200 && weatherCode < 300:
@@ -103,7 +100,7 @@ const WeatherCard = () => {
       <div className="mt-3">
         <label className="block text-sm font-medium mb-2">Select Country:</label>
         <select
-          className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-black dark:bg-gray-300"
+          className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-800 focus:outline-none text-black dark:bg-gray-300"
           value={selectedCountry}
           onChange={(e) => setSelectedCountry(e.target.value)}
         >
@@ -120,7 +117,6 @@ const WeatherCard = () => {
       ) : weather ? (
         <div className="text-center mt-4">
           <WeatherIcon weatherCode={weather.weathercode} />
-          <p className="text-3xl sm:text-2xl">{getWeatherIcon(weather.weathercode)}</p>
           <p className="text-xl sm:text-lg font-bold">{weather.temperature}°C</p>
           <p className="text-gray-300 text-sm">Condition: {weather.condition}</p>
           <p className="text-gray-400 text-sm">Humidity: {weather.humidity}%</p>

@@ -107,7 +107,7 @@ const AddFavoriteTeam = () => {
                   </button>
                 ) : (
                   <button
-                    className="bg-blue-600 text-sm px-2 py-1 rounded-md hover:bg-blue-700"
+                    className="bg-blue-800 text-sm px-2 py-1 rounded-md hover:bg-blue-700"
                     onClick={() => onAddFavorite(team)}
                   >
                     Add
@@ -159,7 +159,7 @@ const AddFavoriteTeam = () => {
                 </div>
                 <div className="flex gap-2">
                   <button
-                    className="bg-blue-600 text-sm px-2 py-1 rounded-md hover:bg-blue-700"
+                    className="bg-blue-800 text-sm px-2 py-1 rounded-md hover:bg-blue-700"
                     onClick={() => handleShowOverview(team)}
                   >
                     Overview

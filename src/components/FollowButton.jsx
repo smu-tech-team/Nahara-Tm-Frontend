@@ -56,7 +56,7 @@ const FollowButton = ({ creatorId, token }) => {
     <button
       onClick={handleFollowToggle}
       className={`mt-4 px-6 py-2 rounded-lg font-semibold ${
-        isFollowing ? "bg-red-600 text-white hover:bg-red-700" : "bg-blue-600 text-white hover:bg-blue-700"
+        isFollowing ? "bg-red-600 text-white hover:bg-red-700" : "bg-blue-800 text-white hover:bg-blue-700"
       }`}
       disabled={loadingFollow}
     >

@@ -50,7 +50,7 @@ const LikeButton = ({ postData }) => {
                 onClick={handleLikeToggle}
                 disabled={isLiking}
                 className={`flex items-center gap-2 px-4 py-2 ${
-                    isLiked ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"
+                    isLiked ? "bg-red-500 hover:bg-red-600" : "bg-blue-800 hover:bg-blue-600"
                 } text-white rounded`}
             >
                 {isLiking ? (isLiked ? "Unliking..." : "Liking...") : isLiked ? "★ Unlike" : "★ Like"}

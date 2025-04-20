@@ -4,59 +4,50 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const ReportPost = () => {
-  const [report, setReport] = useState("");
+  const [reason, setReason] = useState("");
   const [contentLink, setContentLink] = useState("");
   const [acknowledged, setAcknowledged] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Ensure user acknowledged guidelines
     if (!acknowledged) {
-      alert("You must acknowledge the guidelines before submitting.");
+      toast.error("You must acknowledge the guidelines before submitting.");
       return;
     }
-
-    // Start loading
     setLoading(true);
 
     try {
-      const token = localStorage.getItem("token"); // Retrieve token
+      const token = localStorage.getItem("token"); 
       if (!token) {
-        alert("You must be logged in to submit a report.");
+        toast.warning("You must be logged in to submit a report.");
         setLoading(false);
         return;
       }
 
-      const data = { contentLink, report }; // Payload for API call
-
+      const data = { contentLink, reason }; // ✅ Reason now matches backend
       const headers = {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Proper string interpolation
+        Authorization: `Bearer ${token}`,
       };
 
-      // Make the API request
       const response = await axios.post(
         "http://localhost:8087/api/user/submit",
         data,
         { headers }
       );
 
-      // Handle success response
       if (response.status === 200) {
-        toast.alert("Report submitted successfully!");
+        toast.success("Report submitted successfully!");
       } else {
-        alert("Failed to submit the report.");
+        toast.error("Failed to submit the report.");
       }
     } catch (error) {
-      // Handle errors
       console.error("Error submitting report:", error);
-      alert("An error occurred. Please try again.");
+      toast.error("An error occurred. Please try again.");
     } finally {
-      // Reset form and stop loading
       setLoading(false);
-      setReport("");
+      setReason("");
       setContentLink("");
       setAcknowledged(false);
     }
@@ -87,9 +78,9 @@ const ReportPost = () => {
         />
         <label className="block mt-4 text-gray-700 dark:text-gray-300">Reason for reporting:</label>
         <textarea
-          className="w-full p-2 border border-gray-300  text-gray-800 dark:border-gray-300  rounded h-32 mt-2"
-          value={report}
-          onChange={(e) => setReport(e.target.value)}
+          className="w-full p-2 border border-gray-300 text-gray-800 dark:border-gray-300 rounded h-32 mt-2"
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
           required
         ></textarea>
         <div className="mt-4 flex items-center">

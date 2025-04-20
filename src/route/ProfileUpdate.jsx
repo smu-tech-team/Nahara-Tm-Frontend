@@ -3,7 +3,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import useAuthStore from "../store/authStore";
 import { motion } from "framer-motion";
-import { FaUserEdit, FaSignOutAlt, FaEnvelope } from "react-icons/fa";
+import { FaUserEdit, FaSignOutAlt, FaKey } from "react-icons/fa";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import OtpPage from "../components/OtpPage"; // Ensure this path is correct
 
 const ProfileUpdate = () => {
   const { user, setUser, clearUser } = useAuthStore();
@@ -15,23 +18,9 @@ const ProfileUpdate = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [otpMode, setOtpMode] = useState(false);
   const [email, setEmail] = useState(user?.email || "");
-  const [emailSuccess, setEmailSuccess] = useState("");
-
-  const handleEmailVerification = async () => {
-    setEmailSuccess("");
-    setError("");
-    try {
-      const response = await axios.post("http://localhost:8087/api/creator/send-verification", {
-        email,
-      });
-      setEmailSuccess("Verification email sent! Check your inbox.");
-      console.log("Verification Link:", response.data);
-    } catch (err) {
-      console.error("Error:", err);
-      setError(err.response?.data || "Failed to send verification email.");
-    }
-  };
+  const [otp, setOtp] = useState("");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -65,11 +54,13 @@ const ProfileUpdate = () => {
       });
 
       setSuccess(response.data.message);
+      toast.success("Profile updated successfully!");
       if (response.data.user) {
         setUser(response.data.user);
       }
     } catch (err) {
       setError(err.response?.data?.message || "An error occurred. Please try again.");
+      toast.error("Profile update failed.");
     } finally {
       setIsLoading(false);
     }
@@ -88,8 +79,22 @@ const ProfileUpdate = () => {
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Logout failed. Please try again.");
+      toast.error("Logout failed.");
     }
   };
+
+  // 🔄 OTP Mode Fullscreen Switch
+  if (otpMode) {
+    return (
+      <OtpPage
+        otp={otp}
+        setOtp={setOtp}
+        email={email}
+        setOtpMode={setOtpMode}
+        setUser={setUser}
+      />
+    );
+  }
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center justify-center min-h-screen px-4">
@@ -100,55 +105,60 @@ const ProfileUpdate = () => {
 
         {error && <div className="text-red-500 mb-2">{error}</div>}
         {success && <div className="text-green-500 mb-2">{success}</div>}
-        {emailSuccess && <div className="text-blue-500 mb-2">{emailSuccess}</div>}
 
         <form onSubmit={handleUpdate} className="space-y-4">
           <div>
-            <label className="block  dark:border-gray-700 text-gray-600">Blog Website</label>
+            <label className="block text-gray-600">Blog Website</label>
             <input
               type="text"
               value={blogWebsite}
               onChange={(e) => setBlogWebsite(e.target.value)}
-              className="w-full border p-2 rounded dark:border-gray-700 text-gray-600"
+              className="w-full border p-2 rounded text-gray-600"
             />
           </div>
 
           <div>
-            <label className="block  dark:border-gray-700 text-gray-600">Blog Description</label>
+            <label className="block text-gray-600">Blog Description</label>
             <textarea
               value={blogDescription}
               onChange={(e) => setBlogDescription(e.target.value)}
               rows="3"
-              className="w-full border p-2 rounded  dark:border-gray-700 text-gray-600"
+              className="w-full border p-2 rounded text-gray-600"
             />
           </div>
 
           <div>
-            <label className="block  dark:border-gray-700 text-gray-600">Email</label>
-            <div className="flex">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="flex-grow border p-2 rounded  dark:border-gray-700 text-gray-600"
-              />
-              <button type="button" onClick={handleEmailVerification} className="ml-2 bg-blue-500 text-white  p-2 rounded">
-                Verify
-              </button>
-            </div>
+            <label className="block text-gray-600">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full border p-2 rounded text-gray-600"
+              disabled={otpMode}  // Disable email input when OTP mode is active
+            />
           </div>
 
           <div>
-            <label className="block   dark:border-gray-700 text-gray-600">Profile Image</label>
-            <input type="file" accept="image/*" onChange={handleFileChange} className="w-full border p-2 rounded  dark:border-gray-700 text-gray-600" />
+            <label className="block text-gray-600">Profile Image</label>
+            <input type="file" accept="image/*" onChange={handleFileChange} className="w-full border p-2 rounded text-gray-600" />
           </div>
 
           {imagePreview && <img src={imagePreview} alt="Preview" className="w-20 h-20 rounded-full mt-2" />}
 
-          <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded" disabled={isLoading}>
+          <button type="submit" className="w-full bg-blue-800 text-white p-2 rounded" disabled={isLoading}>
             {isLoading ? "Updating..." : "Update Profile"}
           </button>
         </form>
+
+        {/* OTP Verification Button */}
+        {!otpMode && (
+          <button
+            onClick={() => setOtpMode(true)}
+            className="w-full mt-4 bg-green-500 text-white p-2 rounded flex items-center justify-center"
+          >
+            <FaKey className="mr-2" /> Verify Email with OTP
+          </button>
+        )}
 
         <button onClick={handleLogout} className="w-full mt-4 bg-red-500 text-white p-2 rounded flex items-center justify-center">
           <FaSignOutAlt className="mr-2" /> Logout

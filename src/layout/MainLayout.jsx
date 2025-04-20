@@ -11,18 +11,27 @@ import SecureBanner from "../components/SecureBanner";
 import TopButton from "../components/TopButton";
 import Navbar from "../components/Navbar";
 import { UIProvider } from "../components/UIProvider "; // Import UIContext
+import useReminderWebSocket from "../store/useReminderWebSocket.js";
+import { useState } from "react";
+import { toast } from "react-toastify";
+
+
 
 
 
 
 const MainLayout = () => {
+  const [reminders, setReminders] = useState([]);
+
   const videoUrl = "https://youtu.be/N3VdeCtd8oY?si=4HKjo7tvVYX5Gv51";
 
-  // // Use useEffect to initialize OneSignal at the top level
-  // useEffect(() => {
-  //   initializeOneSignal(); // Initialize OneSignal on app load
-  //   setupAuthListener();
-  // }, []); // Empty dependency array ensures it only runs once
+  useReminderWebSocket((newReminder) => {
+    toast.info(`⏰ Reminder: ${newReminder.message}`);
+    setReminders(prev => [...prev, newReminder]);
+  });
+   
+  
+  
 
   
   return (

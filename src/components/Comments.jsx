@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import Comment from "../components/Comment";
 import Image from "/anonymous-8291223_1280.webp";
 
-// Function to fetch comments
 const fetchComments = async (postId) => {
   try {
     const response = await axios.get(`http://localhost:8087/api/comments/get-comments/${postId}`);
@@ -16,20 +15,18 @@ const fetchComments = async (postId) => {
   }
 };
 
-const Comments = ({ postId }) => {
-  const [commentText, setCommentText] = useState(""); // State for the input field
-  const [currentPage, setCurrentPage] = useState(1); // State for pagination
-  const commentsPerPage = 7; // Number of comments to show per page
+const Comments = ({ postId, comments }) => {
+  const [commentText, setCommentText] = useState(""); 
+  const [currentPage, setCurrentPage] = useState(1); 
+  const commentsPerPage = 7; 
   const queryClient = useQueryClient();
 
-  // Fetch comments
   const { isLoading, error, data = [] } = useQuery({
     queryKey: ['comments', postId],
     queryFn: () => fetchComments(postId),
-    enabled: !!postId, // Only fetch if postId exists
+    enabled: !!postId, 
   });
 
-  // Add comment mutation
   const mutation = useMutation({
     mutationFn: async (newComment) => {
       const token = localStorage.getItem("token");
@@ -76,14 +73,12 @@ const Comments = ({ postId }) => {
     mutation.mutate({ desc: commentText });
   };
 
-  // Calculate pagination
   const totalComments = data.length;
   const indexOfLastComment = currentPage * commentsPerPage;
   const indexOfFirstComment = indexOfLastComment - commentsPerPage;
-  const currentComments = data.slice(indexOfFirstComment, indexOfLastComment); // Paginated comments
+  const currentComments = data.slice(indexOfFirstComment, indexOfLastComment); 
   const commentsLeft = totalComments - indexOfLastComment;
 
-  // Delete comment mutation
   const deleteMutation = useMutation({
     mutationFn: async (commentId) => {
       if (!commentId) throw new Error("Comment ID is required for deletion.");
@@ -114,14 +109,15 @@ const Comments = ({ postId }) => {
     },
   });
 
-  const handleDelete = (commentId) => {
-    if (!commentId) {
-      console.error("Comment ID is undefined or null");
+  const handleDelete = (postId, commentId) => {
+    if (!commentId || !postId) {
+      console.error("Post ID or Comment ID is missing");
       return;
     }
+    console.log(`Deleting comment with ID: ${commentId} from post with ID: ${postId}`);
     deleteMutation.mutate(commentId);
   };
-  
+
   const handleNextPage = () => {
     if (indexOfLastComment < totalComments) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -141,7 +137,6 @@ const Comments = ({ postId }) => {
     <div className="flex flex-col gap-8 lg:w-3/5 mb-12">
       <h1 className="text-xl text-gray-500 underline pt-3">Comments</h1>
 
-      {/* Comment Form */}
       <form onSubmit={handleSubmit} className="flex items-center gap-4 w-full">
         <input
           type="text"
@@ -160,15 +155,16 @@ const Comments = ({ postId }) => {
         </button>
       </form>
 
-      {/* Comments List */}
       {data.length === 0 ? (
         <p className="text-gray-500">No comments yet. Be the first to comment!</p>
       ) : (
         <div>
          {currentComments.map((comment) => (
                 <Comment
-                    key={comment._id || comment.createdAt} // Fallback to createdAt if _id is missing
-                    _id={comment._id} // Pass the unique ID
+                    key={comment._id || comment.createdAt} 
+                    _id={comment._id}  
+                    postId={postId}  
+                    comments={comments || []}  
                     userImage={comment.userImage}
                     userName={comment.userName}
                     desc={comment.desc}
@@ -178,7 +174,6 @@ const Comments = ({ postId }) => {
                 />
                 ))}
 
-          {/* Pagination */}
           <div className="flex items-center justify-between mt-4">
             <button
               onClick={handlePreviousPage}

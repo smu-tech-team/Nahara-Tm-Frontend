@@ -17,6 +17,7 @@ const CreatorLogin = () => {
   const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
   const [email, setEmail] = useState("");
+  const [refreshNavbar, setRefreshNavbar] = useState(false); // Added state for Navbar refresh
  const [emailError, setEmailError] = useState("");
  const [forgotPassword, setForgotPassword] = useState(false);
  
@@ -58,6 +59,7 @@ const CreatorLogin = () => {
   
       // Token storage (localStorage or cookies)
       localStorage.setItem("token", response.data.token);
+      setRefreshNavbar((prev) => !prev); 
   
       // Remember Me handling
       if (rememberMe) {
@@ -68,8 +70,7 @@ const CreatorLogin = () => {
         localStorage.removeItem("password");
       }
   
-      // Redirect after successful login
-      setTimeout(() => navigate("/"), 2000); // Adjust the redirect time if needed
+      setTimeout(() => navigate("/creator-dashboard"), 2000);
     } catch (error) {
       console.error("Login error:", error);
       if (error.response) {
@@ -91,7 +92,7 @@ const CreatorLogin = () => {
   
       try {
           const response = await axios.get(`http://localhost:8087/api/creator/verify-email`, {
-              params: { email }  // ✅ Send email as a query param
+              params: { email }  
           });
   
           if (response.data.message === "Email exists") {
@@ -108,7 +109,6 @@ const CreatorLogin = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      {/* Background Video */}
       <video
         className="absolute top-0 left-0 w-full h-full object-cover z-0"
         src={BackGroundVideo}
@@ -117,21 +117,19 @@ const CreatorLogin = () => {
         muted
       />
       
-      {/* Overlay to darken the video */}
       <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50 z-0">
         <p className="text-green-600 font-semibold flex ml-[50rem] pt-5 items-center gap-2">
      <ShieldCheck size={18} />
    Secure Login Enabled 🔒
     </p></div>
-      
-
+    
       <div className="  p-8 rounded-lg shadow-lg w-full max-w-md transform transition-all duration-300 ease-in-out">
          <div
-                onClick={() => navigate('/')} // Navigates back to the homepage
+                onClick={() => navigate('/')} 
                 className="cursor-pointer mx-auto w-fit text-center"
               >
                 <img
-                  src={HomeLogo} // Replace with the actual logo file path
+                  src={HomeLogo} 
                   alt="Logo"
                   className="h-16 w-16 object-contain mx-auto"
                 />
@@ -150,7 +148,7 @@ const CreatorLogin = () => {
               id="blogName"
               value={blogName}
               onChange={(e) => setBlogName(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white text-black dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-800 dark:bg-gray-700 dark:text-white text-black dark:border-gray-600"
             />
           </div>
 
@@ -162,7 +160,7 @@ const CreatorLogin = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none flex items-center focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 text-black dark:text-white dark:border-gray-600"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none flex items-center focus:ring-2 focus:ring-blue-800 dark:bg-gray-700 text-black dark:text-white dark:border-gray-600"
             />
             <button
               type="button"
@@ -187,7 +185,7 @@ const CreatorLogin = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out"
+            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-800 transition duration-300 ease-in-out"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -204,7 +202,6 @@ const CreatorLogin = () => {
         <div className="mt-4 text-center">
                     <button onClick={() => setForgotPassword(true)} className="text-blue-500 hover:underline">Forgot Password?</button>
                 </div>
-                {/* Forgot Password Popup */}
                 {forgotPassword && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60">
                         <div className="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -214,12 +211,12 @@ const CreatorLogin = () => {
                                 placeholder="Enter your email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                                className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-800"
                             />
                             {emailError && <p className="text-red-500 text-sm mt-2">{emailError}</p>}
                             <div className="mt-4 flex justify-end space-x-2">
                                 <button onClick={() => setForgotPassword(false)} className="px-4 py-2 bg-gray-400 text-white rounded">Cancel</button>
-                                <button onClick={handleForgotPassword} className="px-4 py-2 bg-blue-500 text-white rounded">Submit</button>
+                                <button onClick={handleForgotPassword} className="px-4 py-2 bg-blue-800 text-white rounded">Submit</button>
                             </div>
                         </div>
                     </div>

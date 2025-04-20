@@ -62,7 +62,6 @@ const UserResetPassword = () => {
         {success && <p className="text-green-500 text-center mb-4">{success}</p>}
 
         <form onSubmit={handleResetPassword}>
-          {/* New Password Input */}
           <div className="mb-6 relative">
             <label className="block text-gray-700 mb-2">New Password:</label>
             <div className="relative">
@@ -81,8 +80,6 @@ const UserResetPassword = () => {
               </button>
             </div>
           </div>
-
-          {/* Confirm Password Input */}
           <div className="mb-6 relative">
             <label className="block text-gray-700 mb-2">Confirm Password:</label>
             <div className="relative">
@@ -90,7 +87,7 @@ const UserResetPassword = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700"
+                className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-800 focus:outline-none text-gray-700"
               />
               <button
                 type="button"
@@ -105,7 +102,7 @@ const UserResetPassword = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-transform duration-300"
+            className="w-full bg-blue-800 text-white py-3 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-transform duration-300"
           >
             Reset Password
           </button>

@@ -5,6 +5,8 @@ import PostList from "../components/PostList";
 import { useEffect, useState } from "react";
 import {jwtDecode} from "jwt-decode"; 
 import LiveNewsIcon from "../route/LiveNewsIcon";
+import PodcastButton from '../route/PodcastButton'; // adjust path as needed
+
 
 const Homepage = () => {
   const [isCreator, setIsCreator] = useState(false);
@@ -106,7 +108,12 @@ const Homepage = () => {
         <span className="text-blue-700 dark:text-blue-500">News and Bets</span>
       </div>
       <div>
-      <LiveNewsIcon/>
+     
+      <section className="flex justify-between items-center px-4 sm:px-8 py-6 sm:py-10 space-x-4">
+      <PodcastButton />
+      <LiveNewsIcon />
+    </section>
+
       <p className="mt-2 text-sm sm:text-base md:text-lg font-semibold text-gray-400  break-words">
   {localDateTime}
 </p>
@@ -118,16 +125,17 @@ const Homepage = () => {
 </div>
 
       <div className="flex items-center justify-between">
+
         <div>
-        <h1 className="text-gray-300 text-xl pb-2 sm:text-2xl md:text-4xl dark:text-black lg:text-5xl font-bold">
+        <h1 className="text-gray-500 text-xl pb-2 sm:text-2xl md:text-4xl dark:text-gray-400 lg:text-5xl font-bold">
           Your partner on legit news
         </h1>
 
-          <p className="font-bold text-gray-300 dark:text-gray-700 hidden sm:block">
+          {/* <p className="font-bold text-gray-300 dark:text-gray-700 hidden sm:block">
             Smart Media Update TV. <br />
             Is part of SMU Sport News<br />
             Your number one place for legit news.
-          </p>
+          </p> */}
 
         </div>
 

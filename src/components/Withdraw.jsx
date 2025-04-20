@@ -55,7 +55,7 @@ const WithdrawEarnings = ({ balance, onClose }) => {
         <div>
           <input
             type="number"
-            className="w-full p-3 border rounded-lg text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border rounded-lg text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-800"
             placeholder="Enter amount"
             value={fullBalance ? balance : amount}
             onChange={(e) => setAmount(e.target.value)}
@@ -67,7 +67,7 @@ const WithdrawEarnings = ({ balance, onClose }) => {
         <label className="flex items-center space-x-2">
           <input
             type="checkbox"
-            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+            className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-800"
             checked={fullBalance}
             onChange={() => setFullBalance(!fullBalance)}
           />
