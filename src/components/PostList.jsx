@@ -19,43 +19,73 @@ const fetchPosts = async ({ page, size, searchParams }) => {
     
     return res.data;
 };
-
 const PostList = () => {
     const [searchParams] = useSearchParams();
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(0);
     const [hasMore, setHasMore] = useState(true);
+    const [isOnline, setIsOnline] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     const pageSize = 10;
 
-    // Use useCallback to prevent function recreation
-    const loadMorePosts = useCallback(async (newPage) => {
-        try {
-            console.log("Loading posts for page:", newPage);
-            
-            // Simulate delay with setTimeout
-            setTimeout(async () => {
-                const data = await fetchPosts({ page: newPage, size: pageSize, searchParams });
+     useEffect(() => {
+    const updateStatus = () => setIsOnline(navigator.onLine);
+    updateStatus(); 
+    window.addEventListener("online", updateStatus);
+    window.addEventListener("offline", updateStatus);
 
-                if (data.length < pageSize) {
-                    setHasMore(false);
-                }
+    return () => {
+      window.removeEventListener("online", updateStatus);
+      window.removeEventListener("offline", updateStatus);
+    };
+  }, []);
 
-                setPosts((prevPosts) => (newPage === 0 ? data : [...prevPosts, ...data]));
-                setPage(newPage + 1); // Increment page correctly
-            }, 600); // Artificial delay of 1.5 seconds
-        } catch (error) {
-            console.error("Error fetching posts:", error);
-        }
-    }, [searchParams]); // Depend only on searchParams to avoid unnecessary re-creation
+ const reloadPosts = async () => {
+  setLoading(true);
+  setError(null);
+  try {
+    setPosts([]);
+    setHasMore(true);
+    setPage(0);
+    await loadMorePosts(0);
+  } catch (err) {
+    setError("Failed to reload posts. Please try again.");
+    console.error("Reload error:", err);
+  } finally {
+    setLoading(false);
+  }
+};
 
-    // Fetch posts on mount & when search params change
+    const loadMorePosts = useCallback(
+  async (newPage) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await fetchPosts({ page: newPage, size: pageSize, searchParams });
+
+      if (data.length < pageSize) {
+        setHasMore(false);
+      }
+      setPosts((prevPosts) => (newPage === 0 ? data : [...prevPosts, ...data]));
+      setPage(newPage + 1);
+    } catch (error) {
+      setError("Failed to fetch posts. Please check your network.");
+      console.error("Error fetching posts:", error);
+    } finally {
+      setLoading(false);
+    }
+  },
+  [searchParams]
+);
+
     useEffect(() => {
-        setPosts([]); // Reset posts when params change
+        setPosts([]); 
         setHasMore(true);
         setPage(0);
         loadMorePosts(0);
-    }, [searchParams, loadMorePosts]); // ✅ Include loadMorePosts
-
+    }, [searchParams, loadMorePosts]); 
     return (
         <InfiniteScroll
             dataLength={posts.length}
@@ -70,15 +100,37 @@ const PostList = () => {
                 ) : null
             }
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {posts.length > 0 ? (
-                    posts.map((post) => <PostListItem key={post._id || post.slug} post={post} />)
-                ) : (
-                    <p className="text-center text-gray-500">No posts found.</p>
-                )}
-                </div>
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {posts.length > 0 ? (
+        posts.map((post) => <PostListItem key={post._id || post.slug} post={post} />)
+      ) : (
+                <div className="col-span-full flex flex-col items-center justify-center py-12">
+        <img
+            src={isOnline ? "/notfound.webp" : "/offline.webp"}
+            alt={isOnline ? "No posts(404)" : "No network"}
+            className="w-64 h-64 object-contain mb-6"
+        />
+        {loading ? (
+            <p className="text-center text-blue-500 font-semibold mb-4 animate-pulse">Loading posts...</p>
+        ) : (
+            <p className="text-center text-gray-500 text-lg mb-4">
+            {error || (isOnline ? "No posts found. Check back later!" : "You're offline. Please check your internet connection.")}
+            </p>
+        )}
+        <button
+            onClick={reloadPosts}
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow-sm transition disabled:opacity-50"
+        >
+            {loading ? "Refreshing..." : "Refresh"}
+        </button>
+        </div>
+
+      )}
+    </div>
 
         </InfiniteScroll>
+        
     );
 }    
 

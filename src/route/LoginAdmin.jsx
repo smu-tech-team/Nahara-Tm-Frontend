@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import BackGroundVideo from "/creator.mp4";
-import HomeLogo from "/SmartLogoMain.png";
+import HomeLogo from "/Nahara_Red[1].png";
 
 const CreatorLogin = () => {
   const [userName, setUserName] = useState("");

@@ -31,9 +31,10 @@ const TopButton = () => {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed top-1/2 left-6 transform -translate-y-1/2 bg-red-500 text-white p-4 rounded-full shadow-2xl transition-all duration-300 ease-in-out  hover:scale-110 z-50"
+          className="fixed bottom-10  left-6 transform -translate-y-1/2 bg-red-500 text-white p-4
+           rounded-full shadow-2xl transition-all duration-300 ease-in-out  hover:scale-110 z-50 sm:buttom-5"
         >
-          <ArrowUpCircle className="w-8 h-8" />
+          <ArrowUpCircle className="w-5 h-5" />
         </button>
       )}
     </div>

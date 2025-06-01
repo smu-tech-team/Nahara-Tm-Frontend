@@ -10,7 +10,7 @@ const PrivacyPolicy = () => {
     >
       <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white">Privacy Policy</h1>
       <p className="mt-4 text-gray-600 dark:text-gray-300">
-        Welcome to Smart Media Update (SMU Sport News). Your privacy is important to us. This policy explains how we collect, use, and protect your information.
+        Welcome to NAHARA. Your privacy is important to us. This policy explains how we collect, use, and protect your information.
       </p>
 
       <div className="mt-6 space-y-4 text-gray-700 dark:text-gray-300">
@@ -30,7 +30,8 @@ const PrivacyPolicy = () => {
 
         <h2 className="text-xl font-semibold">Cookies and Tracking Technologies</h2>
         <p>
-          We use cookies and similar tracking technologies to enhance your browsing experience. You can manage cookie preferences through your browser settings.
+          We use cookies and similar tracking technologies to enhance your browsing experience. You can manage cookie preferences 
+          through your browser settings.
         </p>
 
         <h2 className="text-xl font-semibold">Third-Party Services</h2>

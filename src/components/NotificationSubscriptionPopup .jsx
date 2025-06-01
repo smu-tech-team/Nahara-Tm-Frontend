@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import NotificationImage from "/SmartLogoMain.png"; // Replace with your notification icon
+import NotificationImage from "/Nahara_Logo[1].png"; // Replace with your notification icon
 
 const NotificationSubscriptionPopup = () => {
   const [isVisible, setIsVisible] = useState(false);

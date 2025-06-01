@@ -1,6 +1,9 @@
 // firebaseConfig.js
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getMessaging } from "firebase/messaging"; 
+
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyBw3_0IuNz7VQY_MwN0LEUfQnlI5mxCfOw",
@@ -15,5 +18,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const messaging = getMessaging(app); // ✅ Initialize messaging
 
-export { app, auth };
+
+export { app, auth, messaging };

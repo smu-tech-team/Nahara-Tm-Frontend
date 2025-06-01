@@ -73,3 +73,30 @@ body {
   animation: shimmer 1.5s infinite;
   background-size: 200% 100%;
 }
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+}
+
+.App {
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+button {
+  cursor: pointer;
+}
+
+.preview-content img {
+  max-width: 100%;
+  display: block;
+  margin: 20px 0;
+}
+
+.preview-content video {
+  width: 100%;
+  max-width: 700px;
+  display: block;
+  margin: 20px 0;
+}
+

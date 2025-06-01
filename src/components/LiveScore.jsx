@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import fetchLiveScoresForAllSports from "../store/LiveScores.js";
 import AddFavoriteTeam from "../components/AddFavoriteTeam.jsx";
+import AdSpace from "./AdSpace.jsx";
 
 const sportColors = {
   football: "bg-blue-500",
@@ -126,7 +127,10 @@ const LiveScores = () => {
             </p>
           )}
         </div>
+                    <AdSpace/>
+
       </div>
+
 
       {/* Sidebar for Favorite Teams */}
       <div
@@ -135,15 +139,9 @@ const LiveScores = () => {
         } fixed right-0 top-0 w-full sm:w-80 bg-gray-800 h-full lg:static lg:translate-x-0 lg:w-1/4 shadow-lg`}
       >
         <div className="p-4 flex flex-col gap-6">
-          {/* Add Favorite Team Section */}
-          <AddFavoriteTeam onAddFavorite={addFavoriteTeam} />
-
-          {/* Display Favorite Teams */}
-        
+          <AddFavoriteTeam onAddFavorite={addFavoriteTeam} />        
         </div>
       </div>
-
-      {/* Sidebar Toggle Button */}
       <button
         className="fixed mb-5 right-4 bg-gray-600 p-2 rounded-full lg:hidden z-10"
         onClick={() => setSidebarOpen(!sidebarOpen)}

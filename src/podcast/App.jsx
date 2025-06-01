@@ -4,6 +4,7 @@ import SearchBar from './SearchBar';
 import PodcastList from './PodcastList';
 import PodcastCard from './PodcastCard';
 import PodcastPopup from './PodcastPopup';
+import CatBannar from '../components/CatBanner';
 import { Link } from 'react-router-dom';
 
 function App() {
@@ -50,55 +51,10 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white font-sans">
-      {/* Header Section */}
       <Header />
-
-      {/* Hero Section */}
       <section className="px-4 sm:px-8 py-6 sm:py-10 animate-fade-in">
-        <div className="relative bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white rounded-xl shadow-lg overflow-hidden">
-          <div className="flex flex-col sm:flex-row items-center justify-between px-8 py-10 space-y-6 sm:space-y-0">
-            <div>
-              <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight">Welcome to Nahara Pod</h2>
-              <p className="mt-4 text-lg sm:text-xl text-gray-200">
-                Discover, explore, and enjoy the best podcasts curated just for you. Dive into your favorite topics today!
-              </p>
-            </div>
-            <Link to="/ads">
-              <button className="bg-blue-800 text-white font-bold py-3 px-6 rounded-lg shadow-md transition hover:bg-blue-600">
-                Contact Us for ADS
-              </button>
-            </Link>
-          </div>
-        </div>
+           <CatBannar/>
       </section>
-
-      {/* Ad Banner Section */}
-      <section className="px-4 sm:px-8 py-6 sm:py-10 animate-fade-in">
-        <div className="relative bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white rounded-xl shadow-lg overflow-hidden transition-transform transform hover:scale-105">
-          <a href="#" target="_blank" rel="noopener noreferrer" className="block w-full h-full">
-            <div className="flex flex-col sm:flex-row items-center justify-between px-6 py-10 sm:py-16">
-              <div className="text-center sm:text-left">
-                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-wide">Advertise With Us</h2>
-                <p className="mt-4 text-gray-300 text-lg sm:text-xl">
-                  Reach your ideal audience with tailored promotions. Make your mark today!
-                </p>
-                <button className="mt-6 bg-blue-800 text-white font-bold py-3 px-6 rounded-lg shadow-md transition">
-                  Learn More
-                </button>
-              </div>
-              <div className="mt-8 sm:mt-0">
-                <img
-                  src="https://via.placeholder.com/350x200"
-                  alt="Advertisement"
-                  className="w-64 sm:w-80 rounded-md shadow-lg"
-                />
-              </div>
-            </div>
-          </a>
-        </div>
-      </section>
-
-      {/* Search and Filter Section */}
       <section className="px-4 sm:px-8 py-4 sm:py-6 lg:py-8 animate-fade-in">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
           <SearchBar onSearch={handleSearch} />
@@ -146,8 +102,6 @@ function App() {
           </div>
         </div>
       </section>
-
-      {/* Podcast List Section */}
       <section className="px-4 sm:px-8 py-6 sm:py-10 animate-fade-in">
         <PodcastList
           searchTerm={searchTerm}
@@ -159,8 +113,6 @@ function App() {
           duration={duration}
         />
       </section>
-
-      {/* Favorites Section */}
       <section className="px-4 sm:px-8 py-6 sm:py-10 bg-black rounded-2xl shadow-xl animate-fade-in">
         <h2 className="text-3xl font-bold mb-6 text-center text-white">
           Your Favorites

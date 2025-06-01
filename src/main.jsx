@@ -52,13 +52,16 @@ import EpisodePage from './podcast/EpisodePage';
 import PodcastUploaderWrapper from './podcast/PodcastUploaderWrapper'
 import VerificationSuccess from './route/VerificationSuccess'
 import VerificationFailed from './route/VerificationFailed'
-
-
-
-
-
-
-
+import Favorites from './podcast/Favorites'
+import EbookHome from './ebooks/EbooksHome'
+import EbookUploaderWrapper from './ebooks/EbookAndWriteWrapper'
+import SingleEbookPage from './ebooks/SingleEbookPage'
+import AdminProtectedRoute from './route/AdminProtectedRoute'
+import ActionManager from './components/ActionManager'
+import AdminAppeals from './components/ReadAppeals'
+import MarketDetails from './components/MarketDetails'
+import RecommendationsPage from './components/RecommendationsPage'
+import Qr from './components/Qr'
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
  {
@@ -79,9 +82,11 @@ const router = createBrowserRouter([
       path: "/:slug",
       element: <SinglePostPage/>
      },
+    
      {
-      path: "/write",
-      element: <Write/>
+       path: "/read-ebook/:id",
+      element: <SingleEbookPage />,
+
      },
      {
       path: "/login",
@@ -94,6 +99,10 @@ const router = createBrowserRouter([
      {
       path: "/creator-profile",
       element: <ProfileUpdate/>
+     },
+     {
+      path: "/market-details",
+      element: <MarketDetails/>
      },
      {
       path: "/user-profile",
@@ -178,12 +187,20 @@ const router = createBrowserRouter([
 
      },
      {
+     path: "/recommendations",
+     element: <RecommendationsPage/>
+     },
+     {
        path: "/creator-website" ,
        element: <CreatorWebsite />
      },
      {
      path: "/podcasts",
       element: <LandingPage />
+     },
+      {
+     path: "/qr",
+      element: <Qr />
      },
      {
        path:"/explore", 
@@ -216,12 +233,40 @@ const router = createBrowserRouter([
      },
      {
       path: "/admin-dashboard/management",
-      element: <AdminDashboard/>
+      element: (
+
+        <AdminProtectedRoute>
+          <AdminDashboard/>
+        </AdminProtectedRoute>
+      )
+     },
+     {
+      path: "/admin-dashboard/management/actions",
+      element: (
+
+        <AdminProtectedRoute>
+          <ActionManager/>
+        </AdminProtectedRoute>
+      )
+     },
+     {
+      path: "/admin/appeals",
+       element: (
+        <AdminProtectedRoute>
+        <AdminAppeals />
+       </AdminProtectedRoute>
+      )
+
      },
      {
        path: "/verify-success",
         element: <VerificationSuccess /> 
      },
+     {
+      path: "/favorites", 
+       element: <Favorites />
+
+    },
      {
       path: "/verify-failed", 
       element: <VerificationFailed />
@@ -234,6 +279,19 @@ const router = createBrowserRouter([
         </ProtectedRoute>
       )
     }, 
+    {
+      path: "/get-started/write/ebook",
+      element:(
+        <ProtectedRoute>
+          <EbookUploaderWrapper />
+        </ProtectedRoute>
+
+      ) 
+     },
+    {
+      path: "/ebooks",
+      element: <EbookHome/>,
+    },
      {
       path: "/creator-dashboard",
       element: (

@@ -14,7 +14,8 @@ import LockEarnings from "../components/LockEarning";
 import CheckEligibility from "../components/CheckEligibility";
 import { toast } from "react-toastify";
 import CreatorMessagesDropdown from "./CreatorMessagesDropdown";
-import { useNavigate } from "react-router-dom";
+import Sidebar from "./Sidebar"; 
+import AdSpace from "./AdSpace";
 
 const CreatorDashboard = ({ creatorId }) => {
   const user = useAuthStore.getState().user;
@@ -25,12 +26,11 @@ const CreatorDashboard = ({ creatorId }) => {
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [totalPosts, setTotalPosts] = useState(0);
   const [activeModal, setActiveModal] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-    const navigate = useNavigate();
-  
-
-
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isVerified, setIsVerified] = useState(false);
   const API_BASE_URL = "http://localhost:8087/api/creator";
+
+
   const fetchCreatorData = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -91,6 +91,23 @@ const CreatorDashboard = ({ creatorId }) => {
       console.error("Error fetching total earnings:", error.response ? error.response.data : error.message);
     }
   };
+
+    const fetchCreatorInfo = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!creatorId || !token) {
+      console.error("Missing creatorId or token!");
+      return;
+    }
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    const response = await axios.get(`${API_BASE_URL}/creators/${creatorId}`);
+    
+    setIsVerified(response.data.isVerified || false);
+  } catch (error) {
+    console.error("Error fetching creator data:", error.response || error.message);
+  }
+};
+
   useEffect(() => {
     if (!creatorId) {
       console.error("Creator ID is missing! Cannot fetch data.");
@@ -100,11 +117,6 @@ const CreatorDashboard = ({ creatorId }) => {
     fetchTotalEarnings();
     fetchCreatorDatas();
   }, [creatorId]);
-
-
-  
-  
-
   const blogName = user?.blogName || "Your Blog Name";
   const blogWebsite= user?.blogWebsite || "Your Blog Website";
   const username = user?.username || "Creator Info";
@@ -124,7 +136,6 @@ const CreatorDashboard = ({ creatorId }) => {
     }
   };
   
-
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="bg-white dark:bg-gray-900 shadow rounded-lg p-6 flex items-center">
@@ -158,7 +169,7 @@ const CreatorDashboard = ({ creatorId }) => {
           <p className="text-sm text-gray-600">Posts</p>
         </motion.div>
       </div>
-      <div className="bg-black dark:bg-gray-500 shadow rounded-lg p-6 mt-6">
+      <div className="bg-black dark:bg-gray-800 shadow rounded-lg p-6 mt-6">
         <h3 className="text-xl font-bold mb-4 dark:text-white">Your Growth Statistics</h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={stats}>
@@ -174,56 +185,10 @@ const CreatorDashboard = ({ creatorId }) => {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <div className="flex flex-wrap justify-center gap-4 mt-6 px-4">
-  {/* Add Live News */}
-  <button
-    onClick={() => setIsModalOpen(true)}
-    className="flex-1 min-w-[150px] bg-blue-800 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 text-sm sm:text-base"
-  >
-    Add Live News
-  </button>
-
-  {isModalOpen && (
-    <AddYourLiveNews
-      onClose={() => setIsModalOpen(false)}
-      blogName={user?.blogName}
-      blogProfile={user?.blogProfile}
-    />
-  )}
-
-  {/* Start Your Podcast */}
-  <button
-    onClick={() => navigate('/start-podcast')}
-    className="flex-1 min-w-[150px] bg-blue-800 text-white py-2 px-4 rounded-full shadow-md hover:bg-blue-700 transition duration-200 text-sm sm:text-base"
-  >
-    Start Your Podcast
-  </button>
-
-  {/* Lock Earnings */}
-  <button
-    className="flex-1 min-w-[150px] bg-blue-800 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 text-sm sm:text-base"
-    onClick={() => setActiveModal("lockEarnings")}
-  >
-    Lock Earnings
-  </button>
-
-  {/* Withdraw */}
-  <button
-    className="flex-1 min-w-[150px] bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition duration-200 text-sm sm:text-base"
-    onClick={() => setActiveModal("withdraw")}
-  >
-    Withdraw
-  </button>
-
-  {/* Check Eligibility */}
-  <button
-    className="flex-1 min-w-[150px] bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-200 text-sm sm:text-base"
-    onClick={() => setActiveModal("checkEligibility")}
-  >
-    Check Eligibility
-  </button>
-</div>
-
+      <AdSpace />
+      <div className="flex ">
+      <Sidebar setActiveModal={setActiveModal} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+      </div>
       {activeModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           {renderModalContent()}

@@ -49,7 +49,7 @@ const PodcastList = ({
                   ...podcast,
                   title: podcast.title || 'Untitled Podcast',
                   cover: podcast.coverImageUrl || '/default-placeholder.png',
-                  host: podcast.creatorId || 'Unknown Host',
+                  host: podcast.blogName || 'Unknown Host',
                   date: podcast.uploadedAt
                     ? new Date(podcast.uploadedAt).toLocaleDateString()
                     : 'Unknown Date',
@@ -75,34 +75,25 @@ const PodcastList = ({
 
   useEffect(() => {
     let filteredList = [...podcasts];
-
-    // Filter by category
     if (category !== 'All') {
       filteredList = filteredList.filter((p) => p.category === category);
     }
-
-    // Filter by search
     if (searchTerm) {
       filteredList = filteredList.filter((p) =>
         p.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // Sort by date
     if (sortBy === 'date-desc') {
       filteredList.sort((a, b) => new Date(b.rawDate) - new Date(a.rawDate));
     } else if (sortBy === 'date-asc') {
       filteredList.sort((a, b) => new Date(a.rawDate) - new Date(b.rawDate));
     }
-
-    // Popularity
     if (popularity === 'most') {
       filteredList.sort((a, b) => (b.views || 0) - (a.views || 0));
     } else if (popularity === 'least') {
       filteredList.sort((a, b) => (a.views || 0) - (b.views || 0));
     }
-
-    // Duration
     if (duration === 'short') {
       filteredList.sort((a, b) => a.numericDuration - b.numericDuration);
     } else if (duration === 'long') {
@@ -136,7 +127,7 @@ const PodcastList = ({
           className="relative bg-gray-800 text-white rounded-lg p-5 shadow-md hover:shadow-white transition-shadow duration-300"
         >
           <PodcastCard
-            podcast={podcast} // Explicitly pass the entire podcast object
+            podcast={podcast} 
             onPlay={() => setSelectedPodcast(podcast)}
             isFavorite={favorites.some((fav) => fav.id === podcast.id)}
             onToggleFavorite={() => onFavorite(podcast)}
@@ -144,9 +135,6 @@ const PodcastList = ({
         </div>
       ))
     )}
-
-    
-
       {selectedPodcast && (
         <PodcastPopup
           podcast={selectedPodcast}

@@ -6,11 +6,10 @@ import Image from "/anonymous-8291223_1280.webp";
 
 const Comment = ({ _id, userImage, userName, desc, createdAt, onDelete, postId, comments }) => {
   const [userId, setUserId] = useState(null);
+  const [isOwner, setIsOwner] = useState(false);
 
-  // Ensure that comments is an array before attempting to find a comment
-  const comment = comments.find((comment) => comment?.postId === postId);
-  const commentId = comment?._id;
-
+  const comment = comments.find((comment) => comment?._id === _id);
+  
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -21,32 +20,35 @@ const Comment = ({ _id, userImage, userName, desc, createdAt, onDelete, postId, 
 
     try {
       const decoded = jwtDecode(token);
-      setUserId(decoded?.userId || "Unknown");
+      const loggedInUser = decoded?.userId || "Unknown";
+      setUserId(loggedInUser);
+
+      // ✅ Compare userId with the comment creator to check ownership
+      if (comment && comment.creatorId === loggedInUser) {
+        setIsOwner(true);
+      }
     } catch (error) {
       console.error("Failed to decode token:", error);
       setUserId("Unknown");
     }
-  }, []);
+  }, [_id]);
 
   const handleDelete = async () => {
-    if (!commentId || !postId) {
-      console.error("Comment ID or Post ID is undefined or null!");
+    if (!comment || !comment._id) {
+      console.error("Comment ID is undefined!");
       return;
     }
   
     try {
-      console.log(`Deleting comment with ID: ${commentId} from post ID: ${postId}`);
-      
-      const response = await axios.delete(`http://localhost:8087/delete-comment/${commentId}`);
+      console.log(`Deleting comment with ID: ${comment._id} from post ID: ${postId}`);
+      const response = await axios.delete(`http://localhost:8087/delete-comment/${comment._id}`);
       console.log("Comment deleted successfully!", response.data);
-      onDelete(commentId); 
+      onDelete(comment._id); 
     } catch (error) {
       console.error("Error deleting comment:", error.response?.data || error.message);
       alert("An error occurred while deleting the comment.");
     }
   };
-  
-  
   
   const isValidDate = createdAt && !isNaN(new Date(createdAt).getTime());
   const relativeTime = isValidDate
@@ -68,10 +70,7 @@ const Comment = ({ _id, userImage, userName, desc, createdAt, onDelete, postId, 
         />
         <div className="flex flex-col">
           <span className="font-medium text-black">{userName || "Anonymous"}</span>
-          <span
-            className="text-sm text-gray-500"
-            title={isValidDate ? exactDate : "Invalid date"}
-          >
+          <span className="text-sm text-gray-500" title={isValidDate ? exactDate : "Invalid date"}>
             {relativeTime}
           </span>
         </div>
@@ -79,12 +78,11 @@ const Comment = ({ _id, userImage, userName, desc, createdAt, onDelete, postId, 
       <div className="mt-4">
         <p className="text-black">{desc || "No description provided"}</p>
       </div>
-      <button
-        className="mt-2 text-red-600 hover:underline"
-        onClick={handleDelete}
-      >
-        Delete
-      </button>
+      {isOwner && (
+        <button className="mt-2 text-red-600 hover:underline" onClick={handleDelete}>
+          Delete
+        </button>
+      )}
     </div>
   );
 };

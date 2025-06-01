@@ -1,0 +1,11 @@
+// src/api/actionTypes.js
+
+export const ActionTypes = {
+    DELETE_PODCAST: "DELETE_PODCAST",
+    DELETE_EBOOK: "DELETE_EBOOK",
+    DELETE_POST: "DELETE_POST",
+    TAKEDOWN_EBOOK: "TAKEDOWN_EBOOK",
+    TAKEDOWN_PODCAST: "TAKEDOWN_PODCAST",
+    TAKEDOWN_POST: "TAKEDOWN_POST",
+  };
+  

@@ -5,34 +5,26 @@ import PostList from "../components/PostList";
 import { useEffect, useState } from "react";
 import {jwtDecode} from "jwt-decode"; 
 import LiveNewsIcon from "../route/LiveNewsIcon";
-import PodcastButton from '../route/PodcastButton'; // adjust path as needed
-
-
+import PodcastButton from '../route/PodcastButton';
+import WeatherComponent from "../components/WeatherComponent";
+import AdsFloating from "../components/AdsFloating";
+import AdSpace from "../components/AdSpace";
+import CategoryBanner from "../components/CatBanner";
 const Homepage = () => {
-  const [isCreator, setIsCreator] = useState(false);
   const [username, setUsername] = useState(""); 
   const [localDateTime, setLocalDateTime] = useState("");
-
-
-  const videoLink = "https://youtu.be/lTA9ChokOJI?si=3HspH9bVPaNGj1S-"; 
-
   useEffect(() => {
     const token = localStorage.getItem("token");
-  
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
         console.log("Decoded Token:", decodedToken);
         setUsername(decodedToken.userName || "Guest"); 
-  
-        setIsCreator(decodedToken.roles.includes("CREATOR"));
-      } catch (error) {
+        } catch (error) {
         console.error("Invalid token", error);
       }
     }
   }, []);
-  
-  
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -47,200 +39,47 @@ const Homepage = () => {
         second: "2-digit",
         hour12: true,
       }).format(now);
-
       setLocalDateTime(formattedDate);
     };
-
     updateTime();
     const interval = setInterval(updateTime, 1000);
-
     return () => clearInterval(interval);
   }, []);
-
-
-
-  const renderVideoEmbed = () => {
-    if (videoLink.includes("youtube.com") || videoLink.includes("youtu.be")) {
-      const videoId = videoLink.split("v=")[1]?.split("&")[0] || videoLink.split("/").pop();
-      return (
-        <div className="w-72 aspect-video  rounded-lg shadow-lg overflow-hidden">
-          <iframe
-            className="w-full h-full"
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
-            title="YouTube Video"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-          ></iframe>
-        </div>
-      );
-    } else if (videoLink.match(/\.(mp4|webm|ogg)$/)) {
-      return (
-        <div className="w-full aspect-video rounded-lg shadow-lg overflow-hidden">
-          <video className="w-full h-full" autoPlay muted loop playsInline>
-            <source src={videoLink} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      );
-    } else {
-      return (
-        <div className="w-full aspect-video rounded-lg shadow-lg overflow-hidden">
-          <iframe
-            className="w-full h-full"
-            src={videoLink}
-            allow="autoplay; fullscreen"
-            allowFullScreen
-            title="Embedded Video"
-          ></iframe>
-        </div>
-      );
-    }
-  };
-    
   
-
   return (
     <div className="mt-4 flex flex-col gap-4">
-      <div className="flex gap-2">
-        <Link to="/">Home</Link>
-        <span className="font-bold">.</span>
-        <span className="text-blue-700 dark:text-blue-500">News and Bets</span>
-      </div>
+      <CategoryBanner/>
       <div>
-     
-      <section className="flex justify-between items-center px-4 sm:px-8 py-6 sm:py-10 space-x-4">
+       <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-8 py-6 sm:py-10 space-y-4 sm:space-y-0 sm:space-x-4 bg-gray-800 text-white rounded-md">
       <PodcastButton />
+      <WeatherComponent />
       <LiveNewsIcon />
-    </section>
+    </div>
 
       <p className="mt-2 text-sm sm:text-base md:text-lg font-semibold text-gray-400  break-words">
   {localDateTime}
 </p>
-
-
        <h2 className="border rounded-lg">  
   <span className="text-gray-500">  Hey!👋 </span> {username}
 </h2>
 </div>
-
       <div className="flex items-center justify-between">
-
-        <div>
-        <h1 className="text-gray-500 text-xl pb-2 sm:text-2xl md:text-4xl dark:text-gray-400 lg:text-5xl font-bold">
-          Your partner on legit news
-        </h1>
-
-          {/* <p className="font-bold text-gray-300 dark:text-gray-700 hidden sm:block">
-            Smart Media Update TV. <br />
-            Is part of SMU Sport News<br />
-            Your number one place for legit news.
-          </p> */}
-
-        </div>
+       
+   <AdsFloating leftBannerUrl="/smuads.jpg" leftLink="https://example.com/left" />
 
 
-{isCreator ? (
-  <>
-    <Link to="write" className="hidden md:block relative">
-      <svg
-        viewBox="0 0 200 200"
-        width="200"
-        height="200"
-        className="text-lg tracking-widest animate-spin animatedButton"
-      >
-        <path
-          id="circlePath"
-          fill="none"
-          d="M 100, 100 m-75 0 a 75, 75 0 1,1 150,0 a 75,75 0 1,1 -150,0"
-        />
-        <text className="text-white dark:text-black">
-          <textPath href="#circlePath" startOffset="0%" fill="currentColor">
-            Start writing now.
-          </textPath>
-          <textPath href="#circlePath" startOffset="50%" fill="currentColor">
-            Share your idea.
-          </textPath>
-        </text>
-      </svg>
-      <button className="absolute top-0 left-0 right-0 bottom-0 m-auto w-20 h-20 bg-red-600 rounded-full flex items-center justify-center">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          width="50"
-          height="50"
-          fill="none"
-          stroke="white"
-          strokeWidth="2"
-        >
-          <line x1="6" y1="18" x2="18" y2="6" />
-          <polyline points="9 6 18 6 18 15" />
-        </svg>
-      </button>
-    </Link>
-
-<div className="md:hidden fixed bottom-5 left-5 flex flex-col items-center">
-  <p className="text-sm text-gray-400 mb-2 font-bold animate-bounce">Create a Post</p> 
-  <Link to="write">
-    <button className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center shadow-md">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        width="28"
-        height="28"
-        fill="none"
-        stroke="white"
-        strokeWidth="2"
-      >
-        <line x1="6" y1="18" x2="18" y2="6" />
-        <polyline points="9 6 18 6 18 15" />
-      </svg>
-    </button>
-  </Link>
-</div>
-
-  </>
-        ) : (
-          renderVideoEmbed() 
-        )}
       </div>
-
       <MainCategories />
       <FeaturedPost />
-
       <div>
-      <h3 className="flex flex-col items-center">Advertisement Space</h3>
-
-<div className="mb-6 flex flex-col md:flex-row items-center gap-4 p-3 bg-gray-400 shadow-md rounded-md">
-    <div className="flex-1">
-        <a href="https://your-ad-link.com" target="_blank" rel="noopener noreferrer">
-            <img 
-                src="https://via.placeholder.com/468x60.png?text=Your+Banner+Ad+Here" 
-                alt="Banner Ad" 
-                className="w-full h-auto rounded-md shadow-sm"
-            />
-        </a>
-    </div>
-
-    <div className="hidden md:flex flex-1">
-        <iframe
-            className="w-full rounded-md shadow-sm"
-            style={{ height: "150px", minHeight: "150px" }}
-            src={`https://www.youtube.com/embed/YOUR_VIDEO_ID?autoplay=1&mute=1`}
-            title="Video Ad"
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-        ></iframe>
-    </div>
-</div>
-
-
+   
+    
         <h1 className="my-8 text-2xl text-gray-600 dark:text-gray-700 font-bold">Recent Posts</h1>
         <PostList />
       </div>
+        <AdSpace />
+      
     </div>
   );
 };
-
 export default Homepage;

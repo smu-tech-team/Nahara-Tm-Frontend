@@ -4,6 +4,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Comment from "../components/Comment";
 import Image from "/anonymous-8291223_1280.webp";
+import {jwtDecode} from "jwt-decode";
+import { v4 as uuidv4 } from "uuid";
 
 const fetchComments = async (postId) => {
   try {
@@ -33,9 +35,12 @@ const Comments = ({ postId, comments }) => {
       return axios.post(
         `http://localhost:8087/api/comments/add-comment/${postId}`,
         newComment,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
       );
     },
+
     onMutate: async (newComment) => {
       await queryClient.cancelQueries(['comments', postId]);
       const previousComments = queryClient.getQueryData(['comments', postId]);
@@ -64,14 +69,27 @@ const Comments = ({ postId, comments }) => {
     },
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!commentText.trim()) {
-      toast.error("Comment cannot be empty!");
-      return;
+ const handleSubmit = (e) => {
+  e.preventDefault();
+  if (!commentText.trim()) {
+    toast.error("Comment cannot be empty!");
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+  let userId = `anonymous-${uuidv4()}`;
+
+  if (token) {
+    try {
+      const decoded = jwtDecode(token);
+      userId = decoded?.userId || userId; // `userId` must be in JWT claims
+    } catch {
+      console.warn("Invalid token, falling back to anonymous");
     }
-    mutation.mutate({ desc: commentText });
-  };
+  }
+
+  mutation.mutate({ desc: commentText, userId });
+};
 
   const totalComments = data.length;
   const indexOfLastComment = currentPage * commentsPerPage;

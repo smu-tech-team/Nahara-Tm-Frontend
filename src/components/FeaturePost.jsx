@@ -3,27 +3,26 @@ import Image from "./image";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import PostSkeleton from "../components/PostSkeleton";
-import WeatherComponent from "../components/WeatherComponent";
 import NewsletterSubscription from "../components/NewsletterSubscription";
 import React, { useState, useEffect, useRef } from "react";
-
 
 const FeaturedPost = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [loadingDelay, setLoadingDelay] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
   const containerRef = useRef(null);
-  const placeholderLogo = "/SmartLogoMain.png";
+  const placeholderLogo = "/Nahara_Red[1].png";
 
-  const fetchPost = async (limit = 4) => {
+  const limit = 4;
+
+  const fetchPost = async () => {
     const res = await axios.get(`http://localhost:8087/api/post/featured?limit=${limit}`);
     return res.data;
   };
 
-  const limit = 4; // Dynamically set this value if required
   const { isLoading, error, data } = useQuery({
     queryKey: ["featuredPosts", limit],
-    queryFn: () => fetchPost(limit),
+    queryFn: fetchPost,
   });
 
   useEffect(() => {
@@ -36,9 +35,7 @@ const FeaturedPost = () => {
       },
       { rootMargin: "200px", threshold: 0.1 }
     );
-
     if (containerRef.current) observer.observe(containerRef.current);
-
     return () => observer.disconnect();
   }, []);
 
@@ -59,22 +56,41 @@ const FeaturedPost = () => {
     );
   }
 
-  if (isLoading) return <div className="text-center text-lg text-gray-500">Loading...</div>;
-  if (error) return <div className="text-red-500 text-center">Error: {error.message}</div>;
+  if (isLoading || error) {
+    return (
+      <div ref={containerRef} className="flex flex-col items-center justify-center py-12">
+        <img
+          src={error ? "/error.webp" : ""} 
+          alt={error ? "Network Error" : "loading"}
+          className="w-64 h-64 object-contain mb-6"
+        />
+        <p className={`text-center text-lg mb-4 ${error ? "text-red-500" : "text-gray-500"}`}>
+          {error ? `Error: ${error.message}` : "Loading... Please wait"}
+        </p>
+        {error && (
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-blue-800 hover:bg-blue-700 text-white px-4 py-2 rounded-md shadow transition"
+          >
+            Retry
+          </button>
+        )}
+      </div>
+    );
+  }
 
   const posts = data || [];
+
   const localTime = posts[0]?.createdAt
     ? new Date(posts[0].createdAt).toLocaleString()
     : "Unknown Date";
 
   return (
     <div className="mt-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
-      {/* Featured Post */}
       <div
         ref={containerRef}
         className="lg:col-span-2 flex flex-col bg-gray-800 dark:bg-white shadow-sm rounded-lg overflow-hidden max-h-[600px]"
       >
-        {/* Image Section */}
         <div className="relative w-full h-64 bg-gray-700 flex items-center justify-center">
           {!imageLoaded && (
             <img
@@ -94,8 +110,6 @@ const FeaturedPost = () => {
             />
           )}
         </div>
-
-        {/* Post Content */}
         <div className="flex flex-col flex-grow p-6">
           <div className="flex items-center justify-between text-gray-500 text-sm mb-3">
             <div className="flex items-center gap-2">
@@ -125,23 +139,21 @@ const FeaturedPost = () => {
         </div>
       </div>
 
-      {/* Sidebar Section */}
-      <div className="flex flex-col bg-gray-800 dark:bg-gray-900 shadow-lg rounded-lg p-6 text-white">
+      <div className="flex flex-col rounded-lg p-6">
         <NewsletterSubscription />
-        <div className="mt-6 p-4 bg-gray-700 rounded-lg shadow-md">
-          <div className="p-4">
-            <WeatherComponent />
-          </div>
-        </div>
       </div>
 
-      {/* Sponsored Ads */}
       <div className="lg:col-span-1 flex flex-col gap-8">
         <h2 className="text-lg font-bold dark:text-gray-600 text-gray-300">Sponsored Ads</h2>
-
         {[
-          { img: "SMUADS2.PNG.jpg", text: "Sabipredict is your number one prediction and free prediction site." },
-          { img: "SMUADS.PNG.jpg", text: "Exclusive deals for sports fans!" },
+          {
+            img: "SMUADS2.PNG.jpg",
+            text: "Sabipredict is your number one prediction and free prediction site.",
+          },
+          {
+            img: "SMUADS.PNG.jpg",
+            text: "Exclusive deals for sports fans!",
+          },
         ].map((ad, idx) => (
           <div key={idx} className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-lg">
             <Image src={ad.img} className="w-full h-[180px] rounded-lg object-cover" />
@@ -152,6 +164,8 @@ const FeaturedPost = () => {
           </div>
         ))}
       </div>
+
+      <div className="lg:col-span-1 flex flex-col gap-8"></div>
     </div>
   );
 };

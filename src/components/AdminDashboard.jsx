@@ -3,6 +3,7 @@ import Head from "./AdminHeader"
 import AdminAnalytics from "./AdminAnalytics";
 import CreatorList from "./CreatorList";
 import ActionButtons from "./ActionButtons";
+import AdminSidebar from "./AdminSidebar";
 
 const AdminDashboard = () => {
 

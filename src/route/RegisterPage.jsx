@@ -17,7 +17,6 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Validation checks
     if (!userName || !email || !password || !role) {
       setError("All fields are required.");
       return;
@@ -41,7 +40,7 @@ const Register = () => {
       });
 
       setSuccess(response.data.message);
-      setTimeout(() => navigate("/login"), 2000); // Redirect to login after 2 seconds
+      setTimeout(() => navigate("/userLogin"), 2000); 
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message);

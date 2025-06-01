@@ -8,9 +8,9 @@ const About = () => {
       transition={{ duration: 0.6 }}
       className="p-6 max-w-3xl mx-auto bg-gray-100 dark:bg-gray-900 mt-6  mb-6 rounded-lg shadow-lg"
     >
-      <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white">About Smart Media Update (SMU Sport News)</h1>
+      <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white">About NAHARA</h1>
       <p className="mt-4 text-gray-600 dark:text-gray-300 text-center">
-        Welcome to Smart Media Update, your go-to platform for the latest news updates from around the world. 
+        Welcome to NAHARA, your go-to platform for the latest news updates from around the world. 
         Whether it's sports, politics, entertainment, or global affairs, we bring you timely and accurate information.
       </p>
       <div className="mt-6 space-y-4 text-gray-700 dark:text-gray-300">

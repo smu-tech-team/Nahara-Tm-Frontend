@@ -5,6 +5,8 @@ import { useState } from "react";
 import "./i18n";
 import MiniPlayer from "../podcast/MiniPlayer";
 import FullPlayerModal from "../podcast/FullPlayerModal";
+import { Toaster } from 'react-hot-toast';
+
 
 const App = () => {
   const [refreshNavbar, setRefreshNavbar] = useState(false);
@@ -32,6 +34,8 @@ const App = () => {
         {/* Featured Post */}
         <FeaturedPost />
       </UIProvider>
+      <Toaster position="top-center" reverseOrder={false} />
+
     </div>
   );
 };

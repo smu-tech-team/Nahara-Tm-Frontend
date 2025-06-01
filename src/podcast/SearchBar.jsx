@@ -18,12 +18,9 @@ const SearchBar = ({ onSearch }) => {
   return (
     <div className="flex justify-end items-center w-full px-4">
       <div className="relative flex items-center bg-gray-800 text-white rounded-full shadow-md p-2 max-w-lg">
-        {/* Search Icon */}
         <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
           <Search className="w-4 h-4 text-gray-400" />
         </div>
-
-        {/* Input Field */}
         <input
           type="text"
           placeholder="Search podcasts..."
@@ -31,8 +28,6 @@ const SearchBar = ({ onSearch }) => {
           onChange={handleSearchChange}
           className="flex-1 pl-10 pr-10 py-2 text-sm bg-transparent placeholder-gray-400 border-none focus:outline-none focus:ring-2 "
         />
-
-        {/* Clear Button */}
         {searchValue && (
           <button
             onClick={clearSearch}
@@ -41,8 +36,6 @@ const SearchBar = ({ onSearch }) => {
             <X className="w-4 h-4" />
           </button>
         )}
-
-        {/* Mic Icon */}
         <button
           className="absolute inset-y-0 right-3 flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-500 transition shadow-md"
         >

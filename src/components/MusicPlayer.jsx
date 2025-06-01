@@ -1,183 +1,251 @@
-import React, { useState, useEffect, useCallback } from "react";
-import axios from "axios";
-import { FaPlay, FaPause } from "react-icons/fa";
-import Cover from "/SmartLogoMain.png"
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import axios from 'axios';
+import {
+  FaHeart, FaPlay, FaSearch, FaHome, FaMusic, FaFire,
+  FaChevronDown, FaChevronUp, FaChevronLeft, FaChevronRight,
+} from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import Draggable from 'react-draggable';
+import { ClipLoader } from 'react-spinners';
+import { motion, AnimatePresence } from 'framer-motion';
+import CategoryBanner from './CatBanner';
 
-const MusicPlayer = () => {
+// Sidebar component
+const Sidebar = ({ setCategory }) => {
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  return (
+<aside className="bg-transparent text-white w-64 p-6 fixed h-screen z-30 overflow-auto">
+      <h2 className="text-2xl font-bold mb-6 text-blue-500">Explore Music</h2>
+      {[
+        { name: 'Home', icon: <FaHome /> },
+        { name: 'Trending', icon: <FaFire /> },
+      ].map((item) => (
+        <button
+          key={item.name}
+          onClick={() => setCategory(item.name.toLowerCase())}
+          className="flex items-center gap-3 py-3 px-4 hover:bg-gray-700 rounded-md w-full"
+        >
+          {item.icon} {item.name}
+        </button>
+      ))}
+      <div className="relative">
+        <button
+          onClick={() => setShowDropdown(!showDropdown)}
+          className="flex items-center gap-3 py-3 px-4 hover:bg-gray-700 rounded-md w-full"
+        >
+          <FaMusic /> Genres
+          <span className="ml-auto">{showDropdown ? <FaChevronUp /> : <FaChevronDown />}</span>
+        </button>
+        <AnimatePresence>
+          {showDropdown && (
+            <motion.div
+              className="pl-8 mt-2 space-y-2"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+            >
+              {['Hip-Hop', 'Afrobeat', 'Gospel'].map((genre) => (
+                <button
+                  key={genre}
+                  onClick={() => setCategory(genre.toLowerCase())}
+                  className="flex items-center gap-2 py-2 px-2 hover:bg-gray-700 rounded-md w-full"
+                >
+                  <FaMusic /> {genre}
+                </button>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </aside>
+    
+  );
+};
+const FloatingMenu = ({ autoplay, toggleAutoplay }) => (
+  <div className="fixed bottom-8 right-8 bg-black p-4 rounded-lg shadow-lg flex items-center gap-4 border border-gray-600 z-50">
+    <button
+      onClick={toggleAutoplay}
+      className={`px-4 py-2 rounded text-white ${autoplay ? 'bg-green-600' : 'bg-gray-700'} transition`}
+    >
+      Autoplay: {autoplay ? 'On' : 'Off'}
+    </button>
+    <FaSearch className="text-gray-300 hover:text-white cursor-pointer" />
+  </div>
+);
+const TrendingSongs = ({ premium }) => {
+  const [category, setCategory] = useState('trending');
   const [songs, setSongs] = useState([]);
-  const [currentSong, setCurrentSong] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [audio, setAudio] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("trending");
   const [loading, setLoading] = useState(true);
-  const [showPopup, setShowPopup] = useState(false);
+  const [favorites, setFavorites] = useState([]);
+  const [playingVideo, setPlayingVideo] = useState(null);
+  const [autoplay, setAutoplay] = useState(() => localStorage.getItem('autoplay') === 'true');
+  const [page, setPage] = useState(1);
 
-  // Fetch songs dynamically
+  const limit = useMemo(() => (premium ? 10 : 6), [premium]);
+
   const fetchSongs = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `http://localhost:8087/api/songs/get-songs?category=${selectedCategory}`
-      );
-      setSongs(response.data || []); // Use backend data directly
-    } catch (error) {
-      console.error("Error fetching songs:", error);
+      const res = await axios.get('http://localhost:8087/api/songs/get-song', {
+        params: { query: category, limit, page },
+      });
+      setSongs(Array.isArray(res.data) ? res.data : []);
+    } catch {
+      toast.error('Failed to fetch songs.');
     } finally {
       setLoading(false);
     }
-  }, [selectedCategory]);
+  }, [category, limit, page]);
 
   useEffect(() => {
     fetchSongs();
   }, [fetchSongs]);
 
-  // Handle play/pause functionality
-  const handlePlayPause = (song) => {
-    if (!song.preview || !song.preview.includes(".mp3")) {
-      alert("Audio preview is not available for this song.");
-      return;
-    }
+  useEffect(() => {
+    localStorage.setItem('autoplay', autoplay);
+  }, [autoplay]);
 
-    if (currentSong?.title === song.title && isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-    } else {
-      if (currentSong?.title !== song.title) {
-        if (audio) audio.pause(); // Stop any existing audio
-        const newAudio = new Audio(song.preview);
-        setAudio(newAudio);
-        setCurrentSong(song);
-        newAudio.play();
-        setShowPopup(true);
-        setIsPlaying(true);
-      }
+  useEffect(() => {
+    const savedFavorites = localStorage.getItem('favorites');
+    if (savedFavorites) {
+      setFavorites(JSON.parse(savedFavorites));
     }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }, [favorites]);
+
+  useEffect(() => {
+    if (autoplay && playingVideo !== null && playingVideo < songs.length - 1) {
+      const timer = setTimeout(() => setPlayingVideo((prev) => prev + 1), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [playingVideo, autoplay, songs.length]);
+
+  const convertToEmbedUrl = (url) => {
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([^?&]+)/);
+    return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=${autoplay ? 1 : 0}` : url;
   };
 
-  // Close popup
-  const closePopup = () => {
-    if (audio) {
-      audio.pause();
-      setIsPlaying(false);
+  const toggleFavorite = (song) => {
+    const exists = favorites.find((f) => f.streamUrl === song.streamUrl);
+    if (!exists) {
+      const updated = [...favorites, song];
+      setFavorites(updated);
+      toast.success('Added to favorites!');
     }
-    setShowPopup(false);
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-gray-800 text-center mb-6">
-        SMUTV MUSIC SPOT
-      </h1>
+    <div className="flex bg-gray-900 text-white min-h-screen">
+      <Sidebar setCategory={setCategory} />
 
-      {/* Category Selector */}
-      <div className="flex justify-center space-x-4 mb-8">
-        <button
-          className={`text-blue-800 font-medium hover:underline ${
-            selectedCategory === "trending" ? "underline" : ""
-          }`}
-          onClick={() => setSelectedCategory("trending")}
+      <main className="flex-grow p-4 sm:ml-64">
+        <motion.div
+          className="bg-gradient-to-r from-black via-blue-800 to-red-800 p-6 rounded-lg shadow-xl text-center"
+          initial={{ opacity: 0, y: -40 }}
+          animate={{ opacity: 1, y: 0 }}
         >
-          Trending
-        </button>
-        <button
-          className={`text-blue-800 font-medium hover:underline ${
-            selectedCategory === "recommendations" ? "underline" : ""
-          }`}
-          onClick={() => setSelectedCategory("recommendations")}
-        >
-          Recommendations
-        </button>
-        <button
-          className={`text-blue-800 font-medium hover:underline ${
-            selectedCategory === "new-releases" ? "underline" : ""
-          }`}
-          onClick={() => setSelectedCategory("new-releases")}
-        >
-          New Releases
-        </button>
-      </div>
-
-      {/* Song Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {loading
-          ? Array(8)
-              .fill(0)
-              .map((_, index) => (
-                <div key={index} className="bg-gray-100 rounded-lg p-4 animate-pulse">
-                  <div className="bg-gray-300 h-48 rounded-lg mb-4"></div>
-                  <div className="space-y-4">
-                    <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-                    <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                  </div>
-                </div>
-              ))
-          : songs.map((song, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200"
-              >
-                <div className="relative">
-                  <img
-                    src={song.album.cover || Cover}
-                    alt={song.title || "No Title Available"}
-                    className="w-full h-48 object-cover rounded-t-lg"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-30 flex justify-center items-center opacity-0 hover:opacity-100 transition-opacity">
-                    {song.preview ? (
-                      <button
-                        className="bg-white text-blue-800 rounded-full p-2 shadow-md hover:bg-blue-800 hover:text-white"
-                        onClick={() => handlePlayPause(song)}
-                      >
-                        {isPlaying && currentSong?.title === song.title ? <FaPause /> : <FaPlay />}
-                      </button>
-                    ) : (
-                      <span className="text-white font-bold">No Preview</span>
-                    )}
-                  </div>
-                </div>
-                <div className="p-4 text-center">
-                  <h3 className="text-lg font-semibold text-gray-800">{song.title || "Unknown Title"}</h3>
-                  <p className="text-sm text-gray-500">{song.artist || "Unknown Artist"}</p>
-                </div>
-              </div>
-            ))}
-      </div>
-
-      {/* Popup for song details */}
-      {showPopup && currentSong && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-            <button
-              className="text-red-500 text-sm font-bold float-right"
-              onClick={closePopup}
-            >
-              X
-            </button>
-            <div className="text-center">
-              <img
-                src={currentSong.album.cover || "https://via.placeholder.com/150"}
-                alt={currentSong.title || "No Title Available"}
-                className="w-48 h-48 mx-auto rounded-lg mb-4"
-              />
-              <h3 className="text-lg font-bold">{currentSong.title || "Unknown Title"}</h3>
-              <p className="text-sm text-gray-500">{currentSong.artist || "Unknown Artist"}</p>
-              <a
-                href={currentSong.preview}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 underline mt-2 block"
-              >
-                View on Last.fm
-              </a>
-              <p className="text-sm text-gray-400">
-                Duration: {audio?.duration ? `${Math.floor(audio.duration / 60)}:${Math.floor(audio.duration % 60)}` : "Unavailable"}
-              </p>
+          <h1 className="text-4xl font-bold text-white">Nahara Music</h1>
+          <p className="text-lg mt-2 text-gray-200">Discover trending vibes.</p>
+        </motion.div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+          {loading ? (
+            <div className="col-span-full flex justify-center items-center flex-col">
+              <ClipLoader color="#00FF99" />
+              <p className="mt-4">Loading songs...</p>
             </div>
-          </div>
+            
+          ) : songs.length === 0 ? (
+            <div className="col-span-full text-center text-red-400">No songs found.</div>
+          ) : (
+            songs.map((song, index) => (
+              <motion.div
+                key={index}
+                className="bg-gray-800 p-4 rounded-lg shadow-md hover:shadow-lg transition relative"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <img
+                  src={song.thumbnail}
+                  alt={song.title}
+                  className="w-full h-48 object-cover rounded mb-3"
+                />
+                <span className="absolute bottom-2 right-2 bg-black/70 px-2 py-1 rounded text-xs">
+                  {song.duration}
+                </span>
+                {playingVideo === index ? (
+                  <iframe
+                    width="100%"
+                    height="200px"
+                    src={convertToEmbedUrl(song.streamUrl)}
+                    title="Now Playing"
+                    frameBorder="0"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                  ></iframe>
+                ) : (
+                  <button
+                    onClick={() => setPlayingVideo(index)}
+                    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 hover:bg-opacity-60 rounded"
+                  >
+                    <FaPlay className="text-white text-2xl" />
+                  </button>
+                )}
+                <h3 className="mt-2 text-lg font-semibold text-blue-400">{song.title}</h3>
+                <button
+                  onClick={() => toggleFavorite(song)}
+                  className="mt-2 flex items-center gap-2 text-pink-400 hover:text-pink-300 transition"
+                >
+                  <FaHeart /> Add to Favorites
+                </button>
+              </motion.div>
+            ))
+          )}
         </div>
+        <CategoryBanner/>
+        <div className="flex justify-center items-center gap-6 mt-8">
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            className="px-4 py-2 bg-blue-700 hover:bg-blue-800 rounded flex items-center gap-2"
+          >
+            <FaChevronLeft /> Prev
+          </button>
+          <span>Page {page}</span>
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            className="px-4 py-2 bg-blue-700 hover:bg-blue-800 rounded flex items-center gap-2"
+          >
+            Next <FaChevronRight />
+          </button>
+        </div>
+
+        <p className="text-center mt-6 text-sm text-gray-400">🎶 Powered by YouTube</p>
+      </main>
+      {autoplay && playingVideo !== null && songs[playingVideo] && (
+        <Draggable>
+  <div className="fixed bottom-24 right-8 bg-black/80 p-4 rounded-lg text-white shadow-lg z-40 flex items-center gap-3 cursor-move">
+    <FaMusic className="text-green-400" />
+    <span>Now Playing: {songs[playingVideo].title}</span>
+    <img
+      src={songs[playingVideo].thumbnail}
+      alt={songs[playingVideo].title}
+      className="w-16 h-16 object-cover rounded"
+    />
+    <div>
+      <p className="text-sm text-gray-300">{songs[playingVideo].duration}</p>
+    </div>
+  </div>
+</Draggable>
+
       )}
+       
+
+      <FloatingMenu autoplay={autoplay} toggleAutoplay={() => setAutoplay((a) => !a)} />
     </div>
   );
 };
 
-export default MusicPlayer;
+export default TrendingSongs;

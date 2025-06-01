@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import FullPlayerModal from "./FullPlayerModal";
-import { FaPlay, FaPause, FaStepBackward, FaStepForward, FaHeart, FaVolumeUp } from "react-icons/fa";
+import { Pause, Play, SkipBack, SkipForward, Heart } from "lucide-react";
 
 const MiniPlayer = ({ episode, onSkip }) => {
   const audioRef = useRef(null);
@@ -14,7 +14,7 @@ const MiniPlayer = ({ episode, onSkip }) => {
   useEffect(() => {
     if (audioRef.current && episode) {
       audioRef.current.src = episode.audioUrl || "";
-      const savedTime = localStorage.getItem(`playback-${episode.id}`);
+      const savedTime = localStorage.getItem(`playback-${episode.episode_id}`);
       if (savedTime) {
         audioRef.current.currentTime = parseFloat(savedTime) || 0;
       }
@@ -24,28 +24,35 @@ const MiniPlayer = ({ episode, onSkip }) => {
 
   useEffect(() => {
     if (!audioRef.current || !episode) return;
+
     const interval = setInterval(() => {
-      localStorage.setItem(`playback-${episode.id}`, audioRef.current.currentTime || 0);
-    }, 2000);
+      const currentTime = audioRef.current.currentTime || 0;
+      localStorage.setItem(`playback-${episode.episode_id}`, currentTime);
+
+      // 🔥 Removed backend POST request to save playback
+    }, 5000);
+
     return () => clearInterval(interval);
   }, [episode]);
 
+  const handlePause = () => {
+    audioRef.current?.pause();
+    setIsPlaying(false);
+  };
+
+  // ✅ Newly added
   const handlePlay = async () => {
     try {
       await audioRef.current?.play();
       setIsPlaying(true);
 
-      await fetch(`http://localhost:8087/api/episode/${episode.id}/play`, {
-        method: "POST",
-      });
+      // Optional: You can re-enable backend call if needed
+      // await fetch(`http://localhost:8087/api/episodes/episode/${episode.episode_id}/play`, {
+      //   method: "POST",
+      // });
     } catch (err) {
       console.error("Playback failed:", err);
     }
-  };
-
-  const handlePause = () => {
-    audioRef.current?.pause();
-    setIsPlaying(false);
   };
 
   const skip = (seconds) => {
@@ -71,10 +78,15 @@ const MiniPlayer = ({ episode, onSkip }) => {
   };
 
   const handleLike = async () => {
-    if (hasLiked) return;
+    if (hasLiked || !episode) return;
     setHasLiked(true);
     setLikes((prev) => prev + 1);
-    await fetch(`http://localhost:8087/api/episode/${episode.id}/like`, { method: "POST" });
+    await fetch(`http://localhost:8087/api/episodes/${episode.episode_id}/like`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    });
   };
 
   const formatTime = (time) => {
@@ -85,76 +97,58 @@ const MiniPlayer = ({ episode, onSkip }) => {
 
   return (
     <>
-      {/* Sticky Mini Player */}
-      <div className="fixed bottom-0 left-0 right-0 z-50">
-        <div className="group relative transition-all duration-300 bg-gray-900 hover:h-32 h-20 border-t border-gray-700 px-4 sm:px-6 py-3 flex items-center justify-between">
-          {/* Info Section */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 border-t border-gray-800 px-4 py-3">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          {/* Episode Info */}
           <div
             onClick={() => setShowFullPlayer(true)}
-            className="cursor-pointer flex items-center space-x-4 w-full sm:w-auto"
+            className="flex-1 cursor-pointer min-w-0"
           >
-            <img
-              src={episode?.cover || "/default-cover.jpg"}
-              alt="Episode Cover"
-              className="w-14 h-14 sm:w-16 sm:h-16 object-cover rounded-lg"
-            />
-            <div>
-              <h4 className="text-white font-bold text-sm sm:text-lg truncate max-w-xs">
-                {episode?.title || "Unknown Episode"}
-              </h4>
-              <p className="text-gray-400 text-xs sm:text-sm">Now Playing</p>
-            </div>
+            <h4 className="text-white font-bold truncate text-sm md:text-lg">
+              {episode?.title || "Unknown Episode"}
+            </h4>
+            <p className="text-gray-400 text-xs md:text-sm">Now Playing</p>
           </div>
 
-          {/* Controls Section */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            <button
-              onClick={() => skip(-15)}
-              className="text-white text-lg sm:text-xl hover:scale-110 transition"
-              aria-label="Rewind"
-            >
-              <FaStepBackward />
+          {/* Controls */}
+          <div className="flex flex-wrap items-center gap-2 md:gap-4 justify-between md:justify-end w-full md:w-auto">
+            {/* Skip Back */}
+            <button onClick={() => skip(-15)} className="text-white hover:text-gray-300">
+              <SkipBack size={20} />
             </button>
 
+            {/* Play / Pause */}
             {!isPlaying ? (
               <button
                 onClick={handlePlay}
-                className="bg-blue-600 text-white px-4 py-2 sm:px-5 sm:py-3 rounded-full hover:bg-blue-500 transition"
-                aria-label="Play"
+                className="bg-white text-black px-4 py-1 rounded-full font-semibold text-sm"
               >
-                <FaPlay />
+                <Play size={18} className="inline-block mr-1" /> Play
               </button>
             ) : (
               <button
                 onClick={handlePause}
-                className="bg-blue-600 text-white px-4 py-2 sm:px-5 sm:py-3 rounded-full hover:bg-blue-500 transition"
-                aria-label="Pause"
+                className="bg-white text-black px-4 py-1 rounded-full font-semibold text-sm"
               >
-                <FaPause />
+                <Pause size={18} className="inline-block mr-1" /> Pause
               </button>
             )}
 
-            <button
-              onClick={() => skip(15)}
-              className="text-white text-lg sm:text-xl hover:scale-110 transition"
-              aria-label="Fast Forward"
-            >
-              <FaStepForward />
+            {/* Skip Forward */}
+            <button onClick={() => skip(15)} className="text-white hover:text-gray-300">
+              <SkipForward size={20} />
             </button>
 
-            {/* Volume Control */}
-            <div className="hidden sm:flex items-center space-x-2">
-              <FaVolumeUp className="text-white" />
-              <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.01}
-                value={volume}
-                onChange={handleVolumeChange}
-                className="w-16 sm:w-24"
-              />
-            </div>
+            {/* Volume */}
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              value={volume}
+              onChange={handleVolumeChange}
+              className="w-24 accent-blue-500"
+            />
 
             {/* Progress */}
             <input
@@ -164,22 +158,22 @@ const MiniPlayer = ({ episode, onSkip }) => {
               value={progress}
               onChange={handleProgressChange}
               onInput={(e) => setProgress(parseFloat(e.target.value))}
-              className="w-28 sm:w-36"
+              className="w-32 md:w-40 accent-green-500"
             />
 
-            {/* Time Display */}
-            <p className="text-white text-xs sm:text-sm min-w-[80px]">
+            {/* Time */}
+            <div className="text-white text-xs min-w-[80px] text-right">
               {formatTime(progress)} / {formatTime(audioRef.current?.duration || 0)}
-            </p>
+            </div>
 
-            {/* Likes */}
+            {/* Like */}
             <button
               onClick={handleLike}
-              className={`flex items-center space-x-2 text-white px-3 py-1 rounded-full text-sm font-semibold hover:bg-gray-800 transition ${
-                hasLiked ? "opacity-50" : ""
+              className={`flex items-center text-white text-sm px-2 py-1 rounded-full ${
+                hasLiked ? "opacity-50 cursor-default" : "hover:bg-gray-800"
               }`}
             >
-              <FaHeart /> <span>{likes}</span>
+              <Heart size={16} className="mr-1" /> {likes}
             </button>
           </div>
         </div>
@@ -192,7 +186,7 @@ const MiniPlayer = ({ episode, onSkip }) => {
         />
       </div>
 
-      {/* Full Player Modal */}
+      {/* Full Modal */}
       {showFullPlayer && (
         <FullPlayerModal
           episode={episode}

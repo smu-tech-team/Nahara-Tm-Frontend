@@ -1,7 +1,7 @@
 import React from "react";
 
 const PostSkeleton = () => {
-  const placeholderLogo = "/SmartLogoMain.png"; // Replace with your logo path
+  const placeholderLogo = "/Nahara_Red[1].png"; // Replace with your logo path
 
   return (
     <div className="flex flex-col gap-4 bg-gray-800 dark:bg-gray-900 text-white p-4 rounded-lg shadow-md animate-pulse">

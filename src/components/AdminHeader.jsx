@@ -7,6 +7,10 @@ import DefaultAvatar from "/anonymous-8291223_1280.webp";
 import axios from "axios";
 import AdminReminderSetting from "../components/AdminReminderSetting"; 
 import useAuthStore from "../store/authStore";
+import { MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // Assuming React Router is in use
+import AdminAddBanner from "./AdminAddBanner";
+
 
 const AdminHeader = () => {
     const { user, setUser, clearUser } = useAuthStore();
@@ -18,6 +22,13 @@ const AdminHeader = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
+    const [appealCount, setAppealCount] = useState(0);
+
+       const handleBannerAdded = (newBanner) => {
+        console.log("Banner Added:", newBanner);
+    };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -139,6 +150,21 @@ const AdminHeader = () => {
         }
     }, []);
 
+    useEffect(() => {
+        const fetchAppeals = async () => {
+          try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get(" http://localhost:8087/api/appeal/count", {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            setAppealCount(response.data.count || 0);
+          } catch (err) {
+            console.error("Failed to fetch appeal count", err);
+          }
+        };
+        fetchAppeals();
+      }, []);
+
     return (
         <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-4 gap-4 items-center mb-6">
             <div className="flex items-center justify-center">
@@ -161,7 +187,9 @@ const AdminHeader = () => {
                 </p>
             </div>
 
-            <div className="flex justify-center lg:justify-end">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-end space-y-4 lg:space-y-0 lg:space-x-4">
+    <div className="flex justify-center lg:justify-end">
+            <AdminAddBanner onBannerAdded={handleBannerAdded} />    </div>
     <motion.button
         onClick={handleSettingsToggle}
         className="bg-blue-800 from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white px-4 py-2 md:px-6 md:py-3 rounded-lg flex items-center shadow-lg transition-transform hover:scale-105"
@@ -171,6 +199,21 @@ const AdminHeader = () => {
         Settings
     </motion.button>
 </div>
+
+<div className="relative ml-4">
+  <button
+    onClick={() => navigate("/admin/appeals")}
+    className="relative bg-white border border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white p-2 rounded-full transition"
+  >
+    <MessageCircle className="w-6 h-6" />
+    {appealCount > 0 && (
+      <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-full">
+        {appealCount}
+      </span>
+    )}
+  </button>
+</div>
+
 
 {settingsOpen && (
     <motion.div
@@ -192,12 +235,9 @@ const AdminHeader = () => {
             </motion.button>
         </div>
 
-        {/* Admin Reminder Setting */}
         <div className="mt-4 sm:mt-8">
             <AdminReminderSetting />
         </div>
-
-        {/* Drag-and-Drop Area */}
         <motion.div
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleDragAndDrop}

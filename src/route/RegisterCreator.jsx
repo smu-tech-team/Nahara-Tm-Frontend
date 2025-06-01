@@ -62,7 +62,7 @@ const CreatorRegister = () => {
   <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
     <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-xl w-11/12 sm:w-4/5 md:w-3/5 max-w-2xl">
       <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 text-center text-gray-900 dark:text-white">
-        📢 Important Guidelines for <span className="font-bold text-red-600">SMUTV</span> Creators
+        📢 Important Guidelines for <span className="font-bold text-red-600">NAHARA</span> Creators
       </h2>
       <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
         As a content creator, you play a key role in shaping public opinion. It is essential to ensure that all news and

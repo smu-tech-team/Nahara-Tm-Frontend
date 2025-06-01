@@ -37,29 +37,34 @@ const PodcastActions = ({
     setViews((prevViews) => prevViews + 1);
     setSelectedPodcast(podcast);
   };
+ const formatNumber = (num) => {
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + "M";
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + "k"; 
+  }
+  return num;
+};
 
   return (
     <>
-      <div className="flex items-center gap-4 text-gray-700 dark:text-white">
-        {/* Like Button */}
-        <button
-          onClick={handleLike}
-          className="flex items-center gap-1 hover:text-red-500 transition"
-        >
-          <FaHeart className={liked ? "text-red-600" : ""} />
-          <span>{likes}</span>
-        </button>
+      <div className="flex items-center gap-4 text-gray-400 dark:text-white">
+      <button
+        onClick={handleLike}
+        className="flex items-center gap-1 hover:text-red-500 transition"
+      >
+        <FaHeart className={liked ? "text-red-600" : ""} />
+        <span>{formatNumber(likes)}</span>
+      </button>
 
-        {/* Play Button */}
-        <button
-          onClick={handlePlay}
-          className="flex items-center gap-1 hover:text-green-500 transition"
-        >
-          <FaPlay />
-          <span>{views}</span>
-        </button>
-
-        {/* Share Button */}
+      <button
+        onClick={handlePlay}
+        className="flex items-center gap-1 hover:text-green-500 transition"
+      >
+        <FaPlay />
+        <span>{formatNumber(views)}</span>
+      </button>
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -71,8 +76,6 @@ const PodcastActions = ({
           <span>Share</span>
         </button>
       </div>
-
-      {/* Share Modal */}
       {showShare && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"

@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import PostSkeleton from "../components/PostSkeleton"; // Import skeleton loader
+import { FaTag, FaEye, FaUser } from "react-icons/fa"; // Import icons
 
 const PostListItem = ({ post }) => {
-  const [isVisible, setIsVisible] = useState(false); // Tracks visibility in viewport
-  const [imageLoaded, setImageLoaded] = useState(false); // Tracks image load state
-  const [loadingDelay, setLoadingDelay] = useState(true); // Tracks simulated delay
-  const placeholderLogo = "/SmartLogoMain.png"; // Replace with website logo
+  const [isVisible, setIsVisible] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [loadingDelay, setLoadingDelay] = useState(true);
+  const placeholderLogo = "/Nahara_Red[1].png"; 
   const containerRef = useRef(null);
 
   const localTime = post.createdAt
@@ -21,10 +22,7 @@ const PostListItem = ({ post }) => {
           observer.disconnect();
         }
       },
-      {
-        rootMargin: "200px",
-        threshold: 0.1,
-      }
+      { rootMargin: "200px", threshold: 0.1 }
     );
 
     if (containerRef.current) observer.observe(containerRef.current);
@@ -34,15 +32,13 @@ const PostListItem = ({ post }) => {
 
   useEffect(() => {
     if (isVisible) {
-      // Simulated delay before content shows
       const timeout = setTimeout(() => {
         setLoadingDelay(false);
-      }, 1500); // Adjust delay time (e.g., 1500ms for 1.5s)
-      return () => clearTimeout(timeout); // Cleanup timeout
+      }, 1500); 
+      return () => clearTimeout(timeout);
     }
   }, [isVisible]);
 
-  // ✨ Render skeleton during delay
   if (!isVisible || loadingDelay) {
     return (
       <div ref={containerRef}>
@@ -54,10 +50,10 @@ const PostListItem = ({ post }) => {
   return (
     <div
       ref={containerRef}
-      className="flex flex-col gap-4 bg-gray-800 dark:bg-gray-900 text-white p-4 rounded-lg shadow-md hover:shadow-lg transition"
+      className="bg-white dark:bg-gray-900 text-gray-800 dark:text-white p-4 rounded-lg shadow-lg hover:shadow-xl transition"
     >
       {/* Image Section */}
-      <div className="relative w-full h-40 overflow-hidden rounded-lg bg-gray-700 flex items-center justify-center">
+      <div className="relative w-full h-40 rounded-lg overflow-hidden bg-gray-700 flex items-center justify-center">
         {!imageLoaded && (
           <img
             src={placeholderLogo}
@@ -80,45 +76,49 @@ const PostListItem = ({ post }) => {
       {/* Title */}
       <Link
         to={`/${post.slug}`}
-        className="text-xl font-bold hover:text-blue-400 transition"
+        className="text-lg font-semibold hover:text-blue-500 transition mt-3 block"
       >
         {post.title || "Untitled Post"}
       </Link>
 
-      {/* Meta Info */}
-      <div className="flex flex-wrap items-center gap-2 text-gray-400 text-sm">
-        <span>Written by</span>
+      {/* Meta Info - Now with Icons! */}
+      <div className="flex flex-wrap items-center gap-3 text-gray-500 text-sm mt-2">
+        <FaUser className="text-blue-400" />
         <Link
           to={`/creator/${post?.creator?.id}`}
-          className="text-blue-400 hover:underline"
+          className="hover:underline"
         >
           {post?.creator?.blogName || "Unknown Creator"}
         </Link>
-        <span>on</span>
+        <span>•</span>
+        <FaTag className="text-green-400" />
         <Link
           to={`/posts?category=${post.category || ""}`}
-          className="text-blue-400 hover:underline"
+          className="hover:underline"
         >
           {post.category || "Uncategorized"}
         </Link>
         <span>•</span>
+
         <span>{localTime}</span>
-        <span className="font-bold">
-          views <span className="text-green-400">{post.views}</span>
-        </span>
+
+        <span>•</span>
+
+        <FaEye className="text-red-400" />
+        <span className="font-semibold text-gray-700 dark:text-gray-300">{post.views} Views</span>
       </div>
 
       {/* Description */}
       {post.desc && (
-        <p className="text-gray-300 dark:text-gray-400 leading-relaxed line-clamp-2">
+        <p className="text-gray-600 dark:text-gray-400 text-sm mt-2 leading-relaxed line-clamp-3">
           {post.desc}
         </p>
       )}
 
-      {/* Read More */}
+      {/* Read More Button */}
       <Link
         to={`/${post.slug}`}
-        className="text-blue-400 hover:text-blue-300 font-medium transition"
+        className="text-blue-500 hover:text-blue-400 font-medium transition mt-3 block"
       >
         Read More →
       </Link>

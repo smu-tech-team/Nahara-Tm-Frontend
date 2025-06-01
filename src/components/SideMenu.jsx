@@ -1,5 +1,5 @@
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Search, Filter, ChevronRight } from "lucide-react";
+import {  Filter, ChevronRight } from "lucide-react";
 import SearchBar from "../components/Search";
 
 const SideMenu = () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "/SmartLogoMain.png";
+import logo from "/Nahara_Red[1].png";
 
 const Skeleton = ({ className }) => {
   return (

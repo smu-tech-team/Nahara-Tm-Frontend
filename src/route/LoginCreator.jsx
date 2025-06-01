@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import BackGroundVideo from "/creator.mp4";
-import HomeLogo from "/SmartLogoMain.png"
+import HomeLogo from "/Nahara_Red[1].png"
 import { ShieldCheck } from "lucide-react";
 
 
@@ -38,9 +38,7 @@ const CreatorLogin = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-  
-    // Enhanced validation
-    if (!blogName.trim() || !password.trim()) {
+      if (!blogName.trim() || !password.trim()) {
       setError("All fields are required.");
       return;
     }

@@ -3,19 +3,19 @@ import React from 'react';
 const WritingStyleGuide = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-lg shadow-lg">
-      <h1 className="text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-8">SMUTV Writing Style Guide</h1>
+      <h1 className="text-4xl font-extrabold text-center text-gray-900 dark:text-white mb-8">NAHARA Writing Style Guide</h1>
 
       <section className="mb-8">
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-white hover:text-blue-500 transition-colors duration-300">1. Purpose of the Style Guide</h2>
         <p className="text-gray-700 dark:text-gray-300 mt-2 leading-relaxed">
-          This style guide ensures that all content submitted to SMUTV is clear, consistent, professional, and aligns with our brand values. It applies to all creators and writers.
+          This style guide ensures that all content submitted to NAHARA is clear, consistent, professional, and aligns with our brand values. It applies to all creators and writers.
         </p>
       </section>
 
       <section className="mb-8">
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-white hover:text-blue-500 transition-colors duration-300">2. Tone and Voice</h2>
         <p className="text-gray-700 dark:text-gray-300 mt-2 leading-relaxed">
-          SMUTV aims to create a voice that resonates with a diverse, global audience while staying approachable, respectful, and informative. Here are the key characteristics of our tone:
+          NAHARA aims to create a voice that resonates with a diverse, global audience while staying approachable, respectful, and informative. Here are the key characteristics of our tone:
         </p>
         <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 mt-4 space-y-3">
           <li><strong>Conversational yet professional:</strong> Write in a way that is friendly, clear, and easy to understand, while maintaining professionalism.</li>
@@ -110,7 +110,7 @@ const WritingStyleGuide = () => {
       <section className="mb-8">
         <h2 className="text-3xl font-semibold text-gray-800 dark:text-white hover:text-blue-500 transition-colors duration-300">11. Submission Requirements</h2>
         <ul className="list-disc pl-6 text-gray-700 dark:text-gray-300 mt-4 space-y-3">
-          <li>Submit content in Google Docs, Word format, or directly to the SMUTV platform.</li>
+          <li>Submit content in Google Docs, Word format, or directly to the NAHARA platform.</li>
           <li>Include a brief summary or introduction to each article (1-2 sentences).</li>
           <li>Provide any necessary links or references used in the article.</li>
           <li>All images and media must be submitted alongside the content with proper attribution.</li>

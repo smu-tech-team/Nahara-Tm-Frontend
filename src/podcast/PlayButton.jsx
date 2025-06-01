@@ -5,7 +5,7 @@ const PlayButton = ({ episode, playlist }) => {
 
   return (
     <button
-      onClick={() => loadTrack(episode, playlist, playlist.findIndex((ep) => ep.id === episode.id))}
+      onClick={() => loadTrack(episode, playlist, playlist.findIndex((ep) => ep.episode_id === episode.episode_id))}
     >
       ▶️ Play
     </button>

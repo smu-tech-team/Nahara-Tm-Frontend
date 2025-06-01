@@ -11,32 +11,26 @@ import { useQuery } from "@tanstack/react-query";
 import PostCard from "../components/PostCard";
 import  Skeleton  from "../components/Skelete";
 import PostShareActions from "./PostShareActions";
-import LikeButton from "./LikeButton ";
-
-
-
-
+import PostTakenDown from "./PostTakenDown";
+import PostLikeButton from "./PostLikeButton";
+import MarketDashboard from "./MarketDashboard";
+import AdSpace from "./AdSpace";
 const fetchPost = async (slug) => {
     try {
         const response = await axios.get(`http://localhost:8087/api/post/post/${slug}`);
-        return response.data; // ✅ Return the data
+        return response.data; 
     } catch (error) {
         console.error("Error fetching post:", error);
-        throw new Error("Failed to fetch post"); // ✅ Throw an error so React Query can handle it
+        throw new Error("Failed to fetch post");
     }
 };
-
 const SinglePostPage = () => {
     const { slug } = useParams();
     console.log("Slug from URL:", slug);
     const [views, setViews] = useState(0);
     const [message] = useState(null);
     const [postDetails, setPostDetails] = useState(null);
-    const [isLoading, setIsLoading] = useState(true); // Loading state
-
- 
-
-
+    const [isLoading, setIsLoading] = useState(true);
     const fetchRelatedPosts = async (slug) => {
         const response = await axios.get(`http://localhost:8087/api/post/${slug}/related`);
         if (response.status !== 200) {
@@ -44,14 +38,11 @@ const SinglePostPage = () => {
         }
         return response.data;
     };
-
-    
         useEffect(() => {
         if (!slug) {
             console.error("slug is undefined");
             return;
         }
-
         const fetchPost = async () => {
             try {
                 const response = await axios.get(` http://localhost:8087/api/post/post/${slug}`);
@@ -63,7 +54,6 @@ const SinglePostPage = () => {
                 setIsLoading(false);
             }
         };
-
         const updateViews = async () => {
             const viewedPosts = JSON.parse(localStorage.getItem("viewedPosts")) || [];
             if (!viewedPosts.includes(slug)) {
@@ -103,38 +93,27 @@ const SinglePostPage = () => {
         queryFn: () => fetchPost(slug),
         enabled: !!slug,
     });
-    
-    // Handle errors for related posts separately
-    if (relatedPostsError) {
+        if (relatedPostsError) {
         console.error("Error fetching related posts:", relatedPostsError);
         return <p className="text-gray-500">Error loading related posts.</p>;
     }
-    
-    // Handle loading and data states for main post and related posts
-    if (isLoadingPost || isLoadingRelatedPosts) {
+        if (isLoadingPost || isLoadingRelatedPosts) {
         return <Skeleton className="w-full h-64" />;
     }
-    
     if (!postDetails) {
         return <p className="text-center text-gray-500">Post not found</p>;
     }      
-
-    
     const localTime = postData?.createdAt ? new Date(postData.createdAt).toLocaleString() : "Unknown Date";
-
-
-
+    if (postDetails.status === "TAKEN_DOWN") {
+        return <PostTakenDown slug={slug} />;
+    }
     return (
         <div className="flex flex-col gap-12 p-4 md:p-8">
-            {/* Post Details */}
             <div className="flex flex-col lg:flex-row gap-8">
-            {/* Left Content */}
             <div className="lg:w-3/5 flex flex-col gap-6">
-               
             <h1 className="text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-bold leading-tight">
             {postDetails.title}
                     </h1>
-                    {/* Post Meta Info */}
                     <div className="flex flex-wrap items-center gap-3 text-gray-500 text-sm">
                     <span>Written by</span>
                         <Link to={`/creator/${postDetails?.creator?.id}`} 
@@ -146,7 +125,7 @@ const SinglePostPage = () => {
                         <Link to="cat"
                          className="text-blue-700 font-semibold hover:underline"
                          >{postData.category}</Link>
-                        <span>{localTime}</span> {/* Displays proper local time */}
+                        <span>{localTime}</span> 
                         <span className="ml-4 text-gray-600 dark:text-gray-400">
                             👁️ {" "}
                              <span className="text-green-400">{postData.views} </span> {" "}
@@ -157,28 +136,25 @@ const SinglePostPage = () => {
                         {postDetails.desc}
                     </p>
                 </div>
-
                 { postDetails.img && <div className="hidden lg:block lg:w-2/5">
                    <img src={postDetails.img} width="500" className="rounded-2xl shadow-lg" />
                 </div>}
             </div>
 
             <div className="flex flex-col md:flex-row gap-10">
-                {/* Article Content */}
                 <div className="lg:w-3/5 text-base leading-relaxed space-y-6">
                 <p className="text-justify">
                         {postDetails.content}
                     </p>
 
+                  
                     <div>
-                    <h1 className="text-center font-bold">Advertisment</h1>
-
-                   <div className="flex justify-center my-8">
-                         <Image src="myphoto.jpg" w="300" h="250" className="rounded-lg shadow-md" />
-                    </div>
+                        <h1 className="text-center font-bold">Advertisment</h1>
+                        <div className="flex justify-center my-8">
+                            <Image src="myphoto.jpg" w="300" h="250" className="rounded-lg shadow-md" />
+                        </div>
                     </div>
                 </div>
-                
                 <div className="md:w-1/3 px-4 py-4 bg-gray-800 dark:bg-white text-white dark:text-black rounded-2xl shadow-lg sticky top-8">
                     <h2 className="text-lg font-semibold mb-4">Author</h2>
                     <div className="flex items-center gap-4">
@@ -198,12 +174,9 @@ const SinglePostPage = () => {
                         </Link>
                         </div>
                     </div>
-
                     <p className="mt-4 text-gray-400 text-sm break-words whitespace-pre-line max-w-md">
                         {postDetails.creator.blogDescription}
                     </p>
-
-
                     <div className="flex gap-3 mt-4">
                         <Link to="#">
                             <Image src="2021_Facebook_icon.svg.png" 
@@ -214,8 +187,6 @@ const SinglePostPage = () => {
                             <Image src="instagram.svg" className="h-8 w-8 hover:opacity-80 transition" />
                         </Link>
                     </div>
-
-                    {/* Post Menu Actions */}
                     <div className="mt-6">
                         <h2 className="text-lg font-semibold mb-3">Actions</h2>
                         <PostMenuActions
@@ -224,9 +195,7 @@ const SinglePostPage = () => {
                         content={postDetails?.content}
                         userId={postDetails?.id}
                         />
-
                     </div>
-
                     <div className="mt-6 ">
                         <h1 className="text-sm font-medium  mb-4">Categories</h1>
                         <div className="flex flex-col gap-2 text-sm">
@@ -238,32 +207,26 @@ const SinglePostPage = () => {
                             <Link className="hover:underline" to="">Hot Gist</Link>
                         </div>
                     </div>
-
                     <div className="mt-6">
                         <h1 className="text-sm font-medium   mb-4">Search</h1>
                         <SearchBar />  
                     </div>
-                    
                 </div>
             </div>
             <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-center">
-            <LikeButton postId={postDetails.id} />
+            <PostLikeButton
+             postId={postDetails.id} 
+            initialLikes={postDetails.likes?.length || 0}
+            initiallyLiked={postDetails.likedByCurrentUser || false}
+            post={postData}
+             />
             <PostShareActions slug={slug}  />
             </div>
-            <button
-                onClick={() => (window.location.href = `/report-post?slug=${slug}`)} // Redirects user to report page
-                className="relative px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-700
-                 rounded-lg shadow-lg hover:from-red-600 hover:to-red-800 focus:outline-none focus:ring focus:ring-red-300 
-                 transition-transform transform hover:scale-105 active:scale-95"
-                >
-                <span className="absolute inset-0 bg-red-700 opacity-25 rounded-lg blur-lg"></span>
-                <span className="relative">🚨 Report Post</span>
-                </button>
+            
               <div className="my-10">
                 <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center pt-30 border-b-2 border-gray-300 dark:border-gray-700">
                     Related Posts
                 </h2>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                     {isLoadingRelatedPosts ? (
                     <Skeleton className="w-full h-48" />
@@ -284,10 +247,20 @@ const SinglePostPage = () => {
                     ) : (
                     <p className="text-gray-500">No related posts found.</p>
                     )}
+                </div>         
+            <button
+                onClick={() => (window.location.href = `/report-post?slug=${slug}`)} // Redirects user to report page
+                className="relative px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-700
+                 rounded-lg shadow-lg hover:from-red-600 hover:to-red-800 focus:outline-none focus:ring focus:ring-red-300 
+                 transition-transform transform hover:scale-105 active:scale-95"
+                >
+                <span className="absolute inset-0 bg-red-700 opacity-25 rounded-lg blur-lg"></span>
+                <span className="relative">🚨 Report Post</span>
+                </button>
+                <div className="mt-12">
+                <MarketDashboard />
                 </div>
-               
 
-                            
                   <div className="pt-4 pb-4">
             {message && 
             <div className="mt-4 text-sm text-gray-600">{message}</div>}
@@ -295,12 +268,11 @@ const SinglePostPage = () => {
              <Comments 
              postId={postDetails.id}
              userId={postDetails.id} />
-             
             </div>
+         <AdSpace />
+            
+            
         </div>
-
-    
     );
 };
-
 export default SinglePostPage;

@@ -60,7 +60,7 @@ const ReportPost = () => {
       transition={{ duration: 0.6 }}
       className="p-6 max-w-3xl mx-auto bg-gray-100 dark:bg-gray-900 mt-6 mb-6 rounded-lg shadow-lg"
     >
-      <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white">Report Post</h1>
+      <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white pt-10">Report Post</h1>
       <p className="mt-4 text-gray-600 dark:text-gray-300">
         If you find any content that violates our guidelines, please report it below.
       </p>

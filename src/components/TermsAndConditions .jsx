@@ -11,7 +11,9 @@ const TermsAndConditions = () => {
         title: '2. Content Submission',
         content: (
           <p className="text-gray-700 dark:text-gray-300">
-            Contributors retain ownership of their original work but grant SMUTV a worldwide, perpetual, royalty-free license to use, edit, distribute, and promote submissions across all channels. Content must not infringe upon intellectual property rights and must meet our{' '}
+            Contributors retain ownership of their original work but grant NAHARA a worldwide, perpetual, 
+            royalty-free license to use, edit, distribute, and promote submissions across all channels.
+             Content must not infringe upon intellectual property rights and must meet our{' '}
             <a
               href="/editorial-standard"
               className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
@@ -26,7 +28,7 @@ const TermsAndConditions = () => {
       title: '3. Creator & Writer Responsibilities',
       content: (
         <ul className="list-disc pl-5 space-y-2">
-          <li>Produce original, engaging, and informative content aligned with SMUTV’s values.</li>
+          <li>Produce original, engaging, and informative content aligned with NAHARA’s values.</li>
           <li>Uphold accuracy and verify all facts before submission.</li>
           <li>Avoid defamatory, harmful, or misleading material.</li>
           <li>Participate in constructive feedback and maintain professionalism in communications.</li>
@@ -57,7 +59,7 @@ const TermsAndConditions = () => {
             href="mailto:support@smutv.com"
             className="text-blue-600 dark:text-blue-400 hover:underline"
           >
-            support@smutv.com
+            support@nahara.com
           </a>
           {' '}or visit our Help Center.
         </>
@@ -75,7 +77,7 @@ const TermsAndConditions = () => {
       <div className="text-center mb-16">
         <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">Terms & Conditions</h1>
         <p className="mt-4 text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
-          These terms are designed to ensure a transparent and collaborative experience for all creators and contributors on SMUTV.
+          These terms are designed to ensure a transparent and collaborative experience for all creators and contributors on NAHARA.
         </p>
       </div>
 
