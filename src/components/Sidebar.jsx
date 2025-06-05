@@ -15,6 +15,7 @@ import {
   FaPenFancy, 
   FaSadTear, 
   FaTimesCircle, 
+  FaUserEdit,
 } from "react-icons/fa";
 const menuItems = [
   { icon: <FaNewspaper size={18} />, label: "Live News", color: "hover:text-blue-500", action: "addLiveNews" },
@@ -27,6 +28,8 @@ const menuItems = [
   { icon: <FaToolbox size={18} />, label: "Creator Tools", color: "hover:text-yellow-500", action: "creatorTools", needsPopup: true },
   { icon: <FaGavel size={18} />, label: "Appeals", color: "hover:text-red-500", action: "appeals", needsPopup: true },
   { icon: <FaPenFancy size={18} />, label: "Create Post", color: "hover:text-blue-600", route: "/get-started/write/ebook" }, 
+  {icon: <FaUserEdit size={18} />,label: "Update Profile",color: "hover:text-blue-600",route: "/creator-profile"}
+
 ];
 const Sidebar = ({ setActiveModal }) => {
   const [isOpen, setIsOpen] = useState(false);

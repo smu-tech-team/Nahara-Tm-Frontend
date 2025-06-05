@@ -5,16 +5,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, CheckCircle2 } from 'lucide-react'
 import Button  from '../components/button'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom' // Import the useNavigate hook
+import { useNavigate } from 'react-router-dom' 
 
 const BlogNameSchema = Yup.object().shape({
-  blogName: Yup.string().required('Blog name is required'),
+  blogName: Yup.string().required('Creator name or Blog name is required'),
 })
-
 const OTPSchema = Yup.object().shape({
   otp: Yup.string().length(6, 'OTP must be 6 digits').required('OTP is required'),
 })
-
 const OtpPage = () => {
   const [step, setStep] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
@@ -23,21 +21,17 @@ const OtpPage = () => {
   const [blogName, setBlogName] = useState('')
   const [message, setMessage] = useState('')
   
-  const navigate = useNavigate() // useNavigate hook for redirection
-
-  // ✅ Cooldown timer effect
+  const navigate = useNavigate()
   useEffect(() => {
     if (cooldown > 0) {
       const timer = setTimeout(() => setCooldown((prev) => prev - 1), 1000)
       return () => clearTimeout(timer)
     }
   }, [cooldown])
-
-  // ✅ Redirect after successful email verification
   useEffect(() => {
     if (emailVerified) {
       const timer = setTimeout(() => {
-        navigate('/creator-dashboard') // Redirect to creator-dashboard after successful verification
+        navigate('/creator-dashboard')
       }, 2000)
       return () => clearTimeout(timer)
     }
@@ -88,7 +82,6 @@ const OtpPage = () => {
       setIsLoading(false)
     }
   }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-black px-4">
       <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md space-y-4">
@@ -102,7 +95,6 @@ const OtpPage = () => {
         {message && (
           <div className="text-center text-sm text-blue-500 dark:text-blue-300">{message}</div>
         )}
-
         <AnimatePresence mode="wait">
           {step === 1 && (
             <motion.div

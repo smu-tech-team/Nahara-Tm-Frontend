@@ -7,6 +7,7 @@ import HomeLogo from "/Nahara_Red[1].png";
 import { ShieldCheckIcon } from "lucide-react";
 import { getToken, getMessaging } from "firebase/messaging";
 import { messaging } from "../store/firebaseConfig.js";
+import GoogleLoginButton from "../components/GoogleLoginButton.jsx";
 
 
 const UserLogin = () => {
@@ -191,6 +192,11 @@ try {
             )}
           </button>
         </form>
+        <div className="text-center">
+  <p className="text-white my-4">Or continue with</p>
+  <GoogleLoginButton onLoginSuccess={() => navigate("/")} />
+    </div>
+
 
         <div className="mt-4 text-center">
           <button onClick={() => setForgotPassword(true)} className="text-blue-500 hover:underline">Forgot Password?</button>

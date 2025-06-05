@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import creatorImage from "/Mobile-login.jpg";
+import { motion } from "framer-motion";
+import GoogleLoginButton from "../components/GoogleLoginButton";
 
 const CreatorRegister = () => {
   const [blogName, setBlogName] = useState("");
@@ -16,10 +19,8 @@ const CreatorRegister = () => {
   const [agreed, setAgreed] = useState(false);
   const navigate = useNavigate();
 
-
   const handleRegister = async (e) => {
     e.preventDefault();
-
     if (!agreed) {
       setError("You must agree to the guidelines before registering.");
       return;
@@ -30,8 +31,9 @@ const CreatorRegister = () => {
       return;
     }
 
-    if (password.length < 8 || !/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/.test(password)) {
-      setError("Password must be at least 8 characters long and include letters, numbers, and special characters.");
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/;
+    if (password.length < 8 || !passwordRegex.test(password)) {
+      setError("Password must be at least 8 characters and include letters, numbers, and symbols.");
       return;
     }
 
@@ -40,155 +42,167 @@ const CreatorRegister = () => {
     setSuccess("");
 
     try {
-      const response = await axios.post("http://localhost:8087/api/creator/register", {
-        blogName,
-        email,
-        password,
-        role,
-      });
-
+      const response = await axios.post(
+        "http://localhost:8087/api/creator/register",
+        { blogName, email, password, role }
+      );
       setSuccess(response.data.message);
       setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
-      setError(error.response ? error.response.data.message : "An error occurred. Please try again.");
+      setError(error.response?.data?.message || "An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-   {showPopup && (
-  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-    <div className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-lg shadow-xl w-11/12 sm:w-4/5 md:w-3/5 max-w-2xl">
-      <h2 className="text-lg sm:text-xl md:text-2xl font-bold mb-4 text-center text-gray-900 dark:text-white">
-        📢 Important Guidelines for <span className="font-bold text-red-600">NAHARA</span> Creators
-      </h2>
-      <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-        As a content creator, you play a key role in shaping public opinion. It is essential to ensure that all news and
-        information you share are **verified, accurate, and responsible**.
-      </p>
-      <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 mb-4">
-        ❌ <span className="font-bold text-red-600">Do not</span> publish or distribute **fake news** or **unverified information**.  
-        🛑 Any misleading content will be removed immediately when reported.  
-        ✅ Always fact-check before posting to maintain credibility.  
-      </p>
-      <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300">
-        Fake news can harm individuals, damage reputations, and mislead communities. Let&apos;s work together to promote
-        **truthful and impactful content**. By proceeding, you agree to uphold these standards.
-      </p>
-      <label className="flex items-center text-sm sm:text-base md:text-lg mt-4">
-        <input
-          type="checkbox"
-          className="mr-3 w-4 sm:w-5 h-4 sm:h-5"
-          checked={agreed}
-          onChange={(e) => setAgreed(e.target.checked)}
-        />
-        <span className="text-gray-900 dark:text-gray-300">I agree to follow these guidelines.</span>
-      </label>
-      <button
-        className={`mt-6 w-full py-2 sm:py-3 text-sm sm:text-lg rounded-lg text-white font-semibold transition ${
-          agreed ? "bg-blue-800 hover:bg-blue-600" : "bg-gray-400 cursor-not-allowed"
-        }`}
-        onClick={() => agreed && setShowPopup(false)}
-        disabled={!agreed}
-      >
-        Proceed
-      </button>
-    </div>
-  </div>
-)}
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col justify-center items-center px-4 py-6">
+      {showPopup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-lg w-full shadow-lg space-y-4">
+            <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-white">
+              📢 Creator Guidelines for <span className="text-red-600">NAHARA</span>
+            </h2>
+            <p className="text-gray-700 dark:text-gray-300 text-sm">
+              ✅ Ensure content is <strong>factual</strong>.  
+              ❌ Avoid fake news.  
+              🛑 Violations will lead to removal.  
+              💡 Build a trusted creator space.
+            </p>
+            <label className="flex items-center mt-2 text-gray-800 dark:text-gray-200">
+              <input
+                type="checkbox"
+                className="mr-3 w-5 h-5"
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+              />
+              I agree to follow these guidelines.
+            </label>
+            <button
+              onClick={() => agreed && setShowPopup(false)}
+              disabled={!agreed}
+              className={`w-full py-3 text-lg rounded-lg font-semibold transition ${
+                agreed
+                  ? "bg-blue-800 hover:bg-blue-600 text-white"
+                  : "bg-gray-400 text-gray-100 cursor-not-allowed"
+              }`}
+            >
+              Proceed
+            </button>
+          </div>
+        </div>
+      )}
 
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 dark:text-white">Register Creator</h2>
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        {success && <p className="text-green-500 text-center mb-4">{success}</p>}
-        <form onSubmit={handleRegister}>
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300">Blog Name:</label>
-            <input
-              type="text"
-              value={blogName}
-              onChange={(e) => setBlogName(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg text-black dark:bg-gray-700 dark:text-white"
-            />
+      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-10 items-center ">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center text-center space-y-6 order-1 md:order-2"
+        >
+          <img
+            src={creatorImage}
+            alt="Content Creator"
+            className="w-[90%] md:w-[400px] rounded-2xl shadow-xl"
+          />
+          <div>
+            <h3 className=" section-title">
+              Empower Your Voice
+            </h3>
+            <p className="mt-2 text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+              Join thousands of creators sharing impactful stories. Grow your brand and inspire change with every post.
+            </p>
           </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 dark:text-gray-300">Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg text-black dark:bg-gray-700 dark:text-white"
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700 dark:text-gray-300">Password:</label>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md w-full"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">
+            Register as Creator
+          </h2>
+          {error && <p className="text-red-500 mb-3 text-center">{error}</p>}
+          {success && <p className="text-green-500 mb-3 text-center">{success}</p>}
+
+          <form onSubmit={handleRegister} className="space-y-4">
+            <div>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Creator Name or Blog Name</label>
+              <input
+                type="text"
+                value={blogName}
+                onChange={(e) => setBlogName(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-600"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-600"
+              />
+            </div>
+            <div className="relative">
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
               <input
                 type={showPassword ? "text" : "password"}
-                id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded-lg text-black dark:bg-gray-700 dark:text-white"
+                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-600"
               />
-              <button
-                type="button"
+              <div
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-3 flex items-center text-gray-500 dark:text-gray-300"
+                className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer text-gray-500 pt-5 dark:text-gray-300"
               >
-              </button>
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Role</label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white"
+              >
+                <option value="CREATOR">Creator</option>
+              </select>
+            </div>
+            <div className="flex items-center text-sm">
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+                className="mr-2 w-4 h-4 text-blue-600 border-gray-300 rounded"
+              />
+              <label className="text-gray-700 dark:text-gray-300">
+                I agree to the{" "}
+                <Link
+                  to="/termsAndConditions"
+                  className="text-blue-600 hover:underline dark:text-blue-400"
+                  target="_blank"
+                >
+                  Terms and Conditions
+                </Link>
+              </label>
             </div>
 
-          <div className="mb-4">
-            <label htmlFor="role" className="block text-gray-700 dark:text-gray-300">Role:</label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2 border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-800 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-600 transition"
             >
-              <option value="CREATOR">Creator</option>
-            </select>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out"
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <svg className="animate-spin h-5 w-5 mx-auto" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.964 7.964 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-            ) : (
-              "Register"
-            )}
-          </button>
-          <div className="flex items-center mt-2 mb-4">
-        <input
-          type="checkbox"
-          checked={agreed}
-          onChange={(e) => setAgreed(e.target.checked)}
-          className="mr-2 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-        />
-        <label className="text-sm text-gray-700 dark:text-gray-300">
-          I agree to the{' '}
-          <Link
-            to="/termsAndConditions"
-            className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
-            target="_blank"
-          >
-            Terms and Conditions
-          </Link>
-        </label>
+              {isLoading ? <span className="animate-spin">⏳</span> : "Register"}
+            </button>
+          </form>
+        </motion.div>
+        {/* <div className="text-center">
+          <p className="text-white my-4">Or continue with</p>
+         <GoogleLoginButton onLoginSuccess={() => navigate("/")} />
+          </div> */}
       </div>
-
-
-        </form>
-      </div>
-      
     </div>
   );
 };

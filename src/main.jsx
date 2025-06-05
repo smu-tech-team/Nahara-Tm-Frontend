@@ -61,6 +61,7 @@ import ActionManager from './components/ActionManager'
 import AdminAppeals from './components/ReadAppeals'
 import MarketDetails from './components/MarketDetails'
 import RecommendationsPage from './components/RecommendationsPage'
+import LandingPageForNewCreator from './components/LandingPage'
 import Qr from './components/Qr'
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -82,7 +83,12 @@ const router = createBrowserRouter([
       path: "/:slug",
       element: <SinglePostPage/>
      },
-    
+     {
+      path: "/creator/get-started",
+      element:<LandingPageForNewCreator/>
+     },
+
+  
      {
        path: "/read-ebook/:id",
       element: <SingleEbookPage />,

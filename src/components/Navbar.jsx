@@ -72,7 +72,7 @@ const Navbar = ({ refreshTrigger  }) => {
   const handleRoleSelection = (role) => {
     setShowRolePopup(false);
     setIsNavbarOpen(false); 
-    navigate(role === "USER" ? "/register/reader" : "/register/creator");
+    navigate(role === "USER" ? "/register/reader" : "/creator/get-started");
   };
   
   const handleLoginClick = () => {
@@ -84,7 +84,7 @@ const Navbar = ({ refreshTrigger  }) => {
     console.log("User Role:", userRole);
     setIsNavbarOpen(false); 
     if (userRole === "CREATOR") {
-      navigate("/creator-profile");
+      navigate("#");
     } else if (userRole === "ADMIN") {
       navigate("/admin-dashboard/management");
     } else {

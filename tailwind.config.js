@@ -6,6 +6,8 @@ export default {
       animation: {
         'pulse-smooth': 'pulse-smooth 1.5s ease-in-out infinite',
         'fade-in-up': 'fade-in-up 0.4s ease-out',
+        'spin-slow': 'spin 12s linear infinite',
+  
       },
       keyframes: {
         'pulse-smooth': {

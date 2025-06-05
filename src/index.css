@@ -99,4 +99,12 @@ button {
   display: block;
   margin: 20px 0;
 }
+.rolling-digit {
+  height: 1.5em; 
+}
+ .section-title{
+        @apply text-center text-3xl md:text-[40px] md:leading-[60px] font-bold tracking-tighter
+        bg-gradient-to-b from-white to-[#fd160e] text-transparent bg-clip-text ;
+    }
+
 
