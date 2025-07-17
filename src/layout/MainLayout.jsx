@@ -23,6 +23,7 @@ const MainLayout = () => {
   const [reminders, setReminders] = useState([]);
   const [loading, setLoading] = useState(true);
   const videoUrl = "https://youtu.be/N3VdeCtd8oY?si=4HKjo7tvVYX5Gv51";
+  
   useReminderWebSocket((newReminder) => {
     toast.info(`⏰ Reminder: ${newReminder.message}`);
     setReminders((prev) => [...prev, newReminder]);

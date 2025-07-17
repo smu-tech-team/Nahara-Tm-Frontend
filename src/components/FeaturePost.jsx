@@ -89,7 +89,7 @@ const FeaturedPost = () => {
     <div className="mt-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
       <div
         ref={containerRef}
-        className="lg:col-span-2 flex flex-col bg-gray-800 dark:bg-white shadow-sm rounded-lg overflow-hidden max-h-[600px]"
+        className="lg:col-span-2 flex flex-col bg-white dark:bg-black dark:shadow-white shadow-sm rounded-lg overflow-hidden max-h-[600px]"
       >
         <div className="relative w-full h-64 bg-gray-700 flex items-center justify-center">
           {!imageLoaded && (
@@ -118,16 +118,16 @@ const FeaturedPost = () => {
                 {posts[0]?.category}
               </Link>
             </div>
-            <span className="text-gray-400">{localTime}</span>
-            <span className="text-green-400 font-bold">{posts[0]?.views} views</span>
+            <span className="text-black dark:text-white">{localTime}</span>
+            <span className="text-black dark:text-white font-bold">{posts[0]?.views} views</span>
           </div>
           <Link
             to={posts[0]?.slug}
-            className="block text-2xl font-semibold text-gray-300 dark:text-gray-700 hover:text-blue-500 transition"
+            className="block text-2xl font-semibold text-black dark:text-white hover:text-blue-500 transition"
           >
             {posts[0]?.title || "Untitled Post"}
           </Link>
-          <p className="text-white dark:text-gray-500 mt-3 line-clamp-3">
+          <p className="text-gray-500 dark:text-white mt-3 line-clamp-3">
             {posts[0]?.desc || "Discover more insights in this article."}
           </p>
           <Link
@@ -144,7 +144,7 @@ const FeaturedPost = () => {
       </div>
 
       <div className="lg:col-span-1 flex flex-col gap-8">
-        <h2 className="text-lg font-bold dark:text-gray-600 text-gray-300">Sponsored Ads</h2>
+        <h2 className="text-lg font-bold dark:text-white text-black">Sponsored Ads</h2>
         {[
           {
             img: "SMUADS2.PNG.jpg",

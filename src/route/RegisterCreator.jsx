@@ -83,7 +83,7 @@ const CreatorRegister = () => {
               disabled={!agreed}
               className={`w-full py-3 text-lg rounded-lg font-semibold transition ${
                 agreed
-                  ? "bg-blue-800 hover:bg-blue-600 text-white"
+                  ? "button-color animate-gradient-flow-x hover:bg-blue-600 text-white"
                   : "bg-gray-400 text-gray-100 cursor-not-allowed"
               }`}
             >
@@ -94,19 +94,19 @@ const CreatorRegister = () => {
       )}
 
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-10 items-center ">
-        <motion.div
+       <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center space-y-6 order-1 md:order-2"
+          className="flex flex-col items-center text-center space-y-6 order-1 md:order-1"
         >
           <img
             src={creatorImage}
             alt="Content Creator"
-            className="w-[90%] md:w-[400px] rounded-2xl shadow-xl"
+            className="w-[90%] md:w-[400px] rounded-2xl shadow-xl "
           />
-          <div>
-            <h3 className=" section-title">
+          <div className="">
+            <h3 className=" section-title  button-color animate-gradient-flow-x">
               Empower Your Voice
             </h3>
             <p className="mt-2 text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-md mx-auto">
@@ -118,7 +118,7 @@ const CreatorRegister = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md w-full"
+          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md w-full order-2 md:order-2"
         >
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">
             Register as Creator
@@ -133,7 +133,7 @@ const CreatorRegister = () => {
                 type="text"
                 value={blogName}
                 onChange={(e) => setBlogName(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-600"
+                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white text-gray-900 focus:ring-2 focus:ring-blue-600"
               />
             </div>
             <div>
@@ -142,7 +142,7 @@ const CreatorRegister = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-600"
+                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white text-gray-900 focus:ring-2 focus:ring-blue-600"
               />
             </div>
             <div className="relative">
@@ -151,21 +151,21 @@ const CreatorRegister = () => {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-600"
+                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-600 text-gray-900"
               />
               <div
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer text-gray-500 pt-5 dark:text-gray-300"
+                className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer text-gray-500 pt-5 dark:text-gray-300  "
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </div>
             </div>
             <div>
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Role</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ">Role</label>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white"
+                className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white text-gray-900"
               >
                 <option value="CREATOR">Creator</option>
               </select>
@@ -192,9 +192,9 @@ const CreatorRegister = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+              className="w-full  button-color animate-gradient-flow-x text-white py-2 rounded-lg hover:bg-blue-600 transition a"
             >
-              {isLoading ? <span className="animate-spin">⏳</span> : "Register"}
+              {isLoading ? <span className="animate-spin">⏳</span> : "Register now"}
             </button>
           </form>
         </motion.div>

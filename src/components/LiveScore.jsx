@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import fetchLiveScoresForAllSports from "../store/LiveScores.js";
 import AddFavoriteTeam from "../components/AddFavoriteTeam.jsx";
-import AdSpace from "./AdSpace.jsx";
 
 const sportColors = {
   football: "bg-blue-500",
@@ -48,7 +47,7 @@ const LiveScores = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row bg-gray-900 text-white min-h-screen">
+    <div className="flex flex-col lg:flex-row  text-black dark:text-white min-h-screen">
       {/* Main Content */}
       <div className="flex-1 p-4">
         <h2 className="text-2xl font-bold text-center mb-6"><span className="animate-pulse">🔴</span> Live Scores</h2>
@@ -60,8 +59,8 @@ const LiveScores = () => {
               key={sport}
               className={`px-3 py-1 text-sm font-semibold capitalize transition-all ${
                 selectedSport === sport
-                  ? "border-b-2 border-white text-white"
-                  : "text-gray-400 hover:text-white"
+                  ? "border-b-2 border-black dark:border-white text-red-500"
+                  : "text-gray-800 dark:text-gray-400 hover:text-red-800"
               }`}
               onClick={() => setSelectedSport(sport)}
             >
@@ -127,26 +126,25 @@ const LiveScores = () => {
             </p>
           )}
         </div>
-                    <AdSpace/>
 
       </div>
 
 
-      {/* Sidebar for Favorite Teams */}
+
       <div
         className={`transition-transform duration-300 ${
           sidebarOpen ? "translate-x-0" : "translate-x-full"
-        } fixed right-0 top-0 w-full sm:w-80 bg-gray-800 h-full lg:static lg:translate-x-0 lg:w-1/4 shadow-lg`}
+        } fixed right-0 top-0 w-full sm:w-80  h-full lg:static lg:translate-x-0 lg:w-1/4 shadow-lg`}
       >
         <div className="p-4 flex flex-col gap-6">
           <AddFavoriteTeam onAddFavorite={addFavoriteTeam} />        
         </div>
       </div>
       <button
-        className="fixed mb-5 right-4 bg-gray-600 p-2 rounded-full lg:hidden z-10"
+        className="fixed mb-5 right-4  button-color animate-gradient-flow-x  p-2 rounded-full lg:hidden z-10 text-white font-semibold"
         onClick={() => setSidebarOpen(!sidebarOpen)}
       >
-        {sidebarOpen ? "Close" : "Favorites"}
+        {sidebarOpen ? "Close" : "View your Favorites"}
       </button>
     </div>
   );

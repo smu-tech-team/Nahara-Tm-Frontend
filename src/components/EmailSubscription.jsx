@@ -40,7 +40,7 @@ const EmailSubscription = () => {
         <option value="daily">Daily</option>
         <option value="weekly">Weekly</option>
       </select>
-      <button onClick={handleSubscribe} className="bg-blue-600 text-white px-4 py-2 rounded">
+      <button onClick={handleSubscribe} className=" bg-gradient-to-r from-red-800 to-blue-800 text-white px-4 py-2 rounded">
         Subscribe
       </button>
     </div>

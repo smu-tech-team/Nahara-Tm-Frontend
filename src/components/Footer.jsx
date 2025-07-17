@@ -10,9 +10,7 @@ import DownloadApp from "../components/DownloadApp";
 
 const Footer = () => {
     const [localTime, setLocalTime] = useState("");
-
     useEffect(() => {
-        // Function to update time
         const updateTime = () => {
             const now = new Date();
             const userTime = new Intl.DateTimeFormat("en-US", {
@@ -32,19 +30,14 @@ const Footer = () => {
         <footer className="bg-gray-900 text-white py-10 dark:bg-gray-800">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 pb-8 border-b border-gray-700">
-                    <div>
-                        <h2 className="text-xl font-semibold mb-3">About Us</h2>
-                        <p className="text-gray-400 text-sm leading-relaxed">
-                            <span className="font-bold text-red-800">NAHARA</span> is a modern news platform where creators retain 
-                            full ownership of their content while <span className="font-bold text-red-800">NAHARA</span> serves as a global news outlet with integrity.
-                        </p>
-                        <p className="text-gray-200 mt-4 text-sm">Current Time: {localTime}</p>
+                    <div> 
+                         <DownloadApp/>
                     </div>
-                    <div>
+                    <div className="pr-4">
                         <h2 className="text-xl font-semibold mb-3">Quick Links</h2>
                         <ul className="space-y-2">
                             <li><Link to="/disclaimer" className="hover:text-red-500 transition">Disclaimer</Link></li>
-                            <li><Link to="/about-us" className="hover:text-red-500 transition">About</Link></li>
+                            <li><Link to="/about-us" className="hover:text-red-500 transition">About Us</Link></li>
                             <li><Link to="/contact" className="hover:text-red-500 transition">Contact</Link></li>
                             <li><Link to="/report-post" className="hover:text-red-500 transition">Report post</Link></li>
                             <li><Link to="/ads" className="hover:text-red-500 transition">Advertise with us</Link></li>
@@ -52,8 +45,6 @@ const Footer = () => {
                             <li><Link to="/termsAndConditions" className="hover:text-red-500 transition">T&Cs</Link></li>
                         </ul>
                     </div>
-
-                    {/* Partners Section */}
                     <div>
                         <h2 className="text-xl font-semibold mb-3">Our Partners</h2>
                         <div className="grid grid-cols-3 gap-4">
@@ -68,6 +59,7 @@ const Footer = () => {
                             </a>
                         </div>
                         <RestrictedComponent className="mt-4" />
+                        <p className="text-gray-200 mt-4 text-sm ">Current Time: {localTime}</p>
                     </div>
                     <div>
                         <h2 className="text-xl font-semibold mb-3">Stay Connected</h2>
@@ -80,7 +72,6 @@ const Footer = () => {
                         </div>
                     </div>
                 </div>
-                <DownloadApp/>
                 <SecurityBadge />
                 <div className="text-center text-sm text-gray-500 mt-8">
                     <p>&copy; {new Date().getFullYear()} <span className="text-red-800">NAHARA</span>. All Rights Reserved.<br />

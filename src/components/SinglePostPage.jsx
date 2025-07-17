@@ -155,7 +155,7 @@ const SinglePostPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="md:w-1/3 px-4 py-4 bg-gray-800 dark:bg-white text-white dark:text-black rounded-2xl shadow-lg sticky top-8">
+                <div className="md:w-1/3 px-4 py-4 bg-white shadow-black dark:shadow-white dark:bg-black text-black dark:text-white rounded-2xl shadow-lg sticky top-8">
                     <h2 className="text-lg font-semibold mb-4">Author</h2>
                     <div className="flex items-center gap-4">
                         {postDetails.creator.blogProfile && (
@@ -222,7 +222,16 @@ const SinglePostPage = () => {
              />
             <PostShareActions slug={slug}  />
             </div>
-            
+             <button
+                onClick={() => (window.location.href =`/post/user/chatroom/${slug}`)}
+                    className="relative px-6 py-3 text-sm font-medium text-white  button-color animate-gradient-flow-x
+                 rounded-lg shadow-lg hover:from-red-600 hover:to-red-800 focus:outline-none focus:ring focus:ring-red-300 
+                 transition-transform transform hover:scale-105 active:scale-95"
+                    >
+                  <span className="absolute inset-0 button-color animate-gradient-flow-x opacity-25 rounded-lg blur-lg"></span>
+                    <span className="relative ">💬</span> Join Post Live Chat
+                </button>
+
               <div className="my-10">
                 <h2 className="text-xl md:text-2xl font-semibold mb-6 text-center pt-30 border-b-2 border-gray-300 dark:border-gray-700">
                     Related Posts
@@ -257,6 +266,8 @@ const SinglePostPage = () => {
                 <span className="absolute inset-0 bg-red-700 opacity-25 rounded-lg blur-lg"></span>
                 <span className="relative">🚨 Report Post</span>
                 </button>
+                 
+
                 <div className="mt-12">
                 <MarketDashboard />
                 </div>

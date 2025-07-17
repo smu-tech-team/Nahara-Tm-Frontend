@@ -66,7 +66,7 @@ const Sidebar = ({ setActiveModal }) => {
     <div className="relative z-50">
      <motion.button
   onClick={() => setIsOpen((prev) => !prev)}
-  className="fixed top-12 left-20 sm:left-4 bg-white dark:bg-black dark:text-white text-black p-3 rounded-full shadow-lg hover:bg-gray-700 transition-all focus:outline-none flex items-center gap-2"
+  className="fixed top-12 left-20 sm:left-4  button-color animate-gradient-flow-xbn  dark:text-white text-black p-3 rounded-full shadow-lg hover:bg-gray-700 transition-all focus:outline-none flex items-center gap-2"
   whileTap={{ scale: 0.9, rotate: 90 }}
   aria-label="Toggle Sidebar"
 >

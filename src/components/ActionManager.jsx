@@ -80,7 +80,7 @@ export default function AdminActions() {
               toast.success("Undo successful!");
               pendingUndo.current = {};
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
+            className="bg-blue-600 bg-gradient-to-r from-red-800 to-blue-800 hover:bg-blue-700 text-white px-3 py-1 rounded"
           >
             Undo
           </button>
@@ -159,15 +159,13 @@ export default function AdminActions() {
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-center">Manage Content</h1>
-
-      {/* Action Buttons */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 mb-4">
         {actionButtons.map((button) => (
           <button
             key={button.type}
             onClick={() => confirmAction(button.type)}
             disabled={isLoading && loadingAction === button.type}
-            className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+            className=" bg-gradient-to-r from-red-800 to-blue-800 hover:bg-blue-700 text-white py-2 px-4 rounded"
           >
             {isLoading && loadingAction === button.type
               ? "Processing..."
@@ -175,8 +173,6 @@ export default function AdminActions() {
           </button>
         ))}
       </div>
-
-      {/* Search + Select All */}
       <div className="flex flex-col md:flex-row justify-between mb-4">
         <input
           type="text"
@@ -187,13 +183,11 @@ export default function AdminActions() {
         />
         <button
           onClick={handleSelectAll}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded"
+          className=" bg-gradient-to-r from-red-800 to-blue-800 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded"
         >
           {selectedItems.length === filteredItems.length ? "Unselect All" : "Select All"}
         </button>
       </div>
-
-      {/* Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg overflow-hidden shadow">
           <thead className="bg-gray-100">
@@ -234,8 +228,6 @@ export default function AdminActions() {
           <p className="text-center text-gray-500 py-6">No items found.</p>
         )}
       </div>
-
-      {/* Pagination */}
       <div className="flex justify-center mt-6">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
@@ -253,8 +245,6 @@ export default function AdminActions() {
           Next
         </button>
       </div>
-
-      {/* Proceed with action confirmation */}
       {pendingAction && (
         <div className="mt-6">
           <button

@@ -15,8 +15,8 @@ const Sidebar = ({ setCategory }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   return (
-<aside className="bg-transparent text-white w-64 p-6 fixed h-screen z-30 overflow-auto">
-      <h2 className="text-2xl font-bold mb-6 text-blue-500">Explore Music</h2>
+<aside className="bg-transparent text-black dark:text-white w-64 p-6 fixed h-screen z-30 overflow-auto">
+      <h2 className=" animate-gradient-flow-x nahara font-bold flex  flex-center">Ex-Plore</h2>
       {[
         { name: 'Home', icon: <FaHome /> },
         { name: 'Trending', icon: <FaFire /> },
@@ -63,7 +63,7 @@ const Sidebar = ({ setCategory }) => {
   );
 };
 const FloatingMenu = ({ autoplay, toggleAutoplay }) => (
-  <div className="fixed bottom-8 right-8 bg-black p-4 rounded-lg shadow-lg flex items-center gap-4 border border-gray-600 z-50">
+  <div className="fixed bottom-8 left-8 bg-black p-4 rounded-lg shadow-lg flex items-center gap-4 border border-gray-600 z-50">
     <button
       onClick={toggleAutoplay}
       className={`px-4 py-2 rounded text-white ${autoplay ? 'bg-green-600' : 'bg-gray-700'} transition`}
@@ -139,12 +139,12 @@ const TrendingSongs = ({ premium }) => {
   };
 
   return (
-    <div className="flex bg-gray-900 text-white min-h-screen">
+    <div className="flex  text-black dark:text-white min-h-screen mt-5 rounded-lg mb-5">
       <Sidebar setCategory={setCategory} />
 
       <main className="flex-grow p-4 sm:ml-64">
         <motion.div
-          className="bg-gradient-to-r from-black via-blue-800 to-red-800 p-6 rounded-lg shadow-xl text-center"
+          className="bg-gradient-to-r from-black via-gray-900 to-red-800 p-6 rounded-lg shadow-xl text-center"
           initial={{ opacity: 0, y: -40 }}
           animate={{ opacity: 1, y: 0 }}
         >

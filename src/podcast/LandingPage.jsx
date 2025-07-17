@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { FaPlayCircle } from 'react-icons/fa';
+import AdSpace from '../components/AdSpace';
+
 
 const ITEMS_PER_PAGE = 4;
-
 const LandingPage = () => {
   const navigate = useNavigate();
   const [latestEpisodes, setLatestEpisodes] = useState([]);
@@ -17,6 +18,7 @@ const LandingPage = () => {
   const [hasMoreCreators, setHasMoreCreators] = useState(true);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  
 
   useEffect(() => {
     loadEpisodes(episodePage);
@@ -140,7 +142,7 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="bg-black text-white min-h-screen" id="content-container">
+    <div className=" text-black  dark:text-white min-h-screen" id="content-container">
       {/* Header */}
       <header className="py-16 text-center px-4">
         <motion.h1
@@ -151,7 +153,7 @@ const LandingPage = () => {
         >
           Stay Informed, On the Go
         </motion.h1>
-        <p className="mt-4 text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
+        <p className="mt-4 text-lg sm:text-xl text-gray-500 max-w-2xl mx-auto">
           Listen to breaking news, interviews, and deep dives curated by top creators.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -162,7 +164,7 @@ const LandingPage = () => {
             Explore Podcasts
           </button>
           <button
-            onClick={() => navigate('/explore')}
+            onClick={() => navigate(`/live`)}
             className="bg-blue-800 text-white px-6 py-3 rounded-full shadow-md hover:bg-blue-700 transition-all duration-300"
           >
             Listen to Live Podcasts
@@ -174,7 +176,8 @@ const LandingPage = () => {
             placeholder="Search episodes or creators..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="w-full sm:w-2/3 md:w-1/2 px-4 py-2 rounded-full bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full sm:w-2/3 md:w-1/2 px-4 py-2 rounded-full bg-transparent shadow-black text-black dark:text-white
+             border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
       </header>
@@ -191,7 +194,7 @@ const LandingPage = () => {
                   whileHover={{ scale: 1.05 }}
                   key={ep.episodeId}
                   onClick={() => navigate(`/episode/${ep.episode_id}`)}
-                  className="relative cursor-pointer bg-gray-800 p-6 rounded-lg shadow-lg group transition-all duration-300"
+                  className="relative cursor-pointer bg-gray-500 p-6 rounded-lg shadow-lg group transition-all duration-300"
                 >
                   {ep.coverImageUrl && (
                     <div className="relative">
@@ -213,9 +216,7 @@ const LandingPage = () => {
               ))}
         </div>
       </section>
-
-      {/* Top Creators */}
-      <section className="py-12 px-4 sm:px-8 bg-gray-900">
+      <section className="py-12 px-4 sm:px-8  ">
         <h2 className="text-4xl font-bold mb-8 text-center">Top Creators</h2>
         {loading ? (
           <p className="text-center text-gray-400">Loading creators...</p>
@@ -246,6 +247,7 @@ const LandingPage = () => {
           <p className="text-center text-gray-400">No creators found.</p>
         )}
       </section>
+      <AdSpace/>
     </div>
   );
 };

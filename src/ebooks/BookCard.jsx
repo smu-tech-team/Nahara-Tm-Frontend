@@ -78,27 +78,18 @@ const BookCard = ({ id, title, description, cover, link, isSaved, userId, author
       >
         ${price}
       </div>
-
-        {/* Actions */}
         <div className="flex items-center justify-between pt-10 mt-6 text-gray-700">
-          {/* Read */}
           <button onClick={handleReadClick} className="flex items-center gap-1 hover:text-blue-600 transition">
             <FaBookOpen className="text-xl" />
             <span className="text-sm">{reads}</span>
           </button>
-
-          {/* Like */}
           <button onClick={handleLikeClick} className="flex items-center gap-1 hover:text-red-600 transition">
             <FaHeart className="text-xl" />
             <span className="text-sm">{likes}</span>
           </button>
-
-          {/* Download */}
           <button onClick={handleDownloadClick} className="flex items-center gap-1 hover:text-green-600 transition">
             <FaDownload className="text-xl" />
           </button>
-
-          {/* Add to Cart */}
           <button
             onClick={handleAddToCart}
             className="flex items-center gap-1 text-blue-600 hover:text-blue-800 transition"
@@ -107,8 +98,6 @@ const BookCard = ({ id, title, description, cover, link, isSaved, userId, author
             <span className="text-sm">Add to Cart</span>
           </button>
         </div>
-
-        {/* Save/Unsave */}
         <button
           onClick={handleSaveToggle}
           className="absolute top-4 right-4 text-blue-600 hover:text-blue-800 transition"

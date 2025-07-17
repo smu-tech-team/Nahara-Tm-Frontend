@@ -63,6 +63,15 @@ import MarketDetails from './components/MarketDetails'
 import RecommendationsPage from './components/RecommendationsPage'
 import LandingPageForNewCreator from './components/LandingPage'
 import Qr from './components/Qr'
+import SuspensionNotice from './components/SuspensionNotice'
+import RecommendedContent from './components/RecommendedPost'
+import LiveChatRoomWrapper from './podcast/LiveChatRoomWrapper'
+import Scheduler from './podcast/Scheduler'
+import LiveStreamer from './podcast/LiveStreamer'
+import LiveListener from './podcast/LiveListener'
+import PodcastList from './podcast/RecenTLivePodcastList'
+import AllLiveSection from './podcast/AllLiveSection'
+import PreviousSessions from './podcast/PreviousSessions'
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
  {
@@ -74,10 +83,45 @@ const router = createBrowserRouter([
         <Homepage/>
       ),
      },
-  
-     {
+    {
+  path: "/suspension/creator/:id",
+  element: <SuspensionNotice />
+},
+  {
+   path: "/creator/schedule", 
+   element :<Scheduler />
+  },
+  {
+    path: "/creator/live/:sessionId", 
+     element: (
+        <ProtectedRoute>
+          <LiveStreamer />
+        </ProtectedRoute>
+      )
+  },
+  {
+    path: "/live", 
+    element :<LiveListener />
+  },
+  {
+       path: "/user/podcasts", 
+       element :<PodcastList />
+  },
+  {
+    path: "/previous-sessions",
+    element: <PreviousSessions />
+  },
+    {
      path: "/posts",
      element: <PostListPage/>
+    },
+      {
+     path: "/creator/go-live/podcast",
+      element: (
+        <ProtectedRoute>
+    <AllLiveSection/>      
+   </ProtectedRoute>
+      )
     },
     {
       path: "/:slug",
@@ -102,6 +146,10 @@ const router = createBrowserRouter([
       path: "/userLogin",
       element: <UserLogin/>
      },
+     {
+  path: "/:type/user/chatroom/:sessionId",
+  element: <LiveChatRoomWrapper />
+} ,
      {
       path: "/creator-profile",
       element: <ProfileUpdate/>
@@ -271,6 +319,11 @@ const router = createBrowserRouter([
      {
       path: "/favorites", 
        element: <Favorites />
+
+    },
+    {
+      path: "/posts/recommended", 
+       element: <RecommendedContent />
 
     },
      {

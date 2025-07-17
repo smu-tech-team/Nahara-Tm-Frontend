@@ -179,7 +179,7 @@ try {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out"
+            className="w-full  button-color animate-gradient-flow-x text-white py-2 rounded-lg hover:bg-blue-600 transition duration-300 ease-in-out"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -192,10 +192,10 @@ try {
             )}
           </button>
         </form>
-        <div className="text-center">
+        {/* <div className="text-center">
   <p className="text-white my-4">Or continue with</p>
   <GoogleLoginButton onLoginSuccess={() => navigate("/")} />
-    </div>
+    </div> */}
 
 
         <div className="mt-4 text-center">
@@ -216,7 +216,7 @@ try {
               {emailError && <p className="text-red-500 text-sm mt-2">{emailError}</p>}
               <div className="mt-4 flex justify-end space-x-2">
                 <button onClick={() => setForgotPassword(false)} className="px-4 py-2 bg-gray-400 text-white rounded">Cancel</button>
-                <button onClick={handleForgotPassword} className="px-4 py-2 bg-blue-800 text-white rounded">Submit</button>
+                <button onClick={handleForgotPassword} className="px-4 py-2  bg-gradient-to-r from-red-800 to-blue-800 text-white rounded">Submit</button>
               </div>
             </div>
           </div>

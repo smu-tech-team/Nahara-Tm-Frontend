@@ -8,17 +8,17 @@ const RecentLiveNews = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [newsPerPage] = useState(10); 
   const [currentText, setCurrentText] = useState("Recent Live Updates");
-  const [currentColor, setCurrentColor] = useState("#ff0000");
+  const [currentColor, setCurrentColor] = useState("#ffff");
  const [isOnline, setIsOnline] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   
   const texts = [
-    { text: "Recent Live Updates", color: "#ff0000" },
-    { text: "Breaking News!", color: "#ff4500" },
-    { text: "Live Football Update", color: "#0000ff" },
-    { text: "Live Storytelling", color: "#808080" },
-    { text: "Hot Gist on Live", color: "#ff0000" },
+    { text: "Recent Live Updates", color: "#ffff" },
+    { text: "Breaking News!", color: "#ffff" },
+    { text: "Live Football Update", color: "#ffff" },
+    { text: "Live Storytelling", color: "#ffff" },
+    { text: "Hot Gist on Live", color: "#ffff" },
   ];
   useEffect(() => {
     const fetchLiveNews = async () => {
@@ -120,7 +120,7 @@ const RecentLiveNews = () => {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <h1
-        className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 py-3 px-6 rounded-lg shadow-md bg-gray-200 dark:bg-gray-800"
+        className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 py-3 px-6 rounded-lg shadow-md button-color animate-gradient-flow-x dark:bg-gray-800"
         style={{
           color: currentColor,
         }}

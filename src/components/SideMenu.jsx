@@ -95,7 +95,7 @@ const SideMenu = () => {
             <div className="mt-10 text-center">
                 <Link
                     to="/submit"
-                    className="inline-block w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:scale-105 transition-transform"
+                    className="inline-block w-full bg-gradient-to-r from-red-800 to-blue-800 text-white font-semibold py-2 px-4 rounded-lg hover:scale-105 transition-transform"
                 >
                     Submit a Post
                 </Link>

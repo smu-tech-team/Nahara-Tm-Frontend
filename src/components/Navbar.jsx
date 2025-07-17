@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import LightLogo from "/Nahara_Logo.png";
-import DarkLogo from "/Nahara_Logo2.png";
 import useAuthStore from "../store/authStore";
 import DefaultAvatar from "/icons8-avatar.gif";
 import axios from "axios";
@@ -19,7 +17,7 @@ const Navbar = ({ refreshTrigger  }) => {
    const [profileUpdated, setProfileUpdated] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const isDarkMode = useDarkMode();
-
+  
   useEffect(() => {
     console.log("Navbar refreshed due to trigger:", refreshTrigger);
   }, [refreshTrigger]);
@@ -62,6 +60,7 @@ const Navbar = ({ refreshTrigger  }) => {
   
     fetchUserProfile();
   }, [setUser, clearUser, profileUpdated]); 
+
   
     
   const handleRegisterClick = () => {
@@ -99,11 +98,11 @@ const Navbar = ({ refreshTrigger  }) => {
         const userName = decodedToken.userName;
         const userId = decodedToken.userId;
   
-        let endpoint = ` http://localhost:8087/api/user/getUser/${userId}`;
+        let endpoint = `http://localhost:8087/api/user/getUser/${userId}`;
         if (userRole === "CREATOR") {
           endpoint = `http://localhost:8087/api/user/creator/${userId}`;
         } else if (userRole === "ADMIN") {
-          endpoint = ` http://localhost:8087/api/user/admin/${userName}`;
+          endpoint = `http://localhost:8087/api/user/admin/${userName}`;
         }
   
         const response = await axios.get(endpoint, {
@@ -124,7 +123,7 @@ const Navbar = ({ refreshTrigger  }) => {
         const token = localStorage.getItem("token");
         if (token) {
             await axios.post(
-                " http://localhost:8087/api/user/logout", 
+                "http://localhost:8087/api/user/logout", 
                 {},
                 {
                     headers: {
@@ -133,7 +132,6 @@ const Navbar = ({ refreshTrigger  }) => {
                 }
             );
         }
-
         clearUser();
         localStorage.removeItem("token");
         navigate("/login");
@@ -141,12 +139,10 @@ const Navbar = ({ refreshTrigger  }) => {
         console.error("Failed to log out from the backend:", error.response?.data || error.message);
     }
 };
-
-
-
   return (
     <>
-<div className="w-full h-16 flex items-center justify-between bg-white dark:bg-black  rounded-lg px-4 md:px-8 border-b border-gray-300 dark:border-gray-700 sticky top-0 z-50">
+<div className="w-full h-16 flex items-center justify-between bg-white dark:bg-black 
+ rounded-lg px-4 md:px-8 border-b border-gray-300 dark:border-gray-700 sticky top-0 z-50">
 <Link to="/" className="flex items-center gap-4 text-2xl font-bold">
   <img
     src={isDarkMode ? "/Nahara_Logo2.png" : "/Nahara_Logo.png"}
@@ -154,9 +150,6 @@ const Navbar = ({ refreshTrigger  }) => {
     alt="Nahara Logo"
   />
 </Link>
-
-
-
     <div className="md:hidden">
         <div
           className="cursor-pointer text-gray-800 dark:text-white text-4xl"
@@ -170,13 +163,16 @@ const Navbar = ({ refreshTrigger  }) => {
               className="fixed inset-0 bg-black bg-opacity-50 z-40"
               onClick={() => setIsNavbarOpen(false)} 
             ></div>
-
-            <div className="w-full h-screen flex flex-col items-center gap-6 text-lg font-medium justify-center fixed top-16 left-0 bg-gray-500 dark:bg-slate-600 transition-all duration-500 z-50">
-              <Link to="/" onClick={() => setIsNavbarOpen(false)}>Home</Link>
-              <Link to="/trending" onClick={() => setIsNavbarOpen(false)}>Trending News</Link>
+            <div className="w-80 h-screen  flex flex-col items-center gap-6 text-lg font-medium justify-center fixed top-16 left-4 
+             bg-gray-900 dark:bg-black transition-all duration-500 z-50 ">
+             <div className="h-28 nahara animate-gradient-flow-x font-extrabold">
+            NAHARA
+          </div>
+              <Link to="/" className="navbar" onClick={() => setIsNavbarOpen(false)}>Home</Link>
+              <Link to="/trending" className="navbar" onClick={() => setIsNavbarOpen(false)}>Trending</Link>
               
-              <Link to="/popular" onClick={() => setIsNavbarOpen(false)}>Most Popular</Link>
-                <Link to="/stream-songs" onClick={() => setIsNavbarOpen(false)} className="bg-blue-800 text-white py-2 px-4  rounded-md text-sm font-medium shadow-md hover:bg-blue-900 hover:scale-105 transition-transform duration-300 ease-in-out"> Listen Songs
+              <Link to="/popular" className="navbar" onClick={() => setIsNavbarOpen(false)}>Most Popular</Link>
+                <Link to="/stream-songs"  onClick={() => setIsNavbarOpen(false)} className="bg-blue-800 text-white py-2 px-4  rounded-md text-sm font-medium shadow-md hover:bg-blue-900 hover:scale-105 transition-transform duration-300 ease-in-out"> Listen Songs
                     </Link> 
               <Link to="/live-scores" className="font-bold border py-2 px-4 rounded-3xl bg-white text-black hover:bg-red-800" 
               onClick={() => setIsNavbarOpen(false)}><sapn className="animate-pulse">🔴</sapn>Live Scores</Link>
@@ -184,13 +180,13 @@ const Navbar = ({ refreshTrigger  }) => {
               <>
                 <button 
                   onClick={handleLoginClick} 
-                  className="py-2 px-4 rounded-3xl bg-blue-800 text-white dark:bg-blue-800"
+                  className="py-2 px-4 rounded-3xl button-color animate-gradient-flow-x text-white dark:bg-blue-800"
                 >
                   Login 👋
                 </button>
                 <button 
                   onClick={handleRegisterClick} 
-                  className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-800"
+                  className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-800 "
                 >
                   Register
                 </button>
@@ -223,7 +219,6 @@ const Navbar = ({ refreshTrigger  }) => {
                     </button>
                   </Link>
                 )}
-
                 <button onClick={handleLogout} className="py-2 px-4 rounded-3xl bg-red-800 text-white dark:bg-red-600">
                   Logout
                 </button>
@@ -247,8 +242,8 @@ const Navbar = ({ refreshTrigger  }) => {
             </span>
           </span>
         </Link>     
-        <Link to="/posts?cat=hot-gist" className="hover:bg-blue-800 hover:text-white rounded-full px-4 py-2 flex items-center gap-2">
-          <FaFire /> Hot Gist
+        <Link to="/posts?cat=hot-gist" className="hover:bg-blue-800 hover:text-red-700 text-red-600 rounded-full px-4 py-2 flex items-center gap-2 ">
+          <FaFire  /> <span className="text-black hover:text-white dark:text-white font-bold">Hot Gist</span>
         </Link>      {userRole === "CREATOR" && (
         <Link to="/creator-dashboard" className="hover:text-blue-500 transition font-bold">
           Dashboard
@@ -266,7 +261,7 @@ const Navbar = ({ refreshTrigger  }) => {
           <button onClick={handleRegisterClick} className="py-2 px-4 bg-red-600 text-white rounded-md">
             Register
           </button>
-          <button onClick={handleLoginClick} className="py-2 px-4 bg-blue-800 text-white rounded-md">
+          <button onClick={handleLoginClick} className="py-2 px-4 button-color animate-gradient-flow-x text-white rounded-md">
             Login
           </button>
         </>
@@ -285,7 +280,6 @@ const Navbar = ({ refreshTrigger  }) => {
       )}
     </div>
   </div>
-
   {showRolePopup && (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white dark:bg-gray-900 p-6 rounded-lg w-96 shadow-xl">
@@ -304,7 +298,6 @@ const Navbar = ({ refreshTrigger  }) => {
     </div>
   )}
 </>
-
   );
 };
 

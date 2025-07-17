@@ -116,7 +116,7 @@ const PostMenuActions = ({ postId, slug }) => {
   };
 
   return (
-    <div className="p-4 dark:text-black text-white w-60">
+    <div className="p-4 text-black dark:text-white w-60">
       <h1 className="text-lg font-semibold mb-3 border-b border-gray-700 pb-2">Actions</h1>
 
       {userRole === "CREATOR" && (

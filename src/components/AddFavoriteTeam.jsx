@@ -32,51 +32,41 @@ const AddFavoriteTeam = () => {
         setIsLoading(false);
       }
     };
-
     loadTeams();
-
     const storedFavorites = JSON.parse(localStorage.getItem("favoriteTeams")) || [];
-    setFavoriteTeams(storedFavorites); // Restore favorite teams from localStorage
+    setFavoriteTeams(storedFavorites); 
   }, []);
-
   useEffect(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
     setDisplayedTeams(allTeams.slice(start, end));
   }, [currentPage, allTeams]);
-
-  // Add team to favorite list and persist in localStorage
   const onAddFavorite = (team) => {
     if (!favoriteTeams.some((favorite) => favorite.name === team.name)) {
       const updatedFavorites = [...favoriteTeams, team];
       setFavoriteTeams(updatedFavorites);
-      localStorage.setItem("favoriteTeams", JSON.stringify(updatedFavorites)); // Save to localStorage
+      localStorage.setItem("favoriteTeams", JSON.stringify(updatedFavorites)); 
     }
   };
-
-  // Remove team from favorite list and update localStorage
   const onRemoveFavorite = (team) => {
     const updatedFavorites = favoriteTeams.filter((favorite) => favorite.name !== team.name);
     setFavoriteTeams(updatedFavorites);
-    localStorage.setItem("favoriteTeams", JSON.stringify(updatedFavorites)); // Save to localStorage
+    localStorage.setItem("favoriteTeams", JSON.stringify(updatedFavorites)); 
   };
-
-  // Fetch team statistics when overview is clicked
   const handleShowOverview = async (team) => {
     setSelectedTeam(team);
     setShowOverviewPopup(true);
     try {
-      const stats = await fetchTeamStatistics(team.name); // Fetch last match data
+      const stats = await fetchTeamStatistics(team.name); 
       setTeamStatistics(stats);
     } catch (err) {
       console.error("Failed to fetch team statistics:", err.message);
       setTeamStatistics(null);
     }
   };
-
   return (
-    <div className="bg-gray-800 p-3 rounded-lg shadow-md h-full flex flex-col">
-      <h2 className="text-lg font-semibold text-white mb-3">Add Favorite Team</h2>
+    <div className="bg-white dark:bg-black p-3 rounded-lg shadow-md h-full flex flex-col">
+      <h2 className="text-lg font-semibold text-black dark:text-white mb-3">Add Favorite Team</h2>
 
       {isLoading ? (
         <p className="text-center text-gray-400">Loading teams...</p>
@@ -107,7 +97,7 @@ const AddFavoriteTeam = () => {
                   </button>
                 ) : (
                   <button
-                    className="bg-blue-800 text-sm px-2 py-1 rounded-md hover:bg-blue-700"
+                    className="  button-color animate-gradient-flow-xtext-sm px-2 py-1 rounded-md hover:bg-blue-700"
                     onClick={() => onAddFavorite(team)}
                   >
                     Add
@@ -118,8 +108,6 @@ const AddFavoriteTeam = () => {
           </ul>
         </div>
       )}
-
-      {/* Pagination Controls */}
       <div className="flex justify-between items-center mt-4">
         <button
           className="bg-gray-600 text-sm px-3 py-1 rounded-md"
@@ -141,10 +129,8 @@ const AddFavoriteTeam = () => {
           Next
         </button>
       </div>
-
-      {/* Favorite Teams Section */}
       <div className="mt-6">
-        <h2 className="text-lg font-semibold text-white mb-3">⭐Your Favorite Teams</h2>
+        <h2 className="text-lg font-semibold text-black dark:text-white mb-3">⭐Your Favorite Teams</h2>
         {favoriteTeams.length > 0 ? (
           <ul className="space-y-2 overflow-y-auto max-h-40">
             {favoriteTeams.map((team) => (
@@ -178,8 +164,6 @@ const AddFavoriteTeam = () => {
           <p className="text-center text-gray-400">No favorite teams added yet.</p>
         )}
       </div>
-
-      {/* Overview Popup */}
       {showOverviewPopup && selectedTeam && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full text-white">
@@ -196,7 +180,7 @@ const AddFavoriteTeam = () => {
             )}
             <button
               className="bg-red-600 text-sm px-4 py-2 rounded-md hover:bg-red-700 mt-4"
-              onClick={() => setShowOverviewPopup(false)} // Close popup
+              onClick={() => setShowOverviewPopup(false)} 
             >
               Close
             </button>

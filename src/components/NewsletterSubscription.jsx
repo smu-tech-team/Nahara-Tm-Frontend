@@ -105,7 +105,7 @@ const NewsletterSubscription = () => {
   };
 
   return (
-    <div className="max-w-sm mx-auto p-6 bg-gray-900 dark:bg-gray-500 rounded-lg shadow-md md:max-w-md">
+    <div className="max-w-sm mx-auto p-6 bg-white shadow-black dark:bg-black dark:shadow-white rounded-lg shadow-md md:max-w-md">
       <h3 className="text-xl font-bold text-center mb-4">📩 Stay Updated</h3>
       <p className="text-center text-gray-500 dark:text-gray-400 mb-6">
         Subscribe to our newsletter and never miss an update.

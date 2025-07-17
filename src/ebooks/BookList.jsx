@@ -64,7 +64,7 @@ const BookList = ({ userId }) => {
   if (error || filteredBooks.length === 0) {
     return (
       <motion.section
-        className="flex flex-col items-center py-16 bg-gray-800"
+        className="flex flex-col items-center py-16 bg-gray-800 rounded-lg"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
@@ -92,12 +92,11 @@ const BookList = ({ userId }) => {
   }
 
   return (
-    <section className="py-16 bg-gray-800">
+    <section className="py-16 bg-gray-800 ">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-white mb-4">Available eBooks</h2>
         <p className="text-gray-300">Explore a wide range of eBooks tailored for you.</p>
       </div>
-
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 px-6 max-w-7xl mx-auto"
         initial="hidden"

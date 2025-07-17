@@ -17,12 +17,12 @@ const PostLikeButton = ({ postId, initialLikes = 0, initiallyLiked = false }) =>
 
   try {
     const decoded = jwtDecode(token);
-    console.log("Decoded Token:", decoded); // Debugging step
-    setCurrentUser(decoded); // Set user only if token is valid
+    console.log("Decoded Token:", decoded); 
+    setCurrentUser(decoded); 
   } catch (error) {
     console.error("Invalid Token Format", error);
     alert("Session expired. Please log in again.");
-    localStorage.removeItem("token"); // Clear invalid token
+    localStorage.removeItem("token");
   }
 }, []);
 

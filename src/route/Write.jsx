@@ -222,7 +222,7 @@ const Write = () => {
         <button
           type="submit"
           disabled={isPublishing}
-          className="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="w-full p-3  button-color animate-gradient-flow-x text-white rounded-lg hover:bg-blue-700"
         >
           {isPublishing ? "Publishing..." : "Publish Post"}
         </button>

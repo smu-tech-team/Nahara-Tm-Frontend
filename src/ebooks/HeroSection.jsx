@@ -6,7 +6,7 @@ const HeroSection = () => {
   const [category, setCategory] = useState("");
 
   return (
-    <section className="bg-gradient-to-br from-blue-800 to-red-800 text-white py-20 text-center">
+    <section className="bg-gradient-to-br from-blue-800 to-red-800 text-white py-20 text-center rounded-lg mb-5 mt-5">
       <motion.h1
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

@@ -3,10 +3,10 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Loader2, CheckCircle2 } from 'lucide-react'
-import Button  from '../components/button'
+import Button from '../components/button'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom' 
-
+import { useNavigate } from 'react-router-dom'
+import otpImage from '/4309035.webp' 
 const BlogNameSchema = Yup.object().shape({
   blogName: Yup.string().required('Creator name or Blog name is required'),
 })
@@ -20,7 +20,6 @@ const OtpPage = () => {
   const [emailVerified, setEmailVerified] = useState(false)
   const [blogName, setBlogName] = useState('')
   const [message, setMessage] = useState('')
-  
   const navigate = useNavigate()
   useEffect(() => {
     if (cooldown > 0) {
@@ -36,13 +35,14 @@ const OtpPage = () => {
       return () => clearTimeout(timer)
     }
   }, [emailVerified, navigate])
-
   const handleSendOtp = async (values) => {
     setIsLoading(true)
     setMessage('')
     try {
-        const res = await axios.post(`http://localhost:8087/api/creator/send-otp?blogName=${values.blogName}`)
-        setBlogName(values.blogName)
+      const res = await axios.post(
+        `http://localhost:8087/api/creator/send-otp?blogName=${values.blogName}`
+      )
+      setBlogName(values.blogName)
       setStep(2)
       setMessage(res.data)
     } catch (error) {
@@ -51,7 +51,6 @@ const OtpPage = () => {
       setIsLoading(false)
     }
   }
-
   const handleVerifyOtp = async (values) => {
     setIsLoading(true)
     setMessage('')
@@ -67,14 +66,15 @@ const OtpPage = () => {
       setIsLoading(false)
     }
   }
-
   const resendOTP = async () => {
     if (cooldown > 0 || !blogName) return
     setCooldown(30)
     setIsLoading(true)
     setMessage('')
     try {
-      const res = await axios.post(`http://localhost:8087/api/creator/send-otp?blogName=${blogName}`)
+      const res = await axios.post(
+        `http://localhost:8087/api/creator/send-otp?blogName=${blogName}`
+      )
       setMessage(res.data)
     } catch (error) {
       setMessage(error.response?.data || 'Failed to resend OTP')
@@ -83,85 +83,95 @@ const OtpPage = () => {
     }
   }
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-black px-4">
-      <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg w-full max-w-md space-y-4">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-            {emailVerified ? 'Blog Verified' : 'Verify Blog'}
-          </h1>
-          {emailVerified && <CheckCircle2 className="text-green-500" />}
-        </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">Step {step} of 2</p>
-        {message && (
-          <div className="text-center text-sm text-blue-500 dark:text-blue-300">{message}</div>
-        )}
-        <AnimatePresence mode="wait">
-          {step === 1 && (
-            <motion.div
-              key="blog"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Formik
-                initialValues={{ blogName: '' }}
-                validationSchema={BlogNameSchema}
-                onSubmit={handleSendOtp}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-slate-900 to-black px-4 py-10">
+      <div className="flex flex-col md:flex-row items-center bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl overflow-hidden max-w-5xl w-full">
+        <div className="md:w-1/2 p-10 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-2">
+              {emailVerified ? '🎉 Blog Verified' : '🔐 Verify Your Blog'}
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400 text-sm">
+              {step === 1
+                ? 'Enter your unique blog or creator name to receive a secure OTP.'
+                : 'Enter the 6-digit OTP sent to your registered email.'}
+            </p>
+            {message && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-sm text-blue-500 dark:text-blue-300"
               >
-                {() => (
-                  <Form className="space-y-4">
+                {message}
+              </motion.div>
+            )}
+          </motion.div>
+          <AnimatePresence mode="wait">
+            {step === 1 && (
+              <motion.div
+                key="blog"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Formik
+                  initialValues={{ blogName: '' }}
+                  validationSchema={BlogNameSchema}
+                  onSubmit={handleSendOtp}
+                >
+                  <Form className="space-y-4 mt-4">
                     <div>
                       <Field
                         name="blogName"
-                        placeholder="Enter your blog name"
-                        className="w-full px-4 py-2 border dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800 dark:text-white"
+                        placeholder="e.g. SmartMediaUpdate"
+                        className="w-full px-4 py-2 border dark:border-zinc-700 rounded-lg bg-gray-50 dark:bg-zinc-800 dark:text-white"
                       />
-                      <ErrorMessage name="blogName" component="div" className="text-red-500 text-sm" />
+                      <ErrorMessage
+                        name="blogName"
+                        component="div"
+                        className="text-red-500 text-xs"
+                      />
                     </div>
-                    <Button
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full flex justify-center items-center"
-                    >
+                    <Button type="submit" disabled={isLoading} className="w-full">
                       {isLoading ? <Loader2 className="animate-spin" /> : 'Send OTP'}
                     </Button>
                   </Form>
-                )}
-              </Formik>
-            </motion.div>
-          )}
-
-          {step === 2 && (
-            <motion.div
-              key="otp"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Formik
-                initialValues={{ otp: '' }}
-                validationSchema={OTPSchema}
-                onSubmit={handleVerifyOtp}
+                </Formik>
+              </motion.div>
+            )}
+            {step === 2 && (
+              <motion.div
+                key="otp"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
               >
-                {() => (
-                  <Form className="space-y-4">
+                <Formik
+                  initialValues={{ otp: '' }}
+                  validationSchema={OTPSchema}
+                  onSubmit={handleVerifyOtp}
+                >
+                  <Form className="space-y-4 mt-4">
                     <div>
                       <Field
                         name="otp"
                         type="text"
-                        placeholder="Enter OTP"
+                        placeholder="123456"
                         maxLength={6}
-                        className="w-full px-4 py-2 border dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800 dark:text-white tracking-widest text-center text-lg"
+                        className="w-full px-4 py-2 border dark:border-zinc-700 rounded-lg bg-gray-50 dark:bg-zinc-800 dark:text-white text-center text-lg tracking-widest"
                       />
-                      <ErrorMessage name="otp" component="div" className="text-red-500 text-sm" />
+                      <ErrorMessage
+                        name="otp"
+                        component="div"
+                        className="text-red-500 text-xs"
+                      />
                     </div>
-                    <Button
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full flex justify-center items-center"
-                    >
+                    <Button type="submit" disabled={isLoading} className="w-full">
                       {isLoading ? <Loader2 className="animate-spin" /> : 'Verify OTP'}
                     </Button>
                     <div className="text-center">
@@ -170,17 +180,29 @@ const OtpPage = () => {
                         variant="outline"
                         onClick={resendOTP}
                         disabled={cooldown > 0}
-                        className="text-sm"
+                        className="text-sm mt-2"
                       >
                         {cooldown > 0 ? `Resend OTP in ${cooldown}s` : 'Resend OTP'}
                       </Button>
                     </div>
                   </Form>
-                )}
-              </Formik>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                </Formik>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+        <motion.div
+          className="hidden md:flex md:w-1/2 items-center justify-center bg-gradient-to-tr from-blue-800 to-blue-500 p-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <img
+            src={otpImage}
+            alt="Verify OTP Illustration"
+            className="w-96 h-96 object-contain animate-fadeInUp"
+          />
+        </motion.div>
       </div>
     </div>
   )

@@ -34,40 +34,30 @@ const CreatorLogin = () => {
       setRememberMe(true);
     }
   }, []);
-
-
   const handleLogin = async (e) => {
     e.preventDefault();
       if (!blogName.trim() || !password.trim()) {
       setError("All fields are required.");
       return;
     }
-  
     setIsLoading(true);
     setError("");
     setSuccess("");
-  
     try {
       const response = await axios.post("http://localhost:8087/api/creator/login", {
         blogName,
         password,
       });
-  
       setSuccess(response.data.message);
-  
-      // Token storage (localStorage or cookies)
-      localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.token);
       setRefreshNavbar((prev) => !prev); 
-  
-      // Remember Me handling
-      if (rememberMe) {
+        if (rememberMe) {
         localStorage.setItem("blogName", blogName);
         localStorage.setItem("password", password);
       } else {
         localStorage.removeItem("blogName");
         localStorage.removeItem("password");
       }
-  
       setTimeout(() => navigate("/creator-dashboard"), 2000);
     } catch (error) {
       console.error("Login error:", error);
@@ -81,13 +71,11 @@ const CreatorLogin = () => {
       setIsLoading(false);
     }
   };
-
    const handleForgotPassword = async () => {
       if (!email) {
           setEmailError("Email is required.");
           return;
       }
-  
       try {
           const response = await axios.get(`http://localhost:8087/api/creator/verify-email`, {
               params: { email }  
@@ -183,7 +171,7 @@ const CreatorLogin = () => {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-800 transition duration-300 ease-in-out"
+            className="w-full  button-color animate-gradient-flow-x text-white py-2 rounded-lg hover:bg-blue-800 transition duration-300 ease-in-out"
             disabled={isLoading}
           >
             {isLoading ? (
@@ -214,7 +202,7 @@ const CreatorLogin = () => {
                             {emailError && <p className="text-red-500 text-sm mt-2">{emailError}</p>}
                             <div className="mt-4 flex justify-end space-x-2">
                                 <button onClick={() => setForgotPassword(false)} className="px-4 py-2 bg-gray-400 text-white rounded">Cancel</button>
-                                <button onClick={handleForgotPassword} className="px-4 py-2 bg-blue-800 text-white rounded">Submit</button>
+                                <button onClick={handleForgotPassword} className="px-4 py-2 bg-gradient-to-r from-red-800 to-blue-800 text-white rounded">Submit</button>
                             </div>
                         </div>
                     </div>

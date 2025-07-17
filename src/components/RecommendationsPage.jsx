@@ -74,7 +74,9 @@ const RecommendationsPage = () => {
       <div className="flex flex-wrap gap-6 justify-between">
         {filteredCreators.length === 0 ? (
           <p className="text-center text-gray-500 w-full">
-            ❌ No creators found. Try a different search!
+            ❌ No creators found.Check your internet connection or Try a different search!
+            <img src="/offline.webp"  alt="Network issue" className="w-96 h-96 object-cover opacity-80 flex justify-center" />
+
           </p>
         ) : (
           filteredCreators.map((creator, index) => (

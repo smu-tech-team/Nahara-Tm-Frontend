@@ -124,7 +124,7 @@ const CreatorProfile = () => {
         </div>
 
         <div className="flex flex-col text-center md:text-left gap-6">
-          <h1 className="text-lg sm:text-xl  text-white dark:text-black font-bold flex items-center gap-2">
+          <h1 className="text-lg sm:text-xl  text-black dark:text-white font-bold flex items-center gap-2">
             @ {creator.name}
             {creator.verified && (
               <span className="text-green-600">
@@ -132,7 +132,7 @@ const CreatorProfile = () => {
               </span>
             )}
           </h1>
-          <p className="mt-4 text-gray-400 text-sm break-words whitespace-pre-line max-w-md">
+          <p className="mt-4 text-gray-500 dark:text-white text-sm break-words whitespace-pre-line max-w-md">
             {creator.bio}
           </p>
           {isValidUrl(creator.website) && (
@@ -179,7 +179,7 @@ const CreatorProfile = () => {
             </div>
           )}
           {token && <FollowButton creatorId={creatorId} token={token} />}
-          <div className="flex items-center justify-center text-white dark:text-black md:justify-start gap-4 mt-4">
+          <div className="flex items-center justify-center text-black dark:text-white md:justify-start gap-4 mt-4">
             <div className="flex flex-col items-center">
               <span className="text-xl font-bold">{creator.postsCount >= 1000 
               ? `${(creator.postsCount / 1000).toFixed(1)}k+`
@@ -244,7 +244,7 @@ const CreatorProfile = () => {
       </div>
 
       <div className="mt-12">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-200 dark:text-black flex flex-wrap items-center">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-500 dark:text-white flex flex-wrap items-center">
           Posts by:
           <span className="ml-2 px-3 py-1 text-base sm:text-lg font-thin bg-gray-700 text-white rounded-lg hover:bg-green-700 transition">
             {creator.name}

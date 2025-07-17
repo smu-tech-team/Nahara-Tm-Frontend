@@ -64,7 +64,7 @@ const ActionButtons = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handlePopup("users")}
-                    className="flex items-center gap-3 px-6 py-4 bg-blue-800 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
+                    className="flex items-center gap-3 px-6 py-4  bg-gradient-to-r from-red-800 to-blue-800 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
                 >
                     <FaUsers />
                     Check Users
@@ -74,7 +74,7 @@ const ActionButtons = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handlePopup("reportedPosts")}
-                    className="flex items-center gap-3 px-6 py-4 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600"
+                    className="flex items-center gap-3 px-6 py-4  bg-gradient-to-r from-red-800 to-blue-800 text-white font-semibold rounded-lg shadow-md hover:bg-red-600"
                 >
                     <FaFlag />
                     Today Reported Posts
@@ -84,7 +84,7 @@ const ActionButtons = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => handlePopup("adsRequests")}
-                    className="flex items-center gap-3 px-6 py-4 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600"
+                    className="flex items-center gap-3 px-6 py-4  bg-gradient-to-r from-red-800 to-blue-800 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600"
                 >
                     <FaBullhorn />
                     Ads Requests

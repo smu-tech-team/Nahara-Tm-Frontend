@@ -41,7 +41,7 @@ export default function HeroSection() {
           >
             <a
               href="/register/creator"
-              className="px-7 py-3 sm:px-8 sm:py-4 bg-blue-600 text-white font-semibold rounded-full shadow-xl hover:bg-blue-700 transition-all duration-300"
+              className="px-7 py-3 sm:px-8 sm:py-4  button-color animate-gradient-flow-x text-white font-semibold rounded-full shadow-xl hover:bg-blue-700 transition-all duration-300"
             >
               Register as a Creator
             </a>

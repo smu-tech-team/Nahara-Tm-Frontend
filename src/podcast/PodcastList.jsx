@@ -104,7 +104,7 @@ const PodcastList = ({
   }, [podcasts, searchTerm, category, sortBy, popularity, duration]);
 
   return (
-    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 ">
     {loading ? (
       <div className="col-span-3 space-y-4">
         {[1, 2, 3].map((_, index) => (
@@ -124,7 +124,7 @@ const PodcastList = ({
       filtered.map((podcast) => (
         <div
           key={podcast.id}
-          className="relative bg-gray-800 text-white rounded-lg p-5 shadow-md hover:shadow-white transition-shadow duration-300"
+          className="relative bg-gray-800 text-white rounded-lg p-5 shadow-md hover:shadow-white transition-shadow duration-300 "
         >
           <PodcastCard
             podcast={podcast} 

@@ -65,7 +65,6 @@ const Homepage = () => {
 </div>
       <div className="flex items-center justify-between">
        
-   <AdsFloating leftBannerUrl="/smuads.jpg" leftLink="https://example.com/left" />
 
 
       </div>
@@ -76,9 +75,8 @@ const Homepage = () => {
     
         <h1 className="my-8 text-2xl text-gray-600 dark:text-gray-700 font-bold">Recent Posts</h1>
         <PostList />
-      </div>
         <AdSpace />
-      
+      </div>      
     </div>
   );
 };

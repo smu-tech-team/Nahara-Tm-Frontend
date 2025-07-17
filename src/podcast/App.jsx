@@ -6,6 +6,7 @@ import PodcastCard from './PodcastCard';
 import PodcastPopup from './PodcastPopup';
 import CatBannar from '../components/CatBanner';
 import { Link } from 'react-router-dom';
+import AdSpace from '../components/AdSpace';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -50,7 +51,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 text-white font-sans">
+    <div className="min-h-screen  text-white font-sans ">
       <Header />
       <section className="px-4 sm:px-8 py-6 sm:py-10 animate-fade-in">
            <CatBannar/>
@@ -113,8 +114,8 @@ function App() {
           duration={duration}
         />
       </section>
-      <section className="px-4 sm:px-8 py-6 sm:py-10 bg-black rounded-2xl shadow-xl animate-fade-in">
-        <h2 className="text-3xl font-bold mb-6 text-center text-white">
+      <section className="px-4 sm:px-8 py-6 sm:py-10  rounded-2xl shadow-xl animate-fade-in ">
+        <h2 className="text-3xl font-bold mb-6 text-center text-black dark:text-white">
           Your Favorites
         </h2>
 
@@ -139,6 +140,7 @@ function App() {
           />
         )}
       </section>
+      <AdSpace/>
     </div>
   );
 }

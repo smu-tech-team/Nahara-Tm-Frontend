@@ -74,7 +74,7 @@ const WeatherCard = () => {
   }, []);
 
   return (
-    <div className="backdrop-blur-sm bg-black text-white p-4 rounded-xl shadow-xl w-full max-w-sm mx-auto mt-6 transition-all duration-300">
+    <div className="backdrop-blur-sm  animate-gradient-flow-x  waether-color text-white p-4 rounded-xl shadow-xl w-full max-w-sm mx-auto mt-6 transition-all duration-300">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-sm font-medium text-gray-300">{location}</h2>
