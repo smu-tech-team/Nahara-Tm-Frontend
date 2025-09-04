@@ -1,5 +1,5 @@
 import axios from "axios";
-import Image from "./image";
+import Image from "./Image";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import PostSkeleton from "../components/PostSkeleton";
