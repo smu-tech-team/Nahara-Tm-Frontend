@@ -2,11 +2,18 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import dotenv from 'dotenv';
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 dotenv.config();
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    visualizer({
+      filename: './dist/stats.html',
+      open: true, // will open the stats file automatically
+    }),
+  ],
   define: {
     global: 'globalThis',
   },
@@ -19,9 +26,9 @@ export default defineConfig({
     },
     proxy: {
       '/api': {
-        target: 'https://api.soccersapi.com', 
-        changeOrigin: true, 
-        rewrite: (path) => path.replace(/^\/api/, ''), 
+        target: process.env.VITE_API_URL,
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
@@ -33,7 +40,7 @@ export default defineConfig({
       },
       plugins: [
         NodeGlobalsPolyfillPlugin({
-          buffer: true,  
+          buffer: true,
         }),
       ],
     },

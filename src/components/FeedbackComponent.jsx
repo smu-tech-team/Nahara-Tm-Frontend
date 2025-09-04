@@ -65,7 +65,7 @@ useEffect(() => {
 
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:8087/api/notifications/send-feedback", {
+      const res = await fetch("https://nahara-production.up.railway.app/api/notifications/send-feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(metadata),

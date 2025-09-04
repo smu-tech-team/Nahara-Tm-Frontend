@@ -12,7 +12,7 @@ const RecommendationsPage = () => {
         const size = 12;
         const page = 0;
 
-        const res = await fetch(`http://localhost:8087/api/creator/get-recommendation?page=${page}&size=${size}`);
+        const res = await fetch(`https://nahara-production.up.railway.app/api/creator/get-recommendation?page=${page}&size=${size}`);
         const data = await res.json();
 
         console.log("API Response:", data); // Debugging log

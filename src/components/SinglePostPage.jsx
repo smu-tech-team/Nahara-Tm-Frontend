@@ -17,7 +17,7 @@ import MarketDashboard from "./MarketDashboard";
 import AdSpace from "./AdSpace";
 const fetchPost = async (slug) => {
     try {
-        const response = await axios.get(`http://localhost:8087/api/post/post/${slug}`);
+        const response = await axios.get(`https://nahara-production.up.railway.app/api/post/post/${slug}`);
         return response.data; 
     } catch (error) {
         console.error("Error fetching post:", error);
@@ -32,7 +32,7 @@ const SinglePostPage = () => {
     const [postDetails, setPostDetails] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const fetchRelatedPosts = async (slug) => {
-        const response = await axios.get(`http://localhost:8087/api/post/${slug}/related`);
+        const response = await axios.get(`https://nahara-production.up.railway.app/api/post/${slug}/related`);
         if (response.status !== 200) {
             throw new Error("Failed to fetch related posts");
         }
@@ -45,7 +45,7 @@ const SinglePostPage = () => {
         }
         const fetchPost = async () => {
             try {
-                const response = await axios.get(` http://localhost:8087/api/post/post/${slug}`);
+                const response = await axios.get(` https://nahara-production.up.railway.app/api/post/post/${slug}`);
                 setPostDetails(response.data); // ✅ Now this will work
                 console.log("Fetched post:", response.data);
             } catch (error) {
@@ -59,7 +59,7 @@ const SinglePostPage = () => {
             if (!viewedPosts.includes(slug)) {
                 try {
                     const response = await axios.post(
-                        `http://localhost:8087/api/post/${slug}/view`,
+                        `https://nahara-production.up.railway.app/api/post/${slug}/view`,
                         {},
                         { withCredentials: true }
                     );

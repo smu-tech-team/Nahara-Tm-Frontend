@@ -15,8 +15,8 @@ const SingleEbookPage = () => {
   useEffect(() => {
     const fetchEbookAndChapters = async () => {
       try {
-        const ebookRes = await axios.get(`http://localhost:8087/api/ebooks/get-single-ebook/${id}`);
-        const chaptersRes = await axios.get(`http://localhost:8087/api/ebooks/${id}/chapters`);
+        const ebookRes = await axios.get(`https://nahara-production.up.railway.app/api/ebooks/get-single-ebook/${id}`);
+        const chaptersRes = await axios.get(`https://nahara-production.up.railway.app/api/ebooks/${id}/chapters`);
 
         console.log("Ebook data:", ebookRes.data); // Check if ebook data is correct
         console.log("Chapters data:", chaptersRes.data); // Check if chapters data is correct

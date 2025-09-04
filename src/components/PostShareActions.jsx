@@ -6,7 +6,7 @@ const PostShareActions = ({ slug }) => {
   const handleShare = (platform) => {
     toast.success(`Shared on ${platform}!`);
   };
-  const postUrl = ` http://localhost:8087/api/post/post/${slug}`; 
+  const postUrl = ` https://nahara-production.up.railway.app/api/post/post/${slug}`; 
   return (
     <div className="p-4 dark:bg-transparent bg-transparent rounded-lg">
       <h1 className="text-lg font-semibold text-white  dark:text-black mb-4">Share this Post</h1>

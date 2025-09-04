@@ -13,7 +13,7 @@ const PodcastList = ({ creatorId }) => {
 
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8087/api/creator/creator/${creatorId}/podcasts`);
+      const response = await fetch(`https://nahara-production.up.railway.app/api/creator/creator/${creatorId}/podcasts`);
       const data = await response.json();
 
       console.log("API Response:", data);

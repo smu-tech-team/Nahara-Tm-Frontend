@@ -17,10 +17,10 @@ const AdminAnalytics = () => {
         const fetchCounts = async () => {
             try {
                 const [usersRes, creatorsRes, reportsRes, adsRes] = await Promise.all([
-                    axios.get("http://localhost:8087/api/admin/users-count"),
-                    axios.get("http://localhost:8087/api/admin/creators-count"),
-                    axios.get("http://localhost:8087/api/admin/reported-posts-count"),
-                    axios.get("http://localhost:8087/api/admin/ads-count"),
+                    axios.get("https://nahara-production.up.railway.app/api/admin/users-count"),
+                    axios.get("https://nahara-production.up.railway.app/api/admin/creators-count"),
+                    axios.get("https://nahara-production.up.railway.app/api/admin/reported-posts-count"),
+                    axios.get("https://nahara-production.up.railway.app/api/admin/ads-count"),
                 ]);
 
                 setAnalytics({

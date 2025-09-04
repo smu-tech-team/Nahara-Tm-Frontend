@@ -116,7 +116,7 @@ const EbookForm = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:8087/api/ebooks/create-ebook",
+        "https://nahara-production.up.railway.app/api/ebooks/create-ebook",
         formData,
         {
           headers: {

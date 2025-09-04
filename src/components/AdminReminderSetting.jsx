@@ -31,7 +31,7 @@ const ReminderSettings = () => {
   };
 
 
-  const API_BASE = "http://localhost:8087"; // change if needed
+  const API_BASE = "https://nahara-production.up.railway.app"; // change if needed
 
   const showNotification = (message) => {
     if (Notification.permission === "granted") {

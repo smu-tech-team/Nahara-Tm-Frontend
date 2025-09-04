@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid"; // Install with `npm install uuid`
 
-const BASE_URL = "http://localhost:8087/api/post"; // API base URL
+const BASE_URL = "https://nahara-production.up.railway.app/api/post"; // API base URL
 
 // Get user ID (anonymous or logged-in)
 export const getUserId = () => {

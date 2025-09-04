@@ -20,7 +20,7 @@ const SearchBar = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`http://localhost:8087/api/post/search?q=${query}`);
+        const response = await axios.get(`https://nahara-production.up.railway.app/api/post/search?q=${query}`);
         setResults(response.data);
       } catch {
         setError("Failed to fetch results. Try again.");

@@ -41,7 +41,7 @@ const Comment = ({ _id, userImage, userName, desc, createdAt, onDelete, postId, 
   
     try {
       console.log(`Deleting comment with ID: ${comment._id} from post ID: ${postId}`);
-      const response = await axios.delete(`http://localhost:8087/delete-comment/${comment._id}`);
+      const response = await axios.delete(`https://nahara-production.up.railway.app/delete-comment/${comment._id}`);
       console.log("Comment deleted successfully!", response.data);
       onDelete(comment._id); 
     } catch (error) {

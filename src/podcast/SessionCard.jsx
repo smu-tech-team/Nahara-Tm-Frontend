@@ -71,7 +71,7 @@ const SessionCard = ({ session, waveformRefs, playingId, setPlayingId }) => {
       setLikeCount((prev) => prev + (newLike ? 1 : -1));
 
       await axios.post(
-        `http://localhost:8087/api/v1/podcast/streams/${session.id}/like`,
+        `https://nahara-production.up.railway.app/api/v1/podcast/streams/${session.id}/like`,
         { like: newLike, userId }
       );
 
@@ -93,7 +93,7 @@ const SessionCard = ({ session, waveformRefs, playingId, setPlayingId }) => {
       setBookmarkCount((prev) => prev + (newBookmark ? 1 : -1));
 
       await axios.post(
-        `http://localhost:8087/api/v1/podcast/${session.id}/bookmark`,
+        `https://nahara-production.up.railway.app/api/v1/podcast/${session.id}/bookmark`,
         { bookmark: newBookmark, userId }
       );
     } catch (e) {

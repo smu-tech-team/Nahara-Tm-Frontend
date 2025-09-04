@@ -9,7 +9,7 @@ const AdminAppeals = () => {
     const fetchAppeals = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:8087/api/appeal/all", {
+        const res = await axios.get("https://nahara-production.up.railway.app/api/appeal/all", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAppeals(res.data);
@@ -23,7 +23,7 @@ const AdminAppeals = () => {
   const handleRestore = async (appealId) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.post(`http://localhost:8087/api/appeal/${appealId}/restore`, {}, {
+      await axios.post(`https://nahara-production.up.railway.app/api/appeal/${appealId}/restore`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAppeals((prev) => prev.filter((a) => a.id !== appealId));

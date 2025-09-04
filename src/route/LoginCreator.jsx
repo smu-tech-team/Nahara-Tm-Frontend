@@ -44,7 +44,7 @@ const CreatorLogin = () => {
     setError("");
     setSuccess("");
     try {
-      const response = await axios.post("http://localhost:8087/api/creator/login", {
+      const response = await axios.post("https://nahara-production.up.railway.app/api/creator/login", {
         blogName,
         password,
       });
@@ -77,7 +77,7 @@ const CreatorLogin = () => {
           return;
       }
       try {
-          const response = await axios.get(`http://localhost:8087/api/creator/verify-email`, {
+          const response = await axios.get(`https://nahara-production.up.railway.app/api/creator/verify-email`, {
               params: { email }  
           });
   

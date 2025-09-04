@@ -82,7 +82,7 @@ const PodcastUpload = () => {
     setIsLoading(true); // Start loading
 
     try {
-      const response = await fetch("http://localhost:8087/api/podcast/upload", {
+      const response = await fetch("https://nahara-production.up.railway.app/api/podcast/upload", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

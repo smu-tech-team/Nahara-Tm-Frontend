@@ -47,7 +47,7 @@ const ProfileUpdate = () => {
       }
 
       const response = await axios.put(
-        "http://localhost:8087/api/creator/update-info",
+        "https://nahara-production.up.railway.app/api/creator/update-info",
         formData,
         {
           headers: {
@@ -74,7 +74,7 @@ const ProfileUpdate = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:8087/api/creator/logout",
+        "https://nahara-production.up.railway.app/api/creator/logout",
         { token },
         { headers: { Authorization: `Bearer ${token}` } }
       );

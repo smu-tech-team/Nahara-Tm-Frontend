@@ -11,7 +11,7 @@ const PodcastList = () => {
   }, []);
 
   const like = async (id) => {
-    await axios.post(`http://localhost:8087/api/v1/podcast/${id}/like`);
+    await axios.post(`https://nahara-production.up.railway.app/api/v1/podcast/${id}/like`);
     setPodcasts((prev) =>
       prev.map((p) => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
     );

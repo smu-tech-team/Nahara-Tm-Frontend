@@ -35,7 +35,7 @@ const UserProfileCard = () => {
     setUserRole(decodedToken.roles?.[0]?.name || "USER");
 
     try {
-      const baseURL = "http://localhost:8087/api/user";
+      const baseURL = "https://nahara-production.up.railway.app/api/user";
       const [userRes, savedPostsRes, followedCreatorsRes] = await Promise.all([
         axios.get(`${baseURL}/getUser/${userId}`, { headers: { Authorization: `Bearer ${token}` } }),
         axios.get(`${baseURL}/saved`, { params: { userId }, headers: { Authorization: `Bearer ${token}` } }),
@@ -60,7 +60,7 @@ const UserProfileCard = () => {
   const handleUnfollow = async (creatorId) => {
     try {
       await axios.post(
-        `http://localhost:8087/api/user/unfollow`,
+        `https://nahara-production.up.railway.app/api/user/unfollow`,
         { creatorId },
         { headers: { Authorization: `Bearer ${token}` } }
       );

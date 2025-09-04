@@ -32,13 +32,13 @@ const Navbar = ({ refreshTrigger  }) => {
           const userName = decodedToken.userName;
           const roles = decodedToken.roles || [];
   
-          let endpoint = `http://localhost:8087/api/user/getUser/${userId}`; // Default for normal users
+          let endpoint = `https://nahara-production.up.railway.app/api/user/getUser/${userId}`; // Default for normal users
   
           if (roles.includes("CREATOR")) {
-            endpoint = `http://localhost:8087/api/user/creator/${userId}`;
+            endpoint = `https://nahara-production.up.railway.app/api/user/creator/${userId}`;
             setUserRole("CREATOR");
           } else if (roles.includes("ADMIN")) {
-            endpoint = `http://localhost:8087/api/user/admin/${userName}`;
+            endpoint = `https://nahara-production.up.railway.app/api/user/admin/${userName}`;
             setUserRole("ADMIN");
           } else {
             setUserRole("USER"); // Default role
@@ -98,11 +98,11 @@ const Navbar = ({ refreshTrigger  }) => {
         const userName = decodedToken.userName;
         const userId = decodedToken.userId;
   
-        let endpoint = `http://localhost:8087/api/user/getUser/${userId}`;
+        let endpoint = `https://nahara-production.up.railway.app/api/user/getUser/${userId}`;
         if (userRole === "CREATOR") {
-          endpoint = `http://localhost:8087/api/user/creator/${userId}`;
+          endpoint = `https://nahara-production.up.railway.app/api/user/creator/${userId}`;
         } else if (userRole === "ADMIN") {
-          endpoint = `http://localhost:8087/api/user/admin/${userName}`;
+          endpoint = `https://nahara-production.up.railway.app/api/user/admin/${userName}`;
         }
   
         const response = await axios.get(endpoint, {
@@ -123,7 +123,7 @@ const Navbar = ({ refreshTrigger  }) => {
         const token = localStorage.getItem("token");
         if (token) {
             await axios.post(
-                "http://localhost:8087/api/user/logout", 
+                "https://nahara-production.up.railway.app/api/user/logout", 
                 {},
                 {
                     headers: {

@@ -1,7 +1,7 @@
 export const fetchSuspensionData = async (creatorId, setSuspensionData) => {
     try {
         const token = localStorage.getItem("jwtToken");
-        const response = await fetch(`http://localhost:8087/api/admin/creator/${creatorId}/suspension`, {
+        const response = await fetch(`https://nahara-production.up.railway.app/api/admin/creator/${creatorId}/suspension`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,

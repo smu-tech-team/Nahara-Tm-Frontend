@@ -28,7 +28,7 @@ const GoogleLoginButton = ({ onLoginSuccess }) => {
     };
 
     try {
-      const res = await axios.post("http://localhost:8087/api/auth/v1/google", userPayload);
+      const res = await axios.post("https://nahara-production.up.railway.app/api/auth/v1/google", userPayload);
       localStorage.setItem("token", res.data.token);
       onLoginSuccess();
     } catch (err) {

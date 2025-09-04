@@ -40,7 +40,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8087/api/creator/reset-password", {
+      const response = await axios.post("https://nahara-production.up.railway.app/api/creator/reset-password", {
         email,
         newPassword: password,
       });

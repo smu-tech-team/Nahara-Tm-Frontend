@@ -22,7 +22,7 @@ const EarningsDashboard = ({ totalEarnings }) => {
         throw new Error("No token found, please log in.");
       }
   
-      const response = await fetch("http://localhost:8087/api/earnings/calculate", {
+      const response = await fetch("https://nahara-production.up.railway.app/api/earnings/calculate", {
         method: "GET",
         credentials: "include",
         headers: {

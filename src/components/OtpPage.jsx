@@ -40,7 +40,7 @@ const OtpPage = () => {
     setMessage('')
     try {
       const res = await axios.post(
-        `http://localhost:8087/api/creator/send-otp?blogName=${values.blogName}`
+        `https://nahara-production.up.railway.app/api/creator/send-otp?blogName=${values.blogName}`
       )
       setBlogName(values.blogName)
       setStep(2)
@@ -56,7 +56,7 @@ const OtpPage = () => {
     setMessage('')
     try {
       const res = await axios.post(
-        `http://localhost:8087/api/creator/verify-otp?blogName=${blogName}&otp=${values.otp}`
+        `https://nahara-production.up.railway.app/api/creator/verify-otp?blogName=${blogName}&otp=${values.otp}`
       )
       setEmailVerified(true)
       setMessage(res.data)
@@ -73,7 +73,7 @@ const OtpPage = () => {
     setMessage('')
     try {
       const res = await axios.post(
-        `http://localhost:8087/api/creator/send-otp?blogName=${blogName}`
+        `https://nahara-production.up.railway.app/api/creator/send-otp?blogName=${blogName}`
       )
       setMessage(res.data)
     } catch (error) {

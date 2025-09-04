@@ -56,7 +56,7 @@ const LandingPage = () => {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:8087/api/episodes/latest?page=${page}&limit=${ITEMS_PER_PAGE}`
+        `https://nahara-production.up.railway.app/api/episodes/latest?page=${page}&limit=${ITEMS_PER_PAGE}`
       );
       const episodes = res.data || [];
   

@@ -23,7 +23,7 @@ const CreatorManagement = () => {
     const fetchCreators = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`http://localhost:8087/api/admin/creators?page=${page}&size=${size}`);
+            const response = await axios.get(`https://nahara-production.up.railway.app/api/admin/creators?page=${page}&size=${size}`);
             setCreators(response.data.content);
             setFilteredCreators(response.data.content);
             setTotalPages(response.data.totalPages);
@@ -42,7 +42,7 @@ const CreatorManagement = () => {
         return;
     }
     try {
-        await axios.post("http://localhost:8087/api/admin/suspend-creator", {
+        await axios.post("https://nahara-production.up.railway.app/api/admin/suspend-creator", {
             creatorId: selectedCreatorId,
             duration: selectedDuration,
             reason: suspensionReason,
@@ -77,12 +77,12 @@ const CreatorManagement = () => {
         const term = event.target.value;
         setSearchTerm(term);
         if (term.trim() === "") {
-            const response = await axios.get(`http://localhost:8087/api/admin/creators?page=${page}&size=${size}`);
+            const response = await axios.get(`https://nahara-production.up.railway.app/api/admin/creators?page=${page}&size=${size}`);
             setFilteredCreators(response.data.content);
             return;
         }
         try {
-            const response = await axios.get(`http://localhost:8087/api/creator/creators/search?query=${term}`);
+            const response = await axios.get(`https://nahara-production.up.railway.app/api/creator/creators/search?query=${term}`);
             setFilteredCreators(response.data);
         } catch (error) {
             console.error("Error searching creators:", error);

@@ -79,7 +79,7 @@ const AdminRegistrationForm = () => {
     setLoading(true); // Start loading
 
     try {
-      const response = await fetch("http://localhost:8087/api/admin/register", {
+      const response = await fetch("https://nahara-production.up.railway.app/api/admin/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

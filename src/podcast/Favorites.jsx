@@ -23,7 +23,7 @@ const Favorites = () => {
     const fetchFavorites = async () => {
         try {
           const jwtToken = localStorage.getItem("jwtToken");
-          const response = await fetch(`http://localhost:8087/api/episodes/favorites`, {
+          const response = await fetch(`https://nahara-production.up.railway.app/api/episodes/favorites`, {
             headers: {
               "Authorization": `Bearer ${jwtToken}`,
             },
@@ -79,7 +79,7 @@ const Favorites = () => {
   const handleDeleteFavorite = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8087/api/episodes/favorites/${selectedEpisodeId}`,
+        `https://nahara-production.up.railway.app/api/episodes/favorites/${selectedEpisodeId}`,
         {
           method: "DELETE",
           headers: {

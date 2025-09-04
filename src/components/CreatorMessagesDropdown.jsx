@@ -16,7 +16,7 @@ const CreatorMessagesDropdown = ({ creatorId }) => {
     const fetchMessages = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8087/api/creator/messages/${creatorId}`
+          `https://nahara-production.up.railway.app/api/creator/messages/${creatorId}`
         );
         setMessages(response.data);
         setUnreadCount(response.data.filter((msg) => !msg.read).length);
@@ -32,7 +32,7 @@ const CreatorMessagesDropdown = ({ creatorId }) => {
     setSelectedMessage(msg);
     if (!msg.read) {
       axios
-        .put(`http://localhost:8087/api/creator/messages/read/${msg.id}`)
+        .put(`https://nahara-production.up.railway.app/api/creator/messages/read/${msg.id}`)
         .then(() => {
           setMessages((prev) =>
             prev.map((m) => (m.id === msg.id ? { ...m, read: true } : m))

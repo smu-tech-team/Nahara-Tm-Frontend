@@ -21,7 +21,7 @@ const LiveStreamer = ({creatorId}) => {
   useEffect(() => {
     if (!isStreaming || !sessionId) return;
 
-const socket = new WebSocket(`ws://localhost:8087/ws/audio?sessionId=${sessionId}&creatorId=${creatorId}&title=${encodeURIComponent(title)}`);
+const socket = new WebSocket(`ws://https://nahara-production.up.railway.app/ws/audio?sessionId=${sessionId}&creatorId=${creatorId}&title=${encodeURIComponent(title)}`);
 
     wsRef.current = socket;
 
@@ -72,12 +72,12 @@ const socket = new WebSocket(`ws://localhost:8087/ws/audio?sessionId=${sessionId
 
   const uploadAndFinalize = async () => {
     try {
-      const res = await axios.post(`http://localhost:8087/api/v1/podcast/upload/${sessionId}`);
+      const res = await axios.post(`https://nahara-production.up.railway.appapi/v1/podcast/upload/${sessionId}`);
       const uploadedUrl = res.data.audioUrl;
       setAudioUrl(uploadedUrl);
 
       if (title.trim()) {
-        await axios.patch(`http://localhost:8087/api/v1/podcast/title/${sessionId}`, { title });
+        await axios.patch(`https://nahara-production.up.railway.app/api/v1/podcast/title/${sessionId}`, { title });
       }
 
       console.log("Stream finalized, uploaded, and titled.");

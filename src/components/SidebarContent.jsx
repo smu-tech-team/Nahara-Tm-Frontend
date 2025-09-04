@@ -25,10 +25,10 @@ export default function RightSidebar() {
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const podcastResponse = await axios.get("http://localhost:8087/api/podcast/list");
+        const podcastResponse = await axios.get("https://nahara-production.up.railway.app/api/podcast/list");
         setPodcasts(Array.isArray(podcastResponse.data) ? podcastResponse.data.slice(0, 6) : []);
 
-        const ebookResponse = await axios.get("http://localhost:8087/api/ebooks/get-all-ebooks");
+        const ebookResponse = await axios.get("https://nahara-production.up.railway.app/api/ebooks/get-all-ebooks");
         setEbooks(Array.isArray(ebookResponse.data) ? ebookResponse.data.slice(0, 6) : []);
 
         setLoading(false);

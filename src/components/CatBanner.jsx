@@ -21,11 +21,11 @@ const CategoryBanner = ({ selectedCategory = "default" }) => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const response = await axios.get(`http://localhost:8087/api/banners/${selectedCategory}`);
+        const response = await axios.get(`https://nahara-production.up.railway.app/api/banners/${selectedCategory}`);
         const banners = response.data;
 
         if (!banners.length) {
-          const fallback = await axios.get(`http://localhost:8087/api/banners/default`);
+          const fallback = await axios.get(`https://nahara-production.up.railway.app/api/banners/default`);
           setBannerData(fallback.data);
         } else {
           setBannerData(banners);

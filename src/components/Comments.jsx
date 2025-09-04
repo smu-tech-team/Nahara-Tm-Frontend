@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const fetchComments = async (postId) => {
   try {
-    const response = await axios.get(`http://localhost:8087/api/comments/get-comments/${postId}`);
+    const response = await axios.get(`https://nahara-production.up.railway.app/api/comments/get-comments/${postId}`);
     return Array.isArray(response.data) ? response.data : [];
   } catch (error) {
     console.error("Error fetching comments:", error);
@@ -33,7 +33,7 @@ const Comments = ({ postId, comments }) => {
     mutationFn: async (newComment) => {
       const token = localStorage.getItem("token");
       return axios.post(
-        `http://localhost:8087/api/comments/add-comment/${postId}`,
+        `https://nahara-production.up.railway.app/api/comments/add-comment/${postId}`,
         newComment,
         {
       headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -102,7 +102,7 @@ const Comments = ({ postId, comments }) => {
       if (!commentId) throw new Error("Comment ID is required for deletion.");
       const token = localStorage.getItem("token");
       return axios.delete(
-        `http://localhost:8087/api/comments/delete-comment/${commentId}`,
+        `https://nahara-production.up.railway.app/api/comments/delete-comment/${commentId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
     },  

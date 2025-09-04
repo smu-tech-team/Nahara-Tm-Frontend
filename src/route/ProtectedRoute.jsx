@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const checkSuspension = async (userId) => {
       try {
-        const response = await axios.get(`http://localhost:8087/api/admin/creator/${userId}/suspension`);
+        const response = await axios.get(`https://nahara-production.up.railway.app/api/admin/creator/${userId}/suspension`);
         const { suspensionEndDate } = response.data;
 
         if (new Date(suspensionEndDate) > new Date()) {

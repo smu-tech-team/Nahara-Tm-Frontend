@@ -6,7 +6,7 @@ import PostListItem from "./PostListItem";
 
 const fetchPosts = async ({ page, size, searchParams }) => {
     const searchParamObj = Object.fromEntries([...searchParams]);
-    const fullUrl = `http://localhost:8087/api/post/getAll-posts?${new URLSearchParams({
+    const fullUrl = `https://nahara-production.up.railway.app/api/post/getAll-posts?${new URLSearchParams({
         ...searchParamObj,
         page,
         size,

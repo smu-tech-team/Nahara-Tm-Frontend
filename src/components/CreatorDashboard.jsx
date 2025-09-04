@@ -28,7 +28,7 @@ const CreatorDashboard = ({ creatorId }) => {
   const [activeModal, setActiveModal] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isVerified, setIsVerified] = useState(false);
-  const API_BASE_URL = "http://localhost:8087/api/creator";
+  const API_BASE_URL = "https://nahara-production.up.railway.app/api/creator";
 
 
   const fetchCreatorData = async () => {
@@ -40,9 +40,9 @@ const CreatorDashboard = ({ creatorId }) => {
       }
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       const [viewsRes, followersRes, postsRes] = await Promise.all([
-        axios.get(`http://localhost:8087/api/creator/${creatorId}/total-views`),
-        axios.get(`http://localhost:8087/api/creator/creators/${creatorId}/followers`),
-        axios.get(`http://localhost:8087/api/creator/${creatorId}/total-posts`),
+        axios.get(`https://nahara-production.up.railway.app/api/creator/${creatorId}/total-views`),
+        axios.get(`https://nahara-production.up.railway.app/api/creator/creators/${creatorId}/followers`),
+        axios.get(`https://nahara-production.up.railway.app/api/creator/${creatorId}/total-posts`),
 
       ]);
       setTotalViews(viewsRes.data || 0);
@@ -82,7 +82,7 @@ const CreatorDashboard = ({ creatorId }) => {
         console.error("No token found in localStorage");
         return;
       }
-      const response = await axios.get("http://localhost:8087/api/earnings/calculate", {
+      const response = await axios.get("https://nahara-production.up.railway.app/api/earnings/calculate", {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log("Response received:", response.data);

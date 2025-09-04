@@ -32,7 +32,7 @@ const ReportPost = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:8087/api/user/submit",
+        "https://nahara-production.up.railway.app/api/user/submit",
         data,
         { headers }
       );

@@ -38,7 +38,7 @@ const PostMenuActions = ({ postId, slug }) => {
       try {
         console.log("Fetching post details for Post ID:", postId);
         
-        const response = await axios.get(`http://localhost:8087/api/post/${postId}`, {
+        const response = await axios.get(`https://nahara-production.up.railway.app/api/post/${postId}`, {
           params: {
             category: Math.random().toString(36).substring(2, 10),
             blogName: Math.random().toString(36).substring(2, 10),
@@ -73,9 +73,9 @@ const PostMenuActions = ({ postId, slug }) => {
     setLoadingSave(true);
     try {
       if (isSaved) {
-        await axios.delete(`http://localhost:8087/api/user/saved/${postId}`);
+        await axios.delete(`https://nahara-production.up.railway.app/api/user/saved/${postId}`);
       } else {
-        await axios.patch(`http://localhost:8087/api/user/save-post/${postId}`);
+        await axios.patch(`https://nahara-production.up.railway.app/api/user/save-post/${postId}`);
       }
       setIsSaved(!isSaved);
       toast.success(isSaved ? "Post removed from saved!" : "Post saved successfully!");
@@ -103,7 +103,7 @@ const PostMenuActions = ({ postId, slug }) => {
 
     setLoadingDelete(true);
     try {
-      await axios.delete(`http://localhost:8087/api/post/delete/${slug}`, {
+      await axios.delete(`https://nahara-production.up.railway.app/api/post/delete/${slug}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Post deleted successfully!");

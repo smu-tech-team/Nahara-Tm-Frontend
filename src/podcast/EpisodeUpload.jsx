@@ -95,7 +95,7 @@ const EpisodeUpload = () => {
 
     try {
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://localhost:8087/api/episodes/upload');
+      xhr.open('POST', 'https://nahara-production.up.railway.app/api/episodes/upload');
       xhr.setRequestHeader('Authorization', `Bearer ${token}`);
 
       xhr.upload.onprogress = (event) => {

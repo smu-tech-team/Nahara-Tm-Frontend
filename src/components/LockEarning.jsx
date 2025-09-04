@@ -10,7 +10,7 @@ const LockEarnings = ({ onClose }) => {
   // Fetch lock status
   const fetchLockStatus = async () => {
     try {
-      const response = await fetch("http://localhost:8087/api/earnings/lock-status", {
+      const response = await fetch("https://nahara-production.up.railway.app/api/earnings/lock-status", {
         credentials: "include",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

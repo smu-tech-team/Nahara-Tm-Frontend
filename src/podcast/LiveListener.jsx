@@ -71,7 +71,7 @@ const LiveHub = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8087/live")
+    fetch("https://nahara-production.up.railway.app/live")
       .then((res) => res.json())
       .then((data) => setSessions(Array.isArray(data) ? data : []))
       .finally(() => setLoadingSessions(false));
@@ -79,7 +79,7 @@ const LiveHub = () => {
 
   useEffect(() => {
     const client = new Client({
-      webSocketFactory: () => new SockJS("http://localhost:8087/ws-sessions"),
+      webSocketFactory: () => new SockJS("https://nahara-production.up.railway.app/ws-sessions"),
       reconnectDelay: 5000,
     });
 
@@ -222,7 +222,7 @@ const LiveHub = () => {
               onClick={async () => {
                 if (!selectedSession) return;
                 try {
-                  await fetch(`http://localhost:8087/api/v1/podcast/speaker-request/${selectedSession.id}`, {
+                  await fetch(`hhttps://nahara-production.up.railway.app/api/v1/podcast/speaker-request/${selectedSession.id}`, {
                     method: "POST",
                   });
                   alert("🎙️ Speaker request sent!");

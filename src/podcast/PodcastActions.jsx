@@ -18,7 +18,7 @@ const PodcastActions = ({
   const handleLike = async (e) => {
     e.stopPropagation();
     try {
-      const res = await fetch(`http://localhost:8087/api/podcast/${podcastId}/like`, {
+      const res = await fetch(`https://nahara-production.up.railway.app/api/podcast/${podcastId}/like`, {
         method: "POST",
         headers: {
           Authorization: localStorage.getItem("token"),

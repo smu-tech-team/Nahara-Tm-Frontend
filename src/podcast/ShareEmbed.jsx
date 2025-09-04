@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const ShareEmbed = ({ podcastId }) => {
-  const embedSrc = `http://localhost:8087/api/podcast/${podcastId}/embed`;
+  const embedSrc = `https://nahara-production.up.railway.app/api/podcast/${podcastId}/embed`;
 
   // ✅ Updated only this line:
   const podcastUrl = `http://localhost:5173/podcast/${podcastId}`;

@@ -14,7 +14,7 @@ const SavedSessions = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:8087/api/v1/podcast/saved?page=${pageNumber}&size=6`,
+        `https://nahara-production.up.railway.app/api/v1/podcast/saved?page=${pageNumber}&size=6`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSessions(res.data.content);
@@ -37,7 +37,7 @@ const SavedSessions = () => {
       {loading ? (
         <p className="text-center">Loading...</p>
       ) : sessions.length === 0 ? (
-        <p className="text-center text-gray-500">You haven't saved any sessions yet.</p>
+        <p className="text-center text-gray-500">You haven&#39;t saved any sessions yet.</p>
       ) : (
         <div className="grid gap-6 md:grid-cols-2">
           {sessions.map((s) => (

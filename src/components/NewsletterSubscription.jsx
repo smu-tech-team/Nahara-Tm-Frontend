@@ -84,7 +84,7 @@ const NewsletterSubscription = () => {
       }
 
       await axios.delete(
-        `http://localhost:8087/api/subscribers/unsubscribe?email=${savedEmail}`
+        `https://nahara-production.up.railway.app/api/subscribers/unsubscribe?email=${savedEmail}`
       );
 
       localStorage.removeItem("isSubscribed");

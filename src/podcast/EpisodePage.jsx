@@ -17,7 +17,7 @@ const EpisodePage = () => {
   useEffect(() => {
     const fetchEpisodeData = async () => {
       try {
-        const response = await fetch(`http://localhost:8087/api/episodes/episode/${id}`); 
+        const response = await fetch(`https://nahara-production.up.railway.app/api/episodes/episode/${id}`); 
         if (!response.ok) throw new Error('Failed to fetch episode');
 
         const data = await response.json();
@@ -78,7 +78,7 @@ const EpisodePage = () => {
     if (!ep?.episode_id) return alert("Missing episode ID.");
 
     try {
-      const response = await fetch(`http://localhost:8087/api/episodes/episode/${ep.episode_id}/favorite`, {
+      const response = await fetch(`https://nahara-production.up.railway.app/api/episodes/episode/${ep.episode_id}/favorite`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

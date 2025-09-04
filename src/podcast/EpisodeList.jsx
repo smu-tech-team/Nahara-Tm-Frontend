@@ -10,7 +10,7 @@ const EpisodeList = ({ excludeId }) => {
     const fetchEpisodes = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:8087/api/episodes?page=0&size=10', {
+        const response = await fetch('https://nahara-production.up.railway.app/api/episodes?page=0&size=10', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

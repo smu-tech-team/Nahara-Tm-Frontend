@@ -50,7 +50,7 @@ const AdminHeader = () => {
             formData.append("imageFile", selectedFile);
           }
       
-          const response = await axios.put("http://localhost:8087/api/admin/update-info", formData, {
+          const response = await axios.put("https://nahara-production.up.railway.app/api/admin/update-info", formData, {
             headers: {
               Authorization: `Bearer ${token}`,
               "Content-Type": "multipart/form-data",
@@ -154,7 +154,7 @@ const AdminHeader = () => {
         const fetchAppeals = async () => {
           try {
             const token = localStorage.getItem("token");
-            const response = await axios.get(" http://localhost:8087/api/appeal/count", {
+            const response = await axios.get(" https://nahara-production.up.railway.app/api/appeal/count", {
               headers: { Authorization: `Bearer ${token}` },
             });
             setAppealCount(response.data.count || 0);

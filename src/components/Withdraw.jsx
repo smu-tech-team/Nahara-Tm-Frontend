@@ -21,7 +21,7 @@ const WithdrawEarnings = ({ balance, onClose }) => {
 
     try {
       setLoading(true); // Show loading state
-      const response = await fetch("http://localhost:8087/api/earnings/withdraw", {
+      const response = await fetch("https://nahara-production.up.railway.app/api/earnings/withdraw", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

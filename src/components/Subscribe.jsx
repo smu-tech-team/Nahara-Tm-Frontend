@@ -12,7 +12,7 @@ function Subscribe() {
     setLoading(true);
     
     try {
-      const response = await axios.post("http://localhost:8080/api/newsletter/subscribe", formData);
+      const response = await axios.post("https://nahara-production.up.railway.app/api/newsletter/subscribe", formData);
       toast.success(response.data || "Subscription successful!");
       setFormData({ name: "", email: "", preferences: "" }); // Reset form
     } catch (error) {

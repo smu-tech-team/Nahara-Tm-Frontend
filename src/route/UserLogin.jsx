@@ -69,7 +69,7 @@ try {
       const requestData = { userName, password };
       if (fcmToken) requestData.fcmToken = fcmToken;
 
-      const response = await axios.post("http://localhost:8087/api/user/login", requestData, {
+      const response = await axios.post("https://nahara-production.up.railway.app/api/user/login", requestData, {
         headers: { "Accept": "application/json" },
       });
 
@@ -94,7 +94,7 @@ try {
       return;
     }
     try {
-      const response = await axios.get(`http://localhost:8087/api/user/verify-email`, {
+      const response = await axios.get(`https://nahara-production.up.railway.app/api/user/verify-email`, {
         params: { email }
       });
 

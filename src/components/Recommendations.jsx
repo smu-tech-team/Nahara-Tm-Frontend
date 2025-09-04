@@ -20,7 +20,7 @@ const Recommendations = () => {
     };
   }, []);
   const fetchData = () => {
-    fetch("http://localhost:8087/api/creator/popular")
+    fetch("https://nahara-production.up.railway.app/api/creator/popular")
       .then((res) => res.json())
       .then((data) => {
         console.log("Creators API Response:", data);

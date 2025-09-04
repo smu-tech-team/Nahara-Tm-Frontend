@@ -17,7 +17,7 @@ const CheckEligibility = ({ onClose }) => {
     setLoading(true);
     console.log("🔄 Sending request to check eligibility...");
 
-    fetch("http://localhost:8087/api/earnings/check-eligibility", {
+    fetch("https://nahara-production.up.railway.app/api/earnings/check-eligibility", {
       credentials: "include",
       headers: {
         Authorization: `Bearer ${token}`,

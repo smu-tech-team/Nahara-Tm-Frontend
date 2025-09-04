@@ -24,7 +24,7 @@ const RecentLiveNews = () => {
     const fetchLiveNews = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8087/api/live-news/get-live-news"
+          "https://nahara-production.up.railway.app/api/live-news/get-live-news"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch live news");

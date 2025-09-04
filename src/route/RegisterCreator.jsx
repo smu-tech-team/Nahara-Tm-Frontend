@@ -4,7 +4,6 @@ import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import creatorImage from "/Mobile-login.jpg";
 import { motion } from "framer-motion";
-import GoogleLoginButton from "../components/GoogleLoginButton";
 
 const CreatorRegister = () => {
   const [blogName, setBlogName] = useState("");
@@ -21,35 +20,56 @@ const CreatorRegister = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    // Validation
     if (!agreed) {
-      setError("You must agree to the guidelines before registering.");
+      setError("⚠️ You must agree to the guidelines before registering.");
       return;
     }
-
-    if (!blogName || !email || !password) {
-      setError("All fields are required.");
+    if (!blogName.trim() || !email.trim() || !password.trim()) {
+      setError("⚠️ All fields are required.");
       return;
     }
 
     const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{8,}$/;
-    if (password.length < 8 || !passwordRegex.test(password)) {
-      setError("Password must be at least 8 characters and include letters, numbers, and symbols.");
+    if (!passwordRegex.test(password)) {
+      setError(
+        "⚠️ Password must be at least 8 characters long and include letters, numbers, and symbols."
+      );
       return;
     }
 
+    // Reset states
     setIsLoading(true);
     setError("");
     setSuccess("");
 
     try {
       const response = await axios.post(
-        "http://localhost:8087/api/creator/register",
-        { blogName, email, password, role }
+        "https://nahara-production.up.railway.app/api/creator/register",
+        { blogName, email, password, role },
+        { timeout: 10000 } // prevent hanging
       );
-      setSuccess(response.data.message);
+
+      setSuccess(response.data?.message || "🎉 Registration successful!");
       setTimeout(() => navigate("/login"), 2000);
-    } catch (error) {
-      setError(error.response?.data?.message || "An error occurred. Please try again.");
+    } catch (err) {
+      console.error("❌ Registration error:", err);
+
+      if (err.response) {
+        // Server sent an error
+        if (err.response.status === 400) {
+          setError(err.response.data?.message || "Invalid input. Please check again.");
+        } else if (err.response.status === 500) {
+          setError("⚠️ Server error. Please try again later.");
+        } else {
+          setError(err.response.data?.message || "Unexpected error. Try again.");
+        }
+      } else if (err.request) {
+        setError("⚠️ No response from server. Check your connection.");
+      } else {
+        setError("⚠️ Something went wrong. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -57,6 +77,7 @@ const CreatorRegister = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col justify-center items-center px-4 py-6">
+      {/* Popup Guidelines */}
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-xl max-w-lg w-full shadow-lg space-y-4">
@@ -64,9 +85,9 @@ const CreatorRegister = () => {
               📢 Creator Guidelines for <span className="text-red-600">NAHARA</span>
             </h2>
             <p className="text-gray-700 dark:text-gray-300 text-sm">
-              ✅ Ensure content is <strong>factual</strong>.  
-              ❌ Avoid fake news.  
-              🛑 Violations will lead to removal.  
+              ✅ Ensure content is <strong>factual</strong>.<br />
+              ❌ Avoid fake news.<br />
+              🛑 Violations will lead to removal.<br />
               💡 Build a trusted creator space.
             </p>
             <label className="flex items-center mt-2 text-gray-800 dark:text-gray-200">
@@ -93,20 +114,21 @@ const CreatorRegister = () => {
         </div>
       )}
 
+      {/* Registration Section */}
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-10 items-center ">
-       <motion.div
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center space-y-6 order-1 md:order-1"
+          className="flex flex-col items-center text-center space-y-6"
         >
           <img
             src={creatorImage}
             alt="Content Creator"
-            className="w-[90%] md:w-[400px] rounded-2xl shadow-xl "
+            className="w-[90%] md:w-[400px] rounded-2xl shadow-xl"
           />
-          <div className="">
-            <h3 className=" section-title  button-color animate-gradient-flow-x">
+          <div>
+            <h3 className="section-title button-color animate-gradient-flow-x">
               Empower Your Voice
             </h3>
             <p className="mt-2 text-base md:text-lg text-gray-600 dark:text-gray-400 max-w-md mx-auto">
@@ -114,21 +136,27 @@ const CreatorRegister = () => {
             </p>
           </div>
         </motion.div>
+
+        {/* Registration Form */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.6 }}
-          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md w-full order-2 md:order-2"
+          className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md w-full"
         >
           <h2 className="text-2xl md:text-3xl font-bold text-center mb-4 text-gray-900 dark:text-white">
             Register as Creator
           </h2>
+
           {error && <p className="text-red-500 mb-3 text-center">{error}</p>}
           {success && <p className="text-green-500 mb-3 text-center">{success}</p>}
 
           <form onSubmit={handleRegister} className="space-y-4">
+            {/* Blog Name */}
             <div>
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Creator Name or Blog Name</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Creator Name or Blog Name
+              </label>
               <input
                 type="text"
                 value={blogName}
@@ -136,8 +164,12 @@ const CreatorRegister = () => {
                 className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white text-gray-900 focus:ring-2 focus:ring-blue-600"
               />
             </div>
+
+            {/* Email */}
             <div>
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Email
+              </label>
               <input
                 type="email"
                 value={email}
@@ -145,8 +177,12 @@ const CreatorRegister = () => {
                 className="w-full px-4 py-2 border rounded-md dark:bg-gray-700 dark:text-white text-gray-900 focus:ring-2 focus:ring-blue-600"
               />
             </div>
+
+            {/* Password */}
             <div className="relative">
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Password
+              </label>
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
@@ -155,13 +191,17 @@ const CreatorRegister = () => {
               />
               <div
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer text-gray-500 pt-5 dark:text-gray-300  "
+                className="absolute right-3 top-[50%] translate-y-[-50%] cursor-pointer text-gray-500 pt-5 dark:text-gray-300"
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </div>
             </div>
+
+            {/* Role */}
             <div>
-              <label className="text-sm font-medium text-gray-700 dark:text-gray-300 ">Role</label>
+              <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Role
+              </label>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
@@ -170,6 +210,8 @@ const CreatorRegister = () => {
                 <option value="CREATOR">Creator</option>
               </select>
             </div>
+
+            {/* Terms */}
             <div className="flex items-center text-sm">
               <input
                 type="checkbox"
@@ -189,19 +231,16 @@ const CreatorRegister = () => {
               </label>
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full  button-color animate-gradient-flow-x text-white py-2 rounded-lg hover:bg-blue-600 transition a"
+              className="w-full button-color animate-gradient-flow-x text-white py-2 rounded-lg hover:bg-blue-600 transition"
             >
-              {isLoading ? <span className="animate-spin">⏳</span> : "Register now"}
+              {isLoading ? "⏳ Registering..." : "Register Now"}
             </button>
           </form>
         </motion.div>
-        {/* <div className="text-center">
-          <p className="text-white my-4">Or continue with</p>
-         <GoogleLoginButton onLoginSuccess={() => navigate("/")} />
-          </div> */}
       </div>
     </div>
   );

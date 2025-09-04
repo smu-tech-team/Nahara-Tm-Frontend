@@ -35,8 +35,8 @@ const PodcastList = ({
       try {
         const url =
           category === 'All' || !category
-            ? 'http://localhost:8087/api/podcast/podcasts'
-            : `http://localhost:8087/api/podcast/podcasts?category=${category}`;
+            ? 'https://nahara-production.up.railway.app/api/podcast/podcasts'
+            : `https://nahara-production.up.railway.app/api/podcast/podcasts?category=${category}`;
         const response = await fetch(url);
         const data = await response.json();
 

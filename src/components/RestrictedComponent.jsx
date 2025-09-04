@@ -15,7 +15,7 @@ const LocationDisplay = () => {
 
         console.log("Detected IP:", userIP);
 
-        const response = await fetch(`http://localhost:8087/api/geo/location?ip=${userIP}`);
+        const response = await fetch(`https://nahara-production.up.railway.app/api/geo/location?ip=${userIP}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch location data");

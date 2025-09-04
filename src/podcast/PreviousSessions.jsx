@@ -19,7 +19,7 @@ const PreviousSessions = () => {
   const fetchSessions = async (pageNumber) => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:8087/api/v1/podcast/previous?page=${pageNumber}&size=${size}`);
+      const res = await axios.get(`https://nahara-production.up.railway.app/api/v1/podcast/previous?page=${pageNumber}&size=${size}`);
       setSessions(res.data.content);
       setTotalPages(res.data.totalPages);
       setPage(res.data.currentPage);

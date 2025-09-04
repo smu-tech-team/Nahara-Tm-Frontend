@@ -31,7 +31,7 @@ const BookCard = ({ id, title, description, cover, link, isSaved, userId, author
 
   const handleReadClick = async () => {
     try {
-      await axios.get(`http://localhost:8087/api/ebooks/get-single-ebook/${id}`);
+      await axios.get(`https://nahara-production.up.railway.app/api/ebooks/get-single-ebook/${id}`);
       setReads((prev) => prev + 1);
       navigate(`/read-ebook/${id}`);
     } catch (err) {
@@ -41,7 +41,7 @@ const BookCard = ({ id, title, description, cover, link, isSaved, userId, author
 
   const handleDownloadClick = async () => {
     try {
-      const res = await axios.get(`http://localhost:8087/api/ebooks/ebook/download?ebookId=${id}`, {
+      const res = await axios.get(`https://nahara-production.up.railway.app/api/ebooks/ebook/download?ebookId=${id}`, {
         responseType: "blob",
       });
       const url = window.URL.createObjectURL(new Blob([res.data]));

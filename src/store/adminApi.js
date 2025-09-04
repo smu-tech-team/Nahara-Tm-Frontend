@@ -2,7 +2,7 @@ import { ActionTypes } from "./actionTypes"; // Adjust path if needed
 import axios from "axios";
 
 export async function fetchAdminItems() {
-  const response = await fetch("http://localhost:8087/api/admin/get-items");
+  const response = await fetch("https://nahara-production.up.railway.app/api/admin/get-items");
   if (!response.ok) {
     throw new Error("Failed to fetch admin items");
   }
@@ -10,7 +10,7 @@ export async function fetchAdminItems() {
 }
 
 export async function performAdminAction(actionType, itemIds) {
-  const response = await fetch("http://localhost:8087/api/admin/perform", {
+  const response = await fetch("https://nahara-production.up.railway.app/api/admin/perform", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

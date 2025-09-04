@@ -9,7 +9,7 @@ const FollowButton = ({ creatorId, token }) => {
     const fetchFollowStatus = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8087/api/creator/follow-status/${creatorId}`,
+          `https://nahara-production.up.railway.app/api/creator/follow-status/${creatorId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setIsFollowing(response.data.isFollowing);
@@ -33,8 +33,8 @@ const FollowButton = ({ creatorId, token }) => {
     try {
       setLoadingFollow(true);
       const endpoint = isFollowing
-        ? `http://localhost:8087/api/creator/unfollow/${creatorId}`
-        : `http://localhost:8087/api/creator/follow/${creatorId}`;
+        ? `https://nahara-production.up.railway.app/api/creator/unfollow/${creatorId}`
+        : `https://nahara-production.up.railway.app/api/creator/follow/${creatorId}`;
 
       if (isFollowing) {
         await axios.delete(endpoint, { headers: { Authorization: `Bearer ${token}` } });

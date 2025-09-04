@@ -26,7 +26,7 @@ const CreatorProfile = () => {
     if (!slug) return;
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`http://localhost:8087/api/post/post/${slug}`);
+        const response = await axios.get(`https://nahara-production.up.railway.app/api/post/post/${slug}`);
         setPost(response.data);
         console.log("Fetched post:", response.data);
       } catch (error) {
@@ -42,7 +42,7 @@ const CreatorProfile = () => {
     const fetchCreatorData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8087/api/creator/creator/${creatorId}`,
+          `https://nahara-production.up.railway.app/api/creator/creator/${creatorId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setCreator(response.data);
@@ -81,7 +81,7 @@ const CreatorProfile = () => {
       setLoadingFollowers(true);
       try {
         const response = await axios.get(
-          `http://localhost:8087/api/creator/creator/${creatorId}/get-creator-followers`,
+          `https://nahara-production.up.railway.app/api/creator/creator/${creatorId}/get-creator-followers`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (response.status === 404) throw new Error("Followers data not found");

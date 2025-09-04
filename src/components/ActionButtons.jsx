@@ -22,13 +22,13 @@ const ActionButtons = () => {
             let response;
             switch (popup) {
                 case "users":
-                    response = await axios.get("http://localhost:8087/api/admin/users?page=0&size=10");
+                    response = await axios.get("https://nahara-production.up.railway.app/api/admin/users?page=0&size=10");
                     break;
                 case "reportedPosts":
-                    response = await axios.get("http://localhost:8087/api/admin/reported-posts?page=0&size=10");
+                    response = await axios.get("https://nahara-production.up.railway.app/api/admin/reported-posts?page=0&size=10");
                     break;
                 case "adsRequests":
-                    response = await axios.get("http://localhost:8087/api/admin/Ads-List?page=0&size=10");
+                    response = await axios.get("https://nahara-production.up.railway.app/api/admin/Ads-List?page=0&size=10");
                     break;
                 default:
                     return;

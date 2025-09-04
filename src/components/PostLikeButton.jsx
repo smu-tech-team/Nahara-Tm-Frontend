@@ -45,7 +45,7 @@ const PostLikeButton = ({ postId, initialLikes = 0, initiallyLiked = false }) =>
   try {
     console.log(`Sending request to like post ${postId} with token:`, token);
 
-    const res = await fetch(`http://localhost:8087/api/post/${postId}/like`, {
+    const res = await fetch(`https://nahara-production.up.railway.app/api/post/${postId}/like`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

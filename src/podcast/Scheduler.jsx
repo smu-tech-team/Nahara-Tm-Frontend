@@ -10,7 +10,7 @@ const Scheduler = () => {
   const schedulePodcast = async () => {
     const creatorId = localStorage.getItem("userId");
     try {
-      await axios.post("http://localhost:8087/api/v1/podcast/api/podcast/schedule", {
+      await axios.post("https://nahara-production.up.railway.app/api/v1/podcast/api/podcast/schedule", {
         title,
         time,
         creatorId,

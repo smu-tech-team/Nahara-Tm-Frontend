@@ -81,7 +81,7 @@ const MiniPlayer = ({ episode, onSkip }) => {
     if (hasLiked || !episode) return;
     setHasLiked(true);
     setLikes((prev) => prev + 1);
-    await fetch(`http://localhost:8087/api/episodes/${episode.episode_id}/like`, {
+    await fetch(`https://nahara-production.up.railway.app/api/episodes/${episode.episode_id}/like`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,

@@ -32,7 +32,7 @@ const Register = () => {
     setSuccess("");
 
     try {
-      const response = await axios.post("http://localhost:8087/api/user/register", {
+      const response = await axios.post("https://nahara-production.up.railway.app/api/user/register", {
         userName,
         email,
         password,

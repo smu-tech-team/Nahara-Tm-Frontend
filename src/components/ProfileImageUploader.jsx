@@ -29,7 +29,7 @@ const ProfileUpdater = () => {
       formData.append("file", selectedFile);
 
       const token = localStorage.getItem("token");
-      await axios.put("http://localhost:8087/api/user/profile-image", formData, {
+      await axios.put("https://nahara-production.up.railway.app/api/user/profile-image", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
@@ -55,7 +55,7 @@ const ProfileUpdater = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        "http://localhost:8087/api/user/email",
+        "https://nahara-production.up.railway.app/api/user/email",
         { email },
         {
           headers: {

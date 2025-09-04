@@ -19,7 +19,7 @@ const AdminMessageForm = () => {
     setSuccess(false);
 
     try {
-      await axios.post("http://localhost:8087/api/creator/messages/admin/send", {
+      await axios.post("https://nahara-production.up.railway.app/api/creator/messages/admin/send", {
         creatorId, // Pass creatorId dynamically
         postTitle,
         content,

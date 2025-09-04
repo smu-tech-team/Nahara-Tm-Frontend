@@ -6,7 +6,7 @@ const EmailSubscription = () => {
 
   const handleSubscribe = async () => {
     try {
-      const response = await fetch("http://localhost:8087/api/subscription", {
+      const response = await fetch("https://nahara-production.up.railway.app/api/subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, frequency }),

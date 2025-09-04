@@ -7,7 +7,7 @@ const MarketDetails = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:8087/api/stocks/commodities')
+    axios.get('https://nahara-production.up.railway.app/api/stocks/commodities')
       .then(res => {
         setCommodities(res.data);
         setLoading(false);

@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 const PodcastPopup = ({ podcast, onClose, setViews }) => {
   const handlePlayCount = async () => {
     try {
-      const res = await fetch(`http://localhost:8087/api/podcast/${podcast.id}/play`, {
+      const res = await fetch(`https://nahara-production.up.railway.app/api/podcast/${podcast.id}/play`, {
         method: "POST",
       });
       const data = await res.json();

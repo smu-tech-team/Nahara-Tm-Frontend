@@ -22,7 +22,7 @@ const AdvertiseWithUs = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:8087/api/advertise/submit", data, {
+      const response = await axios.post("https://nahara-production.up.railway.app/api/advertise/submit", data, {
         headers: {
           "Content-Type": "application/json",
         },

@@ -48,7 +48,7 @@ const Write = () => {
 
   const mutation = useMutation({
     mutationFn: async (newPost) => {
-      return axios.post("http://localhost:8087/api/post/create-post", newPost, {
+      return axios.post("https://nahara-production.up.railway.app/api/post/create-post", newPost, {
         headers: { Authorization: `Bearer ${token}` },
       });
     },

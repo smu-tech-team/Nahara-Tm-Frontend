@@ -1,6 +1,6 @@
 const startVideoStream = async () => {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-  const socket = new WebSocket("ws://localhost:8080/ws/videocast/{sessionId}");
+  const socket = new WebSocket("ws://https://nahara-production.up.railway.app/ws/videocast/{sessionId}");
   const recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
 
   recorder.ondataavailable = (e) => {

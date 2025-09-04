@@ -15,7 +15,7 @@ const PostTakenDown = ({ slug }) => {
 
         try {
             setIsSubmitting(true);
-            await axios.post(`http://localhost:8087/api/appeal/${slug}`, {
+            await axios.post(`https://nahara-production.up.railway.app/api/appeal/${slug}`, {
                 message: appealMessage,
             });
             alert("✅ Appeal submitted successfully! We'll review it shortly.");

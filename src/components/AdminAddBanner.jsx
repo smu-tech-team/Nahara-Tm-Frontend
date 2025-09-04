@@ -35,7 +35,7 @@ export default function AdminAddBanner({ onBannerAdded }) {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:8087/api/banners/admin/add", bannerData);
+      const response = await axios.post("https://nahara-production.up.railway.app/api/banners/admin/add", bannerData);
       alert("Banner added successfully!");
       setIsOpen(false);
       onBannerAdded(response.data);

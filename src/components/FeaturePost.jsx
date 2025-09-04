@@ -16,7 +16,7 @@ const FeaturedPost = () => {
   const limit = 4;
 
   const fetchPost = async () => {
-    const res = await axios.get(`http://localhost:8087/api/post/featured?limit=${limit}`);
+    const res = await axios.get(`https://nahara-production.up.railway.app/api/post/featured?limit=${limit}`);
     return res.data;
   };
 

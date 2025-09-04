@@ -62,7 +62,7 @@ const ChatRoom = ({ postSlug, user: initialUser }) => {
   const fetchMessages = async (pageNum = 0) => {
     try {
       const res = await axios.get(
-        `http://localhost:8087/api/v1/chats/history/${sessionId}?page=${pageNum}&size=20`
+        `https://nahara-production.up.railway.app/api/v1/chats/history/${sessionId}?page=${pageNum}&size=20`
       );
       const data = res.data;
       const orderedMessages = data?.messages || [];
@@ -105,7 +105,7 @@ const groupMessagesWithReplies = (flatMessages) => {
   useEffect(() => {
     if (!sessionId) return;
 
-    const socket = new SockJS("http://localhost:8087/ws-chat");
+    const socket = new SockJS("https://nahara-production.up.railway.app/ws-chat");
     const stompClient = Stomp.over(socket);
 
     stompClient.connect({}, async () => {

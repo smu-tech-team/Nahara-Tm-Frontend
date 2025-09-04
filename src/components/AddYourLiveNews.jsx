@@ -35,7 +35,7 @@ const AddYourLiveNews = ({ onClose }) => {
         };
 
         // Call the backend API to add live news
-        const response = await fetch('http://localhost:8087/api/live-news/add-live-news', {
+        const response = await fetch('https://nahara-production.up.railway.app/api/live-news/add-live-news', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

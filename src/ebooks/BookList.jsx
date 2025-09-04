@@ -27,7 +27,7 @@ const BookList = ({ userId }) => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const res = await axios.get("http://localhost:8087/api/ebooks/get-all-ebooks");
+        const res = await axios.get("https://nahara-production.up.railway.app/api/ebooks/get-all-ebooks");
         setBooks(res.data);
         if (res.data.length === 0) setError(true);
       } catch (err) {

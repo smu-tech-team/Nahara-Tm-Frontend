@@ -24,7 +24,7 @@ const RecommendedContent = () => {
         tags: selectedTags,
       });
 
-      const { data } = await axios.get("http://localhost:8087/api/recommendations/recommended_posts", {
+      const { data } = await axios.get("https://nahara-production.up.railway.app/api/recommendations/recommended_posts", {
         params: {
           userId,
           category: category || "",

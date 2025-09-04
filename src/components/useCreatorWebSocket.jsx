@@ -6,7 +6,7 @@ const useCreatorWebSocket = (creatorId, onNewMessage) => {
   const stompClientRef = useRef(null); // Use ref to retain the stompClient instance
 
   useEffect(() => {
-    const socket = new SockJS("http://localhost:8087/ws-reminder");
+    const socket = new SockJS("https://nahara-production.up.railway.app/ws-reminder");
     const stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 const useReminderWebSocket = (onNewReminder) => {
   useEffect(() => {
-    const socket = new SockJS('http://localhost:8087/ws-reminder'); // replace 8080 with your backend port
+    const socket = new SockJS('https://nahara-production.up.railway.app/ws-reminder'); // replace 8080 with your backend port
     const stompClient = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
